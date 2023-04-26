@@ -36,13 +36,13 @@
                <button class="accept" @click="openPopup">Accept</button>
                <button class="decline" @click="openPopup">Decline</button>
                <div class="popup" id="popup">
-                <div class="text">Are you sure you want to accept this request?</div>
+                <div class="pop">Are you sure you want to accept this request?</div>
                     <button type="button" class="btn yes" @click="closePopup()">Yes</button>
                     <button type="button" class="btn no" @click="closePopup()" >No</button>
                </div>
                
                <div class="popup2" id="popup2">
-                <div class="text">Are you sure you want to decline this request?</div>
+                <div class="pop">Are you sure you want to decline this request?</div>
                     <button type="button" class="btn yes" @click="closePopup()">Yes</button>
                     <button type="button" class="btn no" @click="closePopup()" >No</button>
                </div>
@@ -139,8 +139,11 @@
     visibility: hidden;
    }
 
-   .text{
+   .pop{
     font-size:20px;
+    font-family: 'Roboto';
+    margin-top: 10px;
+    margin-left: 10px;
    }
 
    .yes{

@@ -9,8 +9,8 @@
           <div class="card text-white">
             <img :src="firstImgSrc" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title fw-bolder">{{firstTitle}}</h5>
-              <p class="card-text">{{firstDetails}}</p>
+              <div class="c fw-bolder"> Room:{{firstTitle}}</div>
+              <p class="c"> Details:{{firstDetails}}</p>
               
               <div class="text-center">
                 <button
@@ -27,8 +27,8 @@
           <div class="card text-white">
             <img :src="secondImageSrc" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title fw-bolder">{{secondTitle}}</h5>
-              <p class="card-text">{{secondDetails}}</p>
+              <div class="c fw-bolder">Room: {{secondTitle}}</div>
+              <p class="c"> Details: {{secondDetails}}</p>
               <div class="text-center">
                 <button
                   class="btn mx-auto book-btn"
@@ -81,13 +81,14 @@
     width: 100%;
     height: 200px;
   }
-  h5{
-    color:var(--darkblue);
+  .c{
+    color:var(--light);
     font-weight: bold;
-    font-size: 30px;
+    font-size: 15px;
     margin-top:50px;
-    margin-left:70px;
+    
   }
+
   .book-btn {
     background-color: var(--lightblue);
     color: #fff;
@@ -97,5 +98,13 @@
     border: none;
     text-align: center;
   }
+  .book-btn:hover ,
+  .book-btn:active {
+  color: var(--darkblue) !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  background-color: var(--lightblue);
+
+}
   </style>
   

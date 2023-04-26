@@ -1,37 +1,86 @@
 <template>
-  <nav-bar></nav-bar>
+  <NavBar/>
   <div class="container my-5 ">
+    <h5 v-if="errorMsg">{{errorMsg}}</h5>
   
     <div class="request">
       <div class="title t">Requests</div>
       <hr />
-      <div class="info">
-        <div class="title">{{ FirstSpacename }}</div>
-        <div class="title">{{ SecondSpacename }}</div>
-        <div class="title">{{ ThirdSpacename }}</div>
+      <div class="info" v-for="item in info" v-bind:key="item.spaceName">
+        <div class="title" >{{ item.spaceName }}</div>
       </div>
     </div>
     <div class="name">
       <div class="title t">Name</div>
       <hr />
-      <div class="info">
-        <div class="title">{{ FirsClientname }}</div>
-        <div class="title">{{ SecondClientname }}</div>
-        <div class="title">{{ ThirdClientname }}</div>
+      <div class="info" v-for="item in info" v-bind:key="item.name">
+        <div class="title">{{ item.name }}</div>
       </div>
     </div>
     <div class="status">
       <div class="title t">Status</div>
       <hr />
-      <div class="info b">
-        <button class="accept" disabled>{{ Accepted }}</button>
-        <button class="decline" disabled>{{ Declined }}</button>
-        <button class="pend" disabled>{{ Pending }}</button>
+      <div class="information" v-for="item in info" v-bind:key="item.status"  >
+        <button class="accept " disabled v-if="info.status=='accepted'">{{item.status}}</button>
+        <button class="decline " disabled  v-else-if="info.status=='declined'">{{item.status}}</button>
+        <button class=" pend" disabled v-else>{{item.status}}</button>
       </div>
     </div>
   </div>
   <Footer />
 </template>
+
+<script>
+import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
+import axios from 'axios'
+
+export default {
+  name: "RequestsViewAdmin",
+  components: {
+    NavBar,
+    Footer,
+  },
+  data(){
+    return{
+      info:[
+        {
+          name:'',
+          spaceName:'',
+          status:['accepted' , 'declined' , 'pending'],
+          errorMsg:''
+
+        }
+      ]
+    }
+  },
+  methods:{
+    getRequest(){
+      axios.get('')
+      .then((response)=>{
+        this.info = response.data
+      })
+      .error((error)=>{
+        this.errorMsg ='Error happened'
+      })
+    },
+    created(){
+      this.getRequest();
+    }
+  },
+  /*props: [
+    "FirstSpacename",
+    "SecondSpacename",
+    "ThirdSpacename",
+    "FirstClientname",
+    "SecondClientname",
+    "ThirdClientname",
+    "status",
+  ],  */
+
+};
+</script>
+
 
 <style scoped>
 body {
@@ -67,57 +116,37 @@ hr {
   flex-direction: column;
 }
 
-.b {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  align-content: center;
-  row-gap: 100px;
+.information {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  align-content: center !important;
+  row-gap: 100px !important;
 }
 
-.Accepted {
-  color: var(--light);
-  background-color: green;
-  height: 50px;
-  width: 100px;
-  margin-top: 100px;
+.accept {
+  color: var(--light) !important;
+  background-color: green !important;
+  height: 50px !important;
+  width: 100px !important;
+  margin-top: 100px !important;
+  visibility: hidden;
 }
-.Declined {
-  color: var(--light);
-  background-color: red;
-  height: 50px;
-  width: 100px;
+.decline {
+  color: var(--light) !important;
+  background-color: red !important;
+  height: 50px !important;
+  width: 100px !important;
+  visibility: hidden;
 }
-.Pending {
-  color: var(--light);
-  background-color: rgb(188, 236, 92);
-  height: 50px;
-  width: 100px;
+.pend {
+  color: var(--light) !important;
+  background-color: rgb(136, 136, 13) !important;
+  height: 50px !important;
+  width: 100px !important;
+  visibility: hidden;
 }
 </style>
 
-<script>
-import NavBar from "@/components/NavBar.vue";
-import Footer from "@/components/Footer.vue";
 
-import SimpleNav from "@/components/SimpleNav.vue";
-export default {
-  name: "RequestsViewAdmin",
-  components: {
-    NavBar,
-    Footer,
-  },
-  props: [
-    "FirstSpacename",
-    "SecondSpacename",
-    "ThirdSpacename",
-    "FirstClientname",
-    "SecondClientname",
-    "ThirdClientname",
-    "Accepted",
-    "Declined",
-    "Pending",
-  ],
-};
-</script>

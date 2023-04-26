@@ -9,6 +9,8 @@ import ProfileView from "../views/ProfileView.vue";
 import ReviewRequestView from "../views/ReviewRequestView.vue";
 import BookNowView from "../views/BookNowView.vue";
 import OurSpacesView from "../views/OurSpacesView.vue";
+import RequestsViewAdmin from '../views/RequestsViewAdmin.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -62,6 +64,11 @@ const router = createRouter({
       name: "ourspaces",
       component: OurSpacesView,
     },
+    {
+      path: "/reviewadmin",
+      name: "reviewadmin",
+      component :RequestsViewAdmin,
+    }
   ],
 });
 
