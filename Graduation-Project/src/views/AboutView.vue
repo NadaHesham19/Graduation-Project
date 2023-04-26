@@ -3,7 +3,7 @@
   <div class="aboutusbody">
       <div class="intro">
         <img src="../assets/aboutus.jpg" alt="aboutus" class="image w-100">
-        <h1 class="text">About Us</h1>
+        <h1 class="about-text">About Us</h1>
       </div>
       <div class="details">
         <div class="who">
@@ -44,7 +44,7 @@ body{
     height:500px;   
 }
 
-.text {
+.about-text {
     position: absolute;
     top: 50%;
     left: 50%;

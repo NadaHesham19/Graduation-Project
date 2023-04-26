@@ -1,7 +1,7 @@
 <template>
 <NavBar></NavBar>
   <div class="container mt-5">
-    <div class="row justify-content-center align-items-center mb-5">
+    <div class="row justify-content-center align-items-center mb-5 w-100">
       <div class="col-lg-9 addNew">
         <h1 class="text-center my-5">Add New Spaces</h1>
         <div class="row justify-content-center">

@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="container">
-      <div class="row pb-5 align-items-center">
+      <div class="row pb-5 align-items-center w-100">
         <div class="col-8">
           <img src="../assets/Your-Space-logos_white.png" width="300px" height="100px" alt="" class="footerlogo"/>
         </div>
