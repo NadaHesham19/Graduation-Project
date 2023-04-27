@@ -11,7 +11,7 @@
         <input type="email" placeholder="Enter email" v-model="signinEmail" required />
 
         <input type="password" placeholder="Enter password" v-model="signinPassword" required />
-        <button type="submit" class="btn login" @click="checkIfAccountExists()">
+        <button type="submit" class="btn login" @click.prevent="checkIfAccountExists()">
           Sign in
         </button>
         <p><router-link to="/forgot">Forgot Your Password ?</router-link></p>
@@ -20,39 +20,21 @@
 
     <div id="signup-form">
       <form action="">
-        <input type="text" placeholder="First Name" required />
-        <input type="text" placeholder="Last Name" required />
-        <input type="email" placeholder="Email" required />
-        <input type="text" placeholder="Address" required />
-        <input type="tel" placeholder="Phone number" required />
-        <input
-          :type="type"
-          placeholder="Birthdate"
-          @focus="this.type = 'date'"
-        />
-        <input
-          ref="password"
-          type="password"
-          placeholder="Password"
-          v-model="password"
-          required
-        />
+        <input type="text" placeholder="First Name" required v-model="firstName" />
+        <input type="text" placeholder="Last Name" required v-model="lastName" />
+        <input type="email" placeholder="Email" required v-model="email" />
+        <input type="text" placeholder="Address" required v-model="location" />
+        <input type="tel" placeholder="Phone number" required v-model="phoneNumber" />
+        <input :type="type" placeholder="Birthdate" v-model="birthdate" @focus="this.type = 'date'"
+          @blur="this.type = 'text'" />
+        <input ref="password" type="password" placeholder="Password" v-model="password" required />
 
-        <div v-if="passwordValidation.errors.length > 0 && password.length>0">
-          <span
-            v-for="error in passwordValidation.errors"
-            :key="error"
-            class="error"
-          >
+        <div v-if="passwordValidation.errors.length > 0 && password.length > 0">
+          <span v-for="error in passwordValidation.errors" :key="error" class="error">
             {{ error }}
           </span>
         </div>
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          v-model.lazy="checkPassword"
-          required
-        />
+        <input type="password" placeholder="Confirm Password" v-model.lazy="checkPassword" required />
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
@@ -67,6 +49,8 @@
 
 <script>
 import SimpleNav from '@/components/SimpleNav.vue';
+import axios from 'axios'
+
 
 export default {
   data() {
@@ -78,15 +62,26 @@ export default {
         { message: "8 characters minimum.", regex: /.{8,}/ },
         { message: "One number required.", regex: /[0-9]+/ },
       ],
-      password: "",
+      //data for password validation
       checkPassword: "",
       passwordVisible: false,
       submitted: false,
-      signinEmail:"",
-      signinPassword:"",
+      signinEmail: "",
+      signinPassword: "",
+      users: null,
+      userID: 0,
+
+      // user Data for Signup
+      firstName: null,
+      lastName: null,
+      email: null,
+      phoneNumber: null,
+      location: null,
+      birthdate: null,
+      password: "",
     };
   },
-  components:{
+  components: {
     SimpleNav
   },
   methods: {
@@ -109,7 +104,16 @@ export default {
       document.getElementById("login-form").style.display = "block";
     },
     CreateAccount() {
-      // API from backend
+      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0 })
+        .then((response) => {
+          // Handle response
+          this.users = response.data;
+          console.log(this.users)
+        })
+        .catch((err) => {
+          // Handle errors
+          console.error(err);
+        });
     },
     resetPasswords() {
       this.password = "";
@@ -123,8 +127,19 @@ export default {
       // request for data base
       // from response if doesn't exist route to home
       //if not display error message
-      if(this.signinEmail=="Admin@info.com" &&this.signinPassword=="Root1234"){
-        this.$router.push({name:"profile"})
+      for (let i = 0; i < this.users.length; i++) {
+        if (this.users[i].email == this.signinEmail && this.users[i].password == this.signinPassword && this.users != null) {
+          this.userID = this.users[i].userId
+          console.log(this.userID)
+          this.$router.push("/home")
+
+        }
+      }
+      if (this.signinEmail == "Admin@info.com" && this.signinPassword == "Root1234") {
+        this.$router.push({ name: "profile" })
+      } else {
+        console.log("error")
+        // must show error message
       }
     },
   },
@@ -153,6 +168,18 @@ export default {
       }
     },
   },
+  beforeMount() {
+    axios.get("http://localhost:8080/api/user")
+      .then((response) => {
+        // Handle response
+        this.users = response.data;
+        console.log(this.users)
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
+  }
 };
 </script>
 
@@ -226,10 +253,12 @@ export default {
 .form-toggle button:nth-child(2) {
   border-bottom-left-radius: 20px;
 }
+
 #signup-toggle {
   background-color: var(--lightblue);
   color: white;
 }
+
 #login-toggle {
   background: var(--nav);
   color: #ffff;
@@ -281,6 +310,7 @@ export default {
 .form-modal input:active {
   transform: scaleX(1.02);
 }
+
 .form-modal input::-webkit-input-placeholder {
   color: #222;
 }
@@ -306,10 +336,12 @@ export default {
   top: 50%;
   transform: translateX(-10%) translateY(-50%);
 }
+
 .sign-link {
   text-decoration: none;
   color: #fff;
 }
+
 .login:hover {
   background-color: var(--light);
   color: var(--lightblue);
@@ -319,6 +351,7 @@ export default {
   background-color: var(--light);
   color: var(--lightblue);
 }
+
 .error {
   color: red;
 }

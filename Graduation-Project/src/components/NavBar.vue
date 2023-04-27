@@ -42,7 +42,7 @@
             </router-link>
             <ul class="dropdown-menu "  :class="{ show: isProfileOpen }" @mouseleave="isProfileOpen = false ">
               <li class="text-center">
-                <router-link class="nav-item nav-link item-drop" to="/" style="font-size: 15px">
+                <router-link class="nav-item nav-link item-drop " to="/" style="font-size: 15px">
                   Log Out</router-link>
               </li>
             </ul>

@@ -115,6 +115,7 @@ export default {
       // editing:false,
       // tempValue:null,
       user: null,
+      userID:2,
     };
   },
   components: {
@@ -146,8 +147,9 @@ export default {
     // };
     // console.log(getData)
 
+    
     axios
-      .get("http://localhost:8080/api/user/1")
+      .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
         // Handle response
         this.user = response.data;

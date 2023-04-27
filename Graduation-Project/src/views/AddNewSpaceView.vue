@@ -10,6 +10,7 @@
             type="text"
             class="col-lg-4 mb-4 inputText"
             style="background-color: #d4d4d4"
+            v-model="name"
           />
         </div>
         <div class="row justify-content-center">
@@ -18,6 +19,7 @@
             type="text"
             class="col-lg-4 mb-4 inputText"
             style="background-color: #d4d4d4"
+            v-model="location"
           />
         </div>
         <div class="row justify-content-center">
@@ -26,10 +28,11 @@
             type="text"
             class="col-lg-4 mb-4 inputText"
             style="background-color: #d4d4d4"
+            v-model="numberOfRooms"
           />
         </div>
         <div class="row justify-content-center align-items-center mt-3">
-          <button class="col-lg-3 mb-5 text-center main-btn" type="submit">
+          <button class="col-lg-3 mb-5 text-center main-btn" type="submit" @click="AddnewSpace">
             Submit
           </button>
         </div>
@@ -40,14 +43,22 @@
 
 <script>
 import NavBar from '../components/NavBar.vue'
+import axios from 'axios';
 export default {
     data(){
         return{
-
+          name:'',
+          location:'',
+          numberOfRooms:'',
         }
     }, 
     components:{
         NavBar
+    },
+    methods:{
+      AddnewSpace(){
+
+      }
     }
 };
 </script>
