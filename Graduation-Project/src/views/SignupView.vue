@@ -68,6 +68,8 @@ export default {
       submitted: false,
       signinEmail: "",
       signinPassword: "",
+
+      //users from api
       users: null,
       userID: 0,
 
@@ -104,12 +106,12 @@ export default {
       document.getElementById("login-form").style.display = "block";
     },
     CreateAccount() {
-      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0 })
-        .then((response) => {
-          // Handle response
-          this.users = response.data;
-          console.log(this.users)
-        })
+      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0, birthDate: this.birthdate })
+        // .then((response) => {
+        //   // Handle response
+        //   this.users = response.data;
+        //   console.log(this.users)
+        // })
         .catch((err) => {
           // Handle errors
           console.error(err);
@@ -129,18 +131,19 @@ export default {
       //if not display error message
       for (let i = 0; i < this.users.length; i++) {
         if (this.users[i].email == this.signinEmail && this.users[i].password == this.signinPassword && this.users != null) {
-          this.userID = this.users[i].userId
-          console.log(this.userID)
+          // this.userID = this.users[i].userId
+          // console.log(this.userID)
+          localStorage.setItem('userID', this.users[i].userId);
           this.$router.push("/home")
 
+        } else if (this.signinEmail == "Admin@info.com" && this.signinPassword == "Root1234") {
+          this.$router.push({ name: "profile" })
+        } else {
+          console.log("error")
+          // must show error message
         }
       }
-      if (this.signinEmail == "Admin@info.com" && this.signinPassword == "Root1234") {
-        this.$router.push({ name: "profile" })
-      } else {
-        console.log("error")
-        // must show error message
-      }
+
     },
   },
   computed: {

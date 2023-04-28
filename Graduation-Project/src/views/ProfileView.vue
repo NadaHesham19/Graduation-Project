@@ -115,7 +115,7 @@ export default {
       // editing:false,
       // tempValue:null,
       user: null,
-      userID:2,
+      userID:localStorage.getItem('userID'),
     };
   },
   components: {
