@@ -2,7 +2,7 @@
     <AdminNav></AdminNav>
     <div class="container">
 
-        <h1 class="my-4 text-center ">History</h1>
+        <h1 class="my-4 text-center ">All Bookings</h1>
 
         <div class="my-4 row justify-content-center align-items-center">
             <div class="col-lg-4 my-3">
