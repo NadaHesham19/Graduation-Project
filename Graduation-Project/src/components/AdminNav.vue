@@ -26,11 +26,11 @@
               >Our Spaces</router-link
             >
   
-            <router-link class="nav-link nav-item" aria-current="page" to="/home"
+            <router-link class="nav-link nav-item" aria-current="page" to="/bookingsadmins"
               >All Bookings</router-link
             >
   
-            <router-link class="nav-link nav-item" aria-current="page" to="/home"
+            <router-link class="nav-link nav-item" aria-current="page" to="/historyadmin"
               >History</router-link
             >
 

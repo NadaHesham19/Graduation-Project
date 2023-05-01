@@ -9,7 +9,9 @@ import ProfileView from "../views/ProfileView.vue";
 import ReviewRequestView from "../views/ReviewRequestView.vue";
 import BookNowView from "../views/BookNowView.vue";
 import OurSpacesView from "../views/OurSpacesView.vue";
-import RequestsViewAdmin from '../views/RequestsViewAdmin.vue'
+import RequestsViewAdmin from "../views/RequestsViewAdmin.vue";
+import BookingsAdminView from "../views/BookingsAdminView.vue";
+import HistoryAdminView from "../views/HistoryAdminView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,8 +69,18 @@ const router = createRouter({
     {
       path: "/reviewadmin",
       name: "reviewadmin",
-      component :RequestsViewAdmin,
-    }
+      component: RequestsViewAdmin,
+    },
+    {
+      path: "/allbookingsadmin",
+      name: "allbookingsadmin",
+      component: BookingsAdminView,
+    },
+    {
+      path:"/historyadmin",
+      name:"histiryadmin",
+      component:HistoryAdminView
+    },
   ],
 });
 
