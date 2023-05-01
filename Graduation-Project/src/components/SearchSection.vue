@@ -1,24 +1,16 @@
 <template>
-    <div class="searchsec container-fluid ">
-      <i class="fa-solid fa-magnifying-glass search-icon"></i>
-      <form class="d-flex searchform">
-        <input
-          class="form-control searchinput me-2"
-          type="search"
-          aria-label="Search"
-        />
-        <button
-          class="btn btn-outline-success main-btn search-btn"
-          type="submit"
-        >
-          Search
-        </button>
-      </form>
-    </div>
+  <div class="searchsec container-fluid ">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <form class="d-flex searchform">
+      <input class="form-control searchinput me-2" type="search" aria-label="Search" />
+      <button class="btn btn-outline-success main-btn search-btn" type="submit">
+        Search
+      </button>
+    </form>
+  </div>
 </template>
 
-<style>
-
+<style scoped>
 /* start search section */
 .searchinput {
   position: absolute !important;
@@ -30,6 +22,7 @@
   border-radius: 50px !important;
   padding-left: 45px !important;
 }
+
 .search-btn {
   position: absolute !important;
   width: 110px !important;
@@ -38,6 +31,7 @@
   top: 150px !important;
   border-radius: 50px !important;
 }
+
 .search-icon {
   position: absolute;
   top: 170px;
