@@ -6,12 +6,12 @@
     </div>
 
     <div class="row justify-content-between align-items-center w-100">
-      <i class="fa-solid fa-angle-left col-lg-1 arow"></i>
-      <div class=" col-lg-4 my-5" v-for="booking in bookings" :key="booking">
+      <button class="col-lg-1 control-btn" @click="prevSlide"><i class="fa-solid fa-angle-left  arow"></i></button>
+      <div class=" col-lg-4 my-5 " v-for="(booking,index) in bookings" :key="index" v-show="index === currentSlide" >
         <UpcomingCards class="slide" :firstTitle="booking.title" :firstDate="booking.date"
           :firstStartTime="booking.startTime" :firstDetails="booking.details" :firstEndTime="booking.endTime" />
-      </div>
-      <i class="fa-solid fa-angle-right col-lg-1 arow"></i>
+        </div>
+    <button class="col-lg-1 control-btn" @click="nextSlide" > <i class="fa-solid fa-angle-right arow"></i></button> 
     </div>
   </div>
   <div class="container">
@@ -19,10 +19,22 @@
       <div class="col-lg-12">
         <hr />
       </div>
+      <div class="row w-100">
+      <h5 class="col-lg-3 mt-3">Past Bookings</h5>
+    </div>
+    </div>
+    <div class="row justify-content-between align-items-center w-100">
+      <button class="col-lg-1 control-btn" @click="prevSlide"><i class="fa-solid fa-angle-left  arow"></i></button>
+      <div class=" col-lg-4 my-5" v-for="(booking,index) in bookings" :key="index" v-show="index === currentSlide" >
+        <PastCards class="slide" :firstTitle="booking.title" :firstDate="booking.date"
+          :firstStartTime="booking.startTime" :firstDetails="booking.details" :firstEndTime="booking.endTime" />
+        </div>
+    <button class="col-lg-1 control-btn" @click="nextSlide" > <i class="fa-solid fa-angle-right arow"></i></button> 
     </div>
   </div>
 
-  <PastCards />
+  
+  
 
   <Footer />
 </template>
@@ -57,25 +69,27 @@ export default {
           imgUrl:
             "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
         },
-        // {
-        //   title: "Woork Hub",
-        //   startTime: "12:00 Pm",
-        //   endTime: "2:00 Pm",
-        //   date: "Sunday 20th Nov 2022",
-        //   details: "Meeting room for 12",
-        //   imgUrl:
-        //     "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
-        // },
-        // {
-        //   title: "302 Labs",
-        //   startTime: "12:00 Pm",
-        //   endTime: "2:00 Pm",
-        //   date: "Monday 21st Nov 2022",
-        //   details: "Regular room for 4",
-        //   imgUrl:
-        //     "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
-        // },
+        {
+          title: "Woork Hub",
+          startTime: "12:00 Pm",
+          endTime: "2:00 Pm",
+          date: "Sunday 20th Nov 2022",
+          details: "Meeting room for 12",
+          imgUrl:
+            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
+        },
+        {
+          title: "302 Labs",
+          startTime: "12:00 Pm",
+          endTime: "2:00 Pm",
+          date: "Monday 21st Nov 2022",
+          details: "Regular room for 4",
+          imgUrl:
+            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
+        },
+        
       ],
+      currentSlide: 0,
 
       // firstTitle: "Comma",
       // firstImgSrc:
@@ -102,7 +116,14 @@ export default {
     //         console.error(err);
     //     });
   },
-  methods: {},
+  methods: {
+    nextSlide() {
+      this.currentSlide = (this.currentSlide + 1) % this.bookings.length;
+    },
+    prevSlide() {
+      this.currentSlide = (this.currentSlide + this.bookings.length - 1) % this.bookings.length;
+    }
+  },
 };
 </script>
 
@@ -141,5 +162,10 @@ export default {
 .arow {
   cursor: pointer;
   height: 45px !important;
+  font-size: 38px;
+}
+.control-btn{
+  border: none;
+  background-color: #fff;
 }
 </style>
