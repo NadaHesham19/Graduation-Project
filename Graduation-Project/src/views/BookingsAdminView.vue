@@ -18,7 +18,7 @@
 
         <div class="row justify-content-center align-items-between" v-for="booking in bookings" :key="booking">
 
-            <BookingsAminCards lass="slide my-3 col-lg-10" :firstTitle="booking.room.space" :firstDate="booking.date"
+            <BookingsAminCards class="slide my-3 col-lg-10" :firstTitle="booking.room.space" :firstDate="booking.date"
                 :firstStartTime="booking.startTime" :firstDetails="booking.room.name" :firstEndTime="booking.endTime"
                 :firstUserName="booking.user.firstName" />
         </div>

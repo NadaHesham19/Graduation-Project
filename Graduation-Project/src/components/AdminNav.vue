@@ -26,7 +26,7 @@
               >Our Spaces</router-link
             >
   
-            <router-link class="nav-link nav-item" aria-current="page" to="/bookingsadmins"
+            <router-link class="nav-link nav-item" aria-current="page" to="/allbookingsadmin"
               >All Bookings</router-link
             >
   
