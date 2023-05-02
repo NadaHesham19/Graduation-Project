@@ -16,14 +16,15 @@
 
 <script>
 export default {
-    data() {
-        return {
-            firstImgSrc: this.space.images
-        };
-    },
+
     props: [
         'space'
     ],
+    computed: {
+        firstImgSrc() {
+            return this.space.images;
+        },
+    }
 };
 
 
