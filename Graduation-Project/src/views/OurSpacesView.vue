@@ -60,12 +60,11 @@ export default {
         axios
             .get("http://localhost:8080/api/spaces")
             .then((response) => {
-                // Handle response
-                console.log(response);
+                console.log(response.data)
                 this.spaces = response.data;
             })
             .catch((err) => {
-                // Handle errors
+
                 console.error(err);
             });
     }

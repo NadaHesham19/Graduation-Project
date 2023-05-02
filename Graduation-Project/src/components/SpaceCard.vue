@@ -3,9 +3,9 @@
         <img :src="firstImgSrc" class="card-img-top" alt="..." />
         <div class="card-body">
             <h5 class="card-title fw-bolder"> {{ space.name }}</h5>
-            <p class="card-text">Desc: {{ space.desc }}</p>
-            <!-- <p class="card-text">Time: {{ firstStartTime }} : {{ firstEndTime }}</p>
-            <p class="card-text">Room Details: {{ firstDetails }}</p> -->
+            <p class="card-text">{{ space.description }}</p>
+            <p class="card-text">Ratings: {{ space.ratingAverage }}</p>
+
             <div class="text-center">
                 <router-link to="/space" class="btn mx-auto main-btn">Visit</router-link>
 
@@ -17,7 +17,9 @@
 <script>
 export default {
     data() {
-        return {};
+        return {
+            firstImgSrc: this.space.images
+        };
     },
     props: [
         'space'
