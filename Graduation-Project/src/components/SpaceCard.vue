@@ -7,7 +7,8 @@
             <!-- <p class="card-text">Time: {{ firstStartTime }} : {{ firstEndTime }}</p>
             <p class="card-text">Room Details: {{ firstDetails }}</p> -->
             <div class="text-center">
-                <button href="#" class="btn mx-auto main-btn">Visit</button>
+                <router-link to="/space" class="btn mx-auto main-btn">Visit</router-link>
+
             </div>
         </div>
     </div>

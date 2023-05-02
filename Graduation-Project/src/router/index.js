@@ -12,6 +12,7 @@ import OurSpacesView from "../views/OurSpacesView.vue";
 import RequestsViewAdmin from "../views/RequestsViewAdmin.vue";
 import BookingsAdminView from "../views/BookingsAdminView.vue";
 import HistoryAdminView from "../views/HistoryAdminView.vue";
+import SpaceView from "../views/SpaceView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +81,11 @@ const router = createRouter({
       path:"/historyadmin",
       name:"histiryadmin",
       component:HistoryAdminView
+    },
+    {
+      path:"/space",
+      name:"space",
+      component:SpaceView
     },
   ],
 });
