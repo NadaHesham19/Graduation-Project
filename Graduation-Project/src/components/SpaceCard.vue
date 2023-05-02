@@ -1,9 +1,9 @@
 <template>
-    <div class="card text-white">
+    <div class="card text-white m-5">
         <img :src="firstImgSrc" class="card-img-top" alt="..." />
         <div class="card-body">
-            <h5 class="card-title fw-bolder"> Name {{ firstTitle }}</h5>
-            <p class="card-text">Desc: {{ firstDate }}</p>
+            <h5 class="card-title fw-bolder"> {{ space.name }}</h5>
+            <p class="card-text">Desc: {{ space.desc }}</p>
             <!-- <p class="card-text">Time: {{ firstStartTime }} : {{ firstEndTime }}</p>
             <p class="card-text">Room Details: {{ firstDetails }}</p> -->
             <div class="text-center">
@@ -19,14 +19,11 @@ export default {
         return {};
     },
     props: [
-        "firstStartTime",
-        "firstTitle",
-        "firstDetails",
-        "firstDate",
-        "firstEndTime",
-        "firstImgSrc"
+        'space'
     ],
 };
+
+
 </script>
 
 <style>

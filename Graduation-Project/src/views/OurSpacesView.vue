@@ -10,30 +10,34 @@
             </button>
         </form>
     </div>
-    <div class="ourspaces-section pb-5  mb-5 ">
-        <div class="head d-flex container mb-5 pt-5">
-            <h4>Our Spaces</h4>
+    <div class="ourspaces-section pb-5">
+        <div class="head d-flex container pt-5 mb-5 pt-5">
+            <h4 class="mt-5 pt-5">Our Spaces</h4>
         </div>
         <div class="row justify-content-evenly">
-            <div class="col-lg-3" v-for="(space, index) in spaces" :key="index">
+            <div class="col-4" v-for="(space, index) in pagedSpaces" :key="index">
                 <SpaceCard :space="space" />
             </div>
         </div>
-
-        <v-pagination v-model="currentPage" :total-pages="totalPages" color="primary"></v-pagination>
+        <div class=" row numbers mt-5 mb-5 text-center">
+            <v-pagination active-color="#007CC7" color="#007CC7" v-model="currentPage" :length="totalPages"
+                :total-visible="7"></v-pagination>
+        </div>
     </div>
+    <Footer />
 </template>
 
 
 <script>
 import NavBar from '../components/NavBar.vue'
 import SpaceCard from '../components/SpaceCard.vue'
-// import VPagination from 'vuetify/lib/components/VPagination';
+import Footer from '../components/Footer.vue'
+import { VPagination } from 'vuetify/components/VPagination';
 
 export default {
 
     components: {
-        NavBar, SpaceCard,
+        NavBar, SpaceCard, Footer
     }, data() {
         return {
             spaces: [
@@ -109,6 +113,12 @@ export default {
                     desc: "Description of space 1",
                     imgSrc: "image1.jpg",
                 },
+                {
+                    id: 14,
+                    name: "Space 14",
+                    desc: "Description of space 1",
+                    imgSrc: "image1.jpg",
+                },
             ],
             currentPage: 1,
             spacesPerPage: 6,
@@ -124,6 +134,8 @@ export default {
             const endIndex = startIndex + this.spacesPerPage;
             return this.spaces.slice(startIndex, endIndex);
         },
+    }, mounted() {
+
     }
 
 }
@@ -162,14 +174,4 @@ export default {
     background-color: var(--background);
 
 }
-
-.icon {
-    color: var(--darkblue);
-}
-
-/* .title {
-    padding-top: 120px !important;
-    margin-left: 90px !important;
-    margin-right: 100px !important;
-} */
 </style>

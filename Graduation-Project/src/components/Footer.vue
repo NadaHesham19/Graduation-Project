@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row pb-5 align-items-center w-100">
         <div class="col-8">
-          <img src="../assets/Your-Space-logos_white.png" width="300px" height="100px" alt="" class="footerlogo"/>
+          <img src="../assets/Your-Space-logos_white.png" width="300px" height="100px" alt="" class="footerlogo" />
         </div>
         <div class="col-4 contact">
           <h4 class="mb-2">Contact us</h4>
@@ -32,20 +32,19 @@ export default {
 </script>
 
 <style>
-
 .footer {
   background-color: var(--nav);
   color: white;
-  
+
 }
 
 .contact {
   padding-top: 100px;
   padding-left: -250px !important;
 }
-.footerlogo{
-  margin-top: 50px;
-  margin-left:50px;
-}
 
+.footerlogo {
+  margin-top: 50px;
+  margin-left: 50px;
+}
 </style>
