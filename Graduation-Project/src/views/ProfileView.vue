@@ -8,9 +8,7 @@
         <div class="row justify-content-center w-100">
           <h2 class="text-center profile-text">
             Bio
-            <span class="editable mx-2"
-              ><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i
-            ></span>
+            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span>
           </h2>
           <div class="col-lg-8 text-center editable-data">{{ user.bio }}</div>
         </div>
@@ -25,54 +23,30 @@
         <div class="row justify-content-center w-100">
           <div class="col-lg-8">
             <label for="" class="">Name:</label>
-            <span class=""
-              >{{ user.firstName }} {{ user.lastName
-              }}<span class="editable mx-2"
-                ><i
-                  class="fa-solid fa-pen-to-square"
-                  @click="EnableEdit"
-                ></i></span
-            ></span>
+            <span class="">{{ user.firstName }} {{ user.lastName
+            }}<span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <label class="" for="">Email:</label>
-            <span class=""
-              >{{ user.email }}
-              <span class="editable mx-2"
-                ><i
-                  class="fa-solid fa-pen-to-square"
-                  @click="EnableEdit"
-                ></i></span
-            ></span>
+            <span class="">{{ user.email }}
+              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
           </div>
         </div>
 
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <label class="" for="">Birthdate:</label>
-            <span class=""
-              >{{ user.birthDate }}
-              <span class="editable mx-2"
-                ><i
-                  class="fa-solid fa-pen-to-square"
-                  @click="EnableEdit"
-                ></i></span
-            ></span>
+            <span class="">{{ user.birthDate }}
+              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <label class="" for="">Location:</label>
-            <span class=""
-              >{{ user.address }}
-              <span class="editable mx-2"
-                ><i
-                  class="fa-solid fa-pen-to-square"
-                  @click="EnableEdit"
-                ></i></span
-            ></span>
+            <span class="">{{ user.address }}
+              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
           </div>
         </div>
         <div class="row justify-content-center">
@@ -83,11 +57,7 @@
         </div>
       </div>
       <div class="row justify-content-center my-5">
-        <button
-          class="bttn-profile col-lg-2 my-5"
-          type="submit"
-          @click="SaveEditting"
-        >
+        <button class="bttn-profile col-lg-2 my-5" type="submit" @click="SaveEditting">
           Save
         </button>
       </div>
@@ -115,7 +85,8 @@ export default {
       // editing:false,
       // tempValue:null,
       user: null,
-      userID:localStorage.getItem('userID'),
+      // userID:localStorage.getItem('userID'),
+      userID: 1
     };
   },
   components: {
@@ -147,7 +118,7 @@ export default {
     // };
     // console.log(getData)
 
-    
+
     axios
       .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
@@ -168,13 +139,16 @@ export default {
   height: 200px;
   border-radius: 50%;
 }
+
 .profile-text {
   color: var(--nav);
 }
+
 label {
   font-weight: bold;
   margin: 5px;
 }
+
 .bttn-profile {
   background: var(--lightblue);
   color: #fff;
@@ -183,10 +157,12 @@ label {
   height: 40px;
   font-weight: bold;
 }
+
 .bttn-profile:hover {
   background-color: var(--light);
   color: var(--lightblue);
 }
+
 .editable {
   cursor: pointer;
   font-size: 15px;
