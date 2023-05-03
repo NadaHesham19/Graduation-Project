@@ -7,22 +7,32 @@
         <p class="card-text">Time: {{ booking.startTime }} : {{ booking.endTime}}</p>
         <p class="card-text">Room Details: {{ booking.room.name }}</p> 
       <div class="text-center">
-        <button class="btn mx-auto main-btn ">Rebook <i class="mx-1 fa-regular fa-calendar"></i></button>
+        <!-- <button class="btn mx-auto main-btn ">Rebook <i class="mx-1 fa-regular fa-calendar"></i></button> -->
+      <RebookModal/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import RebookModal from './RebookModal.vue';
 export default {
 data() {
   return {
-    firstImgSrc:this.booking.room.image,
+    
   };
+},
+components:{
+RebookModal
 },
 props: [
  'booking',
 ],
+computed: {
+        firstImgSrc() {
+            return this.booking.room.image;
+        },
+    }
 };
 </script>
 
@@ -45,12 +55,5 @@ border-radius: 30px;
 width: 100%;
 height: 200px;
 }
-.cancel-btn {
-background-color: rgb(169, 11, 11);
-color: #fff;
-border-radius: 15px;
-height: 50px;
-font-weight: 500 !important;
-border: none;
-}
+
 </style>

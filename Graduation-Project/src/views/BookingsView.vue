@@ -75,7 +75,7 @@ export default {
             activity: null,
             type: null,
             price: 0.0,
-            image: null,
+            image: 'https://www.propertyfinder.eg/blog/wp-content/uploads/2020/02/coworking.jpg',
             space: "Comma",
           },
           user: {

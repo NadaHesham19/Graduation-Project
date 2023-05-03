@@ -19,12 +19,17 @@
 export default {
   data() {
     return {
-      firstImgSrc:this.booking.room.image,
+      
     };
   },
   props: [
     'booking'
   ],
+  computed: {
+        firstImgSrc() {
+            return this.booking.room.image;
+        },
+    }
 };
 </script>
 

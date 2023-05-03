@@ -183,7 +183,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 /* @import "~@fortawesome/fontawesome-free/css/all.min.css"; */
 
 .form-modal {
