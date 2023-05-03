@@ -35,11 +35,11 @@
       </button>
       <div class="col-lg-4 my-5" v-for="(booking, index) in evenPastBookings" :key="index"
         v-show="index === currentSlidePast">
-        <PastCards class="slide" :pastbooking="booking" />
+        <PastCards class="slide" :booking="booking" />
       </div>
       <div class="col-lg-4 my-5" v-for="(booking, index) in oddPastBookings" :key="index"
         v-show="index === currentSlidePast">
-        <PastCards class="slide" :pastbooking="booking" />
+        <PastCards class="slide" :booking="booking" />
       </div>
       <button class="col-lg-1 control-btn" @click="nextSlidePast">
         <i class="fa-solid fa-angle-right arow"></i>
@@ -328,6 +328,7 @@ export default {
       ],
       currentSlide: 0,
       currentSlidePast: 0,
+     
     };
   },
   components: {
@@ -352,7 +353,7 @@ export default {
   },
   methods: {
     nextSlide() {
-      if (this.currentSlide == this.bookings.length / 2 - 0.5) {
+      if (this.currentSlide ==(this.bookings.length / 2) - 0.5) {
         this.currentSlide = 0;
       } else {
         this.currentSlide =
@@ -361,7 +362,7 @@ export default {
     },
     prevSlide() {
       if (this.currentSlide == 0) {
-        this.currentSlide = this.bookings.length / 2 - 0.5;
+        this.currentSlide = (this.bookings.length / 2 ) - 0.5;
       } else {
         this.currentSlide =
           (this.currentSlide + this.bookings.length - 1) %
@@ -370,7 +371,7 @@ export default {
     },
 
     nextSlidePast() {
-      if (this.currentSlidePast == this.pastbookings.length / 2 - 0.5) {
+      if (this.currentSlidePast == (this.pastbookings.length / 2) - 0.5) {
         this.currentSlidePast = 0;
       } else {
         this.currentSlidePast =
@@ -379,7 +380,7 @@ export default {
     },
     prevSlidePast() {
       if (this.currentSlidePast == 0) {
-        this.currentSlidePast = this.pastbookings.length / 2 - 0.5;
+        this.currentSlidePast = (this.pastbookings.length / 2) - 0.5;
       } else {
         this.currentSlidePast =
           (this.currentSlidePast + this.pastbookings.length - 1) %
@@ -390,7 +391,7 @@ export default {
   computed:
   {
     currentDate() {
-      const dateStr = '2022-05-15';
+      const dateStr = new Date()
       return moment(dateStr, 'DD-MM-YYYY').toDate();
     },
     evenBookings() {
@@ -405,6 +406,14 @@ export default {
     oddPastBookings() {
       return this.pastbookings.filter((pastbooking, index) => index % 2 === 1);
     },
+
+    pastbookings() {
+
+      return this.allbookings.filter(booking => {
+        let bookingDate = moment(booking.date, 'DD-MM-YYYY').toDate();
+        return moment(bookingDate).isBefore(this.currentDate, 'day');
+      });
+    },
     bookings() {
       return this.allbookings.filter(booking => {
         let bookingDate = moment(booking.date, 'DD-MM-YYYY').toDate();
@@ -412,13 +421,7 @@ export default {
       });
 
     },
-    pastbookings() {
 
-      return this.allbookings.filter(booking => {
-        let bookingDate = moment(booking.date, 'DD-MM-YYYY').toDate();
-        return moment(bookingDate).isBefore(this.currentDate, 'day');
-      });
-    }
   },
 };
 </script>

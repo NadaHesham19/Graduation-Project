@@ -5,7 +5,7 @@
         <h5 class="card-title fw-bolder">{{ booking.room.space }}</h5>
         <p class="card-text">Date: {{ booking.date }}</p>
         <p class="card-text">Time: {{ booking.startTime }} : {{ booking.endTime}}</p>
-        <p class="card-text">Room Details: {{ booking.room.name }}</p> -
+        <p class="card-text">Room Details: {{ booking.room.name }}</p> 
       <div class="text-center">
         <button class="btn mx-auto main-btn ">Rebook <i class="mx-1 fa-regular fa-calendar"></i></button>
       </div>
@@ -17,11 +17,11 @@
 export default {
 data() {
   return {
-    firstImgSrc:this.pastbooking.room.image,
+    firstImgSrc:this.booking.room.image,
   };
 },
 props: [
- 'pastbooking',
+ 'booking',
 ],
 };
 </script>
