@@ -34,7 +34,7 @@ export default {
 .card {
     background-color: var(--darkblue) !important;
     border-radius: 30px !important;
-    /* width: 25rem !important; */
+
 }
 
 .card img {

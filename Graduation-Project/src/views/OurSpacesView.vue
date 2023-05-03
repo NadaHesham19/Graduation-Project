@@ -54,9 +54,7 @@ export default {
             return Math.ceil(filteredSpaces.length / this.spacesPerPage);
         },
         pagedSpaces() {
-            // const startIndex = (this.currentPage - 1) * this.spacesPerPage;
-            // const endIndex = startIndex + this.spacesPerPage;
-            // return this.spaces.slice(startIndex, endIndex);
+
             let filteredSpaces = this.spaces;
             if (this.searchTerm) {
                 filteredSpaces = this.spaces.filter(space => space.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
@@ -68,7 +66,7 @@ export default {
     },
     methods: {
         search() {
-            // reset current page when performing a search
+
             this.currentPage = 1;
         }
     },
