@@ -41,7 +41,7 @@
               <i class="icon fa-regular fa-circle-user ms-sm-0 mx-5 text-white user"></i>
             </router-link>
             <ul class="dropdown-menu "  :class="{ show: isProfileOpen }" @mouseleave="isProfileOpen = false ">
-              <li class="text-center">
+              <li class="">
                 <router-link class="nav-item nav-link item-drop " to="/" style="font-size: 15px">
                   Log Out</router-link>
               </li>

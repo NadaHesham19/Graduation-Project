@@ -10,7 +10,8 @@
             Bio
             <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span>
           </h2>
-          <div class="col-lg-8 text-center editable-data">{{ user.bio }}</div>
+          <!-- <div class="col-lg-8 text-center editable-data">{{ user.bio }}</div> -->
+          <input class="col-lg-8 text-center" type="text" v-bind:disabled="!inputEnabled" v-model="userBio">
         </div>
       </div>
       <div class="col-lg-4 col-sm-6">
@@ -74,19 +75,13 @@ import axios from "axios";
 export default {
   data() {
     return {
-      // userBio:"Hello I am Nadodaa",
+      userBio:"Please Enter Your Bio",
       imgSrc:
         "https://hips.hearstapps.com/hmg-prod/images/cute-cat-photos-1593441022.jpg?crop=1.00xw:0.753xh;0,0.153xh&resize=1200:*",
-      // userName:"Nada Taalab",
-      // userEmail:"Nadoda@info.com",
-      // userBirthdate:"1999-11-19",
-      // userLocation:"Nasr City",
-      // userPoints:250,
-      // editing:false,
-      // tempValue:null,
+  
       user: null,
-      // userID:localStorage.getItem('userID'),
-      userID: 1
+      userID:localStorage.getItem('userID'),
+      inputEnabled:false,
     };
   },
   components: {
@@ -95,8 +90,7 @@ export default {
   },
   methods: {
     EnableEdit() {
-      this.tempValue = this.userBio;
-      this.editing = true;
+      this.inputEnabled = true
     },
     disableEditting() {
       this.tempValue = null;
@@ -108,17 +102,7 @@ export default {
     },
   },
   beforeMount() {
-    //  axios.get('http://localhost:8080/api/user/[2]').then(response => this.user = response.data.total)
-    // console.log(this.user)
-
-    // const getData = async () => {
-    // 	const response = await axios.get(
-    // 		`http://localhost:8080/api/user/2`
-    // 	);
-    // };
-    // console.log(getData)
-
-
+  
     axios
       .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
@@ -151,7 +135,7 @@ label {
 
 .bttn-profile {
   background: var(--lightblue);
-  color: #fff;
+  color: #fff !important;
   border: none;
   border-radius: 20px;
   height: 40px;
@@ -160,7 +144,7 @@ label {
 
 .bttn-profile:hover {
   background-color: var(--light);
-  color: var(--lightblue);
+  color: var(--lightblue) !important;
 }
 
 .editable {

@@ -38,7 +38,7 @@
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
-        <button type="submit" class="btn signup" @click="CreateAccount()">
+        <button type="submit" class="btn signup" @click.prevent="CreateAccount()">
           Create an account
         </button>
       </form>
@@ -107,14 +107,11 @@ export default {
     },
     CreateAccount() {
       axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0, birthDate: this.birthdate })
-        // .then((response) => {
-        //   // Handle response
-        //   this.users = response.data;
-        //   console.log(this.users)
-        // })
+       
         .catch((err) => {
           // Handle errors
           console.error(err);
+          
         });
     },
     resetPasswords() {

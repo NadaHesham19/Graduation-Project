@@ -2,10 +2,10 @@
     <div class="card text-white">
       <img :src="firstImgSrc" class="card-img-top" alt="..." />
       <div class="card-body">
-        <h5 class="card-title fw-bolder">{{ firstTitle }}</h5>
-        <p class="card-text">Date: {{ firstDate }}</p>
-        <p class="card-text">Time: {{ firstStartTime }} : {{ firstEndTime }}</p>
-        <p class="card-text">Room Details: {{ firstDetails }}</p>
+        <h5 class="card-title fw-bolder">{{ booking.room.space }}</h5>
+        <p class="card-text">Date: {{ booking.date }}</p>
+        <p class="card-text">Time: {{ booking.startTime }} : {{ booking.endTime}}</p>
+        <p class="card-text">Room Details: {{ booking.room.name }}</p>
         <div class="text-center">
           <button class="btn mx-auto cancel-btn main-btn">
             Cancel <i class="mx-1 fa-solid fa-xmark"></i>
@@ -18,15 +18,12 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      firstImgSrc:this.booking.room.image,
+    };
   },
   props: [
-    "firstStartTime",
-    "firstTitle",
-    "firstDetails",
-    "firstDate",
-    "firstEndTime",
-    "firstImgSrc"
+    'booking'
   ],
 };
 </script>

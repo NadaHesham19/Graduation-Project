@@ -34,7 +34,7 @@
               >History</router-link
             >
 
-            <router-link class="nav-link nav-item" aria-current="page" to="/requestsview"
+            <router-link class="nav-link nav-item" aria-current="page" to="/reviewadmin"
               >Requests</router-link
             >
    

@@ -6,12 +6,18 @@
     </div>
 
     <div class="row justify-content-between align-items-center w-100">
-      <button class="col-lg-1 control-btn" @click="prevSlide"><i class="fa-solid fa-angle-left  arow"></i></button>
-      <div class=" col-lg-4 my-5 " v-for="(booking,index) in bookings" :key="index" v-show="index === currentSlide" >
-        <UpcomingCards class="slide" :firstTitle="booking.title" :firstDate="booking.date"
-          :firstStartTime="booking.startTime" :firstDetails="booking.details" :firstEndTime="booking.endTime" />
-        </div>
-    <button class="col-lg-1 control-btn" @click="nextSlide" > <i class="fa-solid fa-angle-right arow"></i></button> 
+      <button class="col-lg-1 control-btn" @click="prevSlide">
+        <i class="fa-solid fa-angle-left arow"></i>
+      </button>
+      <div class="col-lg-4 my-5" v-for="(booking, index) in evenBookings" :key="index" v-show="index === currentSlide">
+        <UpcomingCards class="slide" :booking="booking" />
+      </div>
+      <div class="col-lg-4 my-5" v-for="(booking, index) in oddBookings" :key="index" v-show="index === currentSlide">
+        <UpcomingCards class="slide" :booking="booking" />
+      </div>
+      <button class="col-lg-1 control-btn" @click="nextSlide">
+        <i class="fa-solid fa-angle-right arow"></i>
+      </button>
     </div>
   </div>
   <div class="container">
@@ -20,21 +26,26 @@
         <hr />
       </div>
       <div class="row w-100">
-      <h5 class="col-lg-3 mt-3">Past Bookings</h5>
-    </div>
+        <h5 class="col-lg-3 mt-3">Past Bookings</h5>
+      </div>
     </div>
     <div class="row justify-content-between align-items-center w-100">
-      <button class="col-lg-1 control-btn" @click="prevSlide"><i class="fa-solid fa-angle-left  arow"></i></button>
-      <div class=" col-lg-4 my-5" v-for="(booking,index) in bookings" :key="index" v-show="index === currentSlide" >
-        <PastCards class="slide" :firstTitle="booking.title" :firstDate="booking.date"
-          :firstStartTime="booking.startTime" :firstDetails="booking.details" :firstEndTime="booking.endTime" />
-        </div>
-    <button class="col-lg-1 control-btn" @click="nextSlide" > <i class="fa-solid fa-angle-right arow"></i></button> 
+      <button class="col-lg-1 control-btn" @click="prevSlidePast">
+        <i class="fa-solid fa-angle-left arow"></i>
+      </button>
+      <div class="col-lg-4 my-5" v-for="(booking, index) in evenPastBookings" :key="index"
+        v-show="index === currentSlidePast">
+        <PastCards class="slide" :pastbooking="booking" />
+      </div>
+      <div class="col-lg-4 my-5" v-for="(booking, index) in oddPastBookings" :key="index"
+        v-show="index === currentSlidePast">
+        <PastCards class="slide" :pastbooking="booking" />
+      </div>
+      <button class="col-lg-1 control-btn" @click="nextSlidePast">
+        <i class="fa-solid fa-angle-right arow"></i>
+      </button>
     </div>
   </div>
-
-  
-  
 
   <Footer />
 </template>
@@ -46,55 +57,277 @@ import CancelModal from "../components/CancelModal.vue";
 import RebookModal from "../components/RebookModal.vue";
 import UpcomingCards from "@/components/UpcomingCards.vue";
 import PastCards from "@/components/PastCards.vue";
+import moment from 'moment';
 
 export default {
   data() {
     return {
-      bookings: [
+      allbookings: [
         {
-          title: "Comma",
-          startTime: "12:00 Pm",
-          endTime: "2:00 Pm",
-          date: "Friday 18th Nov 2022",
-          details: "Meeting room for 12",
-          imgUrl:
-            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
+          id: 4,
+          startTime: "12:00:00",
+          endTime: "20:00:00",
+          date: "15-05-2023",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room1",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Comma",
+          },
+          user: {
+            userId: 1,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
         },
         {
-          title: "Creativo",
-          startTime: "12:00 Pm",
-          endTime: "2:00 Pm",
-          date: "Saturday 19th Nov 2022",
-          details: "Regular room for 4",
-          imgUrl:
-            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
+          id: 5,
+          startTime: "12:00:00",
+          endTime: "14:00:00",
+          date: "15-03-2023",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room2",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Woork Hub",
+          },
+          user: {
+            userId: 1,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
         },
         {
-          title: "Woork Hub",
-          startTime: "12:00 Pm",
-          endTime: "2:00 Pm",
-          date: "Sunday 20th Nov 2022",
-          details: "Meeting room for 12",
-          imgUrl:
-            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
+          id: 6,
+          startTime: "12:00:00",
+          endTime: "14:00:00",
+          date: "15-03-2023",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room3",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "302 Labs",
+          },
+          user: {
+            userId: 1,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
         },
         {
-          title: "302 Labs",
-          startTime: "12:00 Pm",
-          endTime: "2:00 Pm",
-          date: "Monday 21st Nov 2022",
-          details: "Regular room for 4",
-          imgUrl:
-            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
+          id: 9,
+          startTime: "12:00:00",
+          endTime: "20:00:00",
+          date: "15-03-2024",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room1",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Square",
+          },
+          user: {
+            userId: 3,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
         },
-        
+
+        {
+          id: 4,
+          startTime: "12:00:00",
+          endTime: "20:00:00",
+          date: "15-03-2023",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room 5",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Geeks Hub",
+          },
+          user: {
+            userId: 1,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
+        },
+        {
+          id: 5,
+          startTime: "12:00:00",
+          endTime: "14:00:00",
+          date: "15-03-2023",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room1",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Your Space",
+          },
+          user: {
+            userId: 1,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
+        },
+        {
+          id: 6,
+          startTime: "12:00:00",
+          endTime: "14:00:00",
+          date: "15-03-2023",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room 7",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Maqar",
+          },
+          user: {
+            userId: 1,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
+        },
+        {
+          id: 9,
+          startTime: "12:00:00",
+          endTime: "20:00:00",
+          date: "15-03-2024",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room 8",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Erro 404",
+          },
+          user: {
+            userId: 3,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
+        },
+        {
+          id: 9,
+          startTime: "12:00:00",
+          endTime: "20:00:00",
+          date: "15-03-2024",
+          room: {
+            roomId: 1,
+            number: 0,
+            name: "room 9",
+            activity: null,
+            type: null,
+            price: 0.0,
+            image: null,
+            space: "Hello",
+          },
+          user: {
+            userId: 3,
+            email: "test",
+            firstName: null,
+            lastName: null,
+            password: null,
+            mobileNo: null,
+            address: null,
+            birthDate: null,
+            bio: null,
+            points: 0,
+            picture: null,
+          },
+        },
       ],
       currentSlide: 0,
-
-      // firstTitle: "Comma",
-      // firstImgSrc:
-      //   "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansday.com%2Flife%2Fg32979681%2Fcute-cat-photos%2F&psig=AOvVaw3fJXcsY_eWtaDBsP-Xqts0&ust=1682090078900000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiOjYDguP4CFQAAAAAdAAAAABAE",
-      //  bookings:null
+      currentSlidePast: 0,
     };
   },
   components: {
@@ -115,13 +348,76 @@ export default {
     //         // Handle errors
     //         console.error(err);
     //     });
+
   },
   methods: {
     nextSlide() {
-      this.currentSlide = (this.currentSlide + 1) % this.bookings.length;
+      if (this.currentSlide == this.bookings.length / 2 - 0.5) {
+        this.currentSlide = 0;
+      } else {
+        this.currentSlide =
+          (this.currentSlide + 1) % (this.bookings.length / 2);
+      }
     },
     prevSlide() {
-      this.currentSlide = (this.currentSlide + this.bookings.length - 1) % this.bookings.length;
+      if (this.currentSlide == 0) {
+        this.currentSlide = this.bookings.length / 2 - 0.5;
+      } else {
+        this.currentSlide =
+          (this.currentSlide + this.bookings.length - 1) %
+          (this.bookings.length / 2);
+      }
+    },
+
+    nextSlidePast() {
+      if (this.currentSlidePast == this.pastbookings.length / 2 - 0.5) {
+        this.currentSlidePast = 0;
+      } else {
+        this.currentSlidePast =
+          (this.currentSlidePast + 1) % (this.pastbookings.length / 2);
+      }
+    },
+    prevSlidePast() {
+      if (this.currentSlidePast == 0) {
+        this.currentSlidePast = this.pastbookings.length / 2 - 0.5;
+      } else {
+        this.currentSlidePast =
+          (this.currentSlidePast + this.pastbookings.length - 1) %
+          (this.pastbookings.length / 2);
+      }
+    },
+  },
+  computed:
+  {
+    currentDate() {
+      const dateStr = '2022-05-15';
+      return moment(dateStr, 'DD-MM-YYYY').toDate();
+    },
+    evenBookings() {
+      return this.bookings.filter((booking, index) => index % 2 === 0);
+    },
+    oddBookings() {
+      return this.bookings.filter((booking, index) => index % 2 === 1);
+    },
+    evenPastBookings() {
+      return this.pastbookings.filter((pastbooking, index) => index % 2 === 0);
+    },
+    oddPastBookings() {
+      return this.pastbookings.filter((pastbooking, index) => index % 2 === 1);
+    },
+    bookings() {
+      return this.allbookings.filter(booking => {
+        let bookingDate = moment(booking.date, 'DD-MM-YYYY').toDate();
+        return moment(bookingDate).isSameOrAfter(this.currentDate, 'day');
+      });
+
+    },
+    pastbookings() {
+
+      return this.allbookings.filter(booking => {
+        let bookingDate = moment(booking.date, 'DD-MM-YYYY').toDate();
+        return moment(bookingDate).isBefore(this.currentDate, 'day');
+      });
     }
   },
 };
@@ -164,7 +460,8 @@ export default {
   height: 45px !important;
   font-size: 38px;
 }
-.control-btn{
+
+.control-btn {
   border: none;
   background-color: #fff;
 }
