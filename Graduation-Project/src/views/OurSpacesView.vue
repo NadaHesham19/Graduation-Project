@@ -3,9 +3,9 @@
     <div class="searchsec container-fluid position-relative">
         <img class="img-fluid w-100  ps-5" src="../assets/main1.jpeg" alt="" />
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <form class="d-flex searchform">
-            <input class="form-control searchinput me-2" type="search" aria-label="Search" />
-            <button class="btn btn-outline-success main-btn search-btn" type="submit">
+        <form class="d-flex searchform" @submit.prevent>
+            <input class="form-control searchinput me-2" type="search" aria-label="Search" v-model="searchTerm" />
+            <button class="btn btn-outline-success main-btn search-btn" type="submit" @click="search">
                 Search
             </button>
         </form>
@@ -44,19 +44,35 @@ export default {
             spaces: [],
             currentPage: 1,
             spacesPerPage: 6,
+            searchTerm: ''
 
         };
     },
     computed: {
         totalPages() {
-            return Math.ceil(this.spaces.length / this.spacesPerPage);
+            const filteredSpaces = this.spaces.filter(space => space.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+            return Math.ceil(filteredSpaces.length / this.spacesPerPage);
         },
         pagedSpaces() {
+            // const startIndex = (this.currentPage - 1) * this.spacesPerPage;
+            // const endIndex = startIndex + this.spacesPerPage;
+            // return this.spaces.slice(startIndex, endIndex);
+            let filteredSpaces = this.spaces;
+            if (this.searchTerm) {
+                filteredSpaces = this.spaces.filter(space => space.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+            }
             const startIndex = (this.currentPage - 1) * this.spacesPerPage;
             const endIndex = startIndex + this.spacesPerPage;
-            return this.spaces.slice(startIndex, endIndex);
+            return filteredSpaces.slice(startIndex, endIndex);
         },
-    }, beforeMount() {
+    },
+    methods: {
+        search() {
+            // reset current page when performing a search
+            this.currentPage = 1;
+        }
+    },
+    beforeMount() {
         axios
             .get("http://localhost:8080/api/spaces")
             .then((response) => {
