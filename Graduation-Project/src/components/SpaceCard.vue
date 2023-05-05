@@ -7,8 +7,8 @@
             <p class="card-text">Ratings: {{ space.ratingAverage }}</p>
 
             <div class="text-center">
-                <router-link to="/space" class="btn mx-auto main-btn">Visit</router-link>
-
+                <router-link :to="{ name: 'space', params: { id: space.spaceId } }"
+                    class="btn mx-auto main-btn">Visit</router-link>
             </div>
         </div>
     </div>

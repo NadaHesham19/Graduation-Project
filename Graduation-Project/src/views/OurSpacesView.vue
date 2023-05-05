@@ -29,9 +29,9 @@
 
 
 <script>
-import NavBar from '../components/NavBar.vue'
-import SpaceCard from '../components/SpaceCard.vue'
-import Footer from '../components/Footer.vue'
+import NavBar from '../components/NavBar.vue';
+import SpaceCard from '../components/SpaceCard.vue';
+import Footer from '../components/Footer.vue';
 import { VPagination } from 'vuetify/components/VPagination';
 import axios from "axios";
 
@@ -41,9 +41,112 @@ export default {
         NavBar, SpaceCard, Footer
     }, data() {
         return {
-            spaces: [],
+            spaces: [
+                {
+                    spaceId: 1,
+                    address: "nasrcity",
+                    district: "cairo",
+                    roomNumbers: 4,
+                    description: "test123",
+                    name: "nadine",
+                    contactNumber: "123",
+                    minPrice: 10,
+                    maxPrice: 20,
+                    startTime: "10:00:00",
+                    endTime: "12:00:00",
+                    drinks: true,
+                    owner: "weza",
+                    outdoors: false,
+                    ratingAverage: 4
+                },
+                {
+                    spaceId: 2,
+                    address: "nasrcity",
+                    district: "cairo",
+                    roomNumbers: 4,
+                    description: "test123",
+                    name: "nadine",
+                    contactNumber: "123",
+                    minPrice: 10,
+                    maxPrice: 20,
+                    startTime: "10:00:00",
+                    endTime: "12:00:00",
+                    drinks: true,
+                    owner: "weza",
+                    outdoors: false,
+                    ratingAverage: 4
+                },
+                {
+                    spaceId: 3,
+                    address: "nasrcity",
+                    district: "cairo",
+                    roomNumbers: 4,
+                    description: "test123",
+                    name: "nadine",
+                    contactNumber: "123",
+                    minPrice: 10,
+                    maxPrice: 20,
+                    startTime: "10:00:00",
+                    endTime: "12:00:00",
+                    drinks: true,
+                    owner: "weza",
+                    outdoors: false,
+                    ratingAverage: 4
+                },
+                {
+                    spaceId: 4,
+                    address: "nasrcity",
+                    district: "cairo",
+                    roomNumbers: 4,
+                    description: "test123",
+                    name: "nadine",
+                    contactNumber: "123",
+                    minPrice: 10,
+                    maxPrice: 20,
+                    startTime: "10:00:00",
+                    endTime: "12:00:00",
+                    drinks: true,
+                    owner: "weza",
+                    outdoors: false,
+                    ratingAverage: 4
+                },
+                {
+                    spaceId: 5,
+                    address: "nasrcity",
+                    district: "cairo",
+                    roomNumbers: 4,
+                    description: "test123",
+                    name: "nadine",
+                    contactNumber: "123",
+                    minPrice: 10,
+                    maxPrice: 20,
+                    startTime: "10:00:00",
+                    endTime: "12:00:00",
+                    drinks: true,
+                    owner: "weza",
+                    outdoors: false,
+                    ratingAverage: 4
+                },
+                {
+                    spaceId: 6,
+                    address: "nasrcity",
+                    district: "cairo",
+                    roomNumbers: 4,
+                    description: "test123",
+                    name: "farah",
+                    contactNumber: "123",
+                    minPrice: 10,
+                    maxPrice: 20,
+                    startTime: "10:00:00",
+                    endTime: "12:00:00",
+                    drinks: true,
+                    owner: "weza",
+                    outdoors: false,
+                    ratingAverage: 4
+                }
+            ],
             currentPage: 1,
-            spacesPerPage: 6,
+            spacesPerPage: 3,
             searchTerm: ''
 
         };
@@ -70,18 +173,18 @@ export default {
             this.currentPage = 1;
         }
     },
-    beforeMount() {
-        axios
-            .get("http://localhost:8080/api/spaces")
-            .then((response) => {
-                console.log(response.data)
-                this.spaces = response.data;
-            })
-            .catch((err) => {
+    // beforeMount() {
+    //     axios
+    //         .get("http://localhost:8080/api/spaces")
+    //         .then((response) => {
+    //             console.log(response.data)
+    //             this.spaces = response.data;
+    //         })
+    //         .catch((err) => {
 
-                console.error(err);
-            });
-    }
+    //             console.error(err);
+    //         });
+    // }
 
 }
 </script>

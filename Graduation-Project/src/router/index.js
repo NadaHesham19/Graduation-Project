@@ -83,9 +83,9 @@ const router = createRouter({
       component:HistoryAdminView
     },
     {
-      path:"/space",
-      name:"space",
-      component:SpaceView
+       path: '/space/:id',
+      name: 'space',
+      component: SpaceView
     },
   ],
 });
