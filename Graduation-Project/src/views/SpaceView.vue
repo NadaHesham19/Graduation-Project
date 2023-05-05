@@ -43,7 +43,7 @@
                     <div class="map p-5">map is here</div>
                 </div>
             </div>
-            <div class="row mt-5 pt-5"></div>
+            <div class="row mt-5 pt-5 search"></div>
         </div>
     </div>
 </template>
