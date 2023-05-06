@@ -7,6 +7,7 @@
         <p class="card-text">Time: {{ booking.startTime }} : {{ booking.endTime}}</p>
         <p class="card-text">Room Details: {{ booking.room.name }}</p> 
       <div class="text-center">
+        <div class="d-none" >{{ booking.room.roomId }}</div>
         <!-- <button class="btn mx-auto main-btn ">Rebook <i class="mx-1 fa-regular fa-calendar"></i></button> -->
       <RebookModal/>
       </div>

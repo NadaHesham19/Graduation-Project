@@ -343,13 +343,13 @@ export default {
 }
 
 .login:hover {
-  background-color: var(--light);
-  color: var(--lightblue);
+  background-color: var(--light) !important;
+  color: var(--lightblue) !important;
 }
 
 .signup:hover {
-  background-color: var(--light);
-  color: var(--lightblue);
+  background-color: var(--light) !important;
+  color: var(--lightblue) !important;
 }
 
 .error {

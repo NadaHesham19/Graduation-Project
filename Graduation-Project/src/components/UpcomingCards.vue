@@ -7,15 +7,18 @@
         <p class="card-text">Time: {{ booking.startTime }} : {{ booking.endTime}}</p>
         <p class="card-text">Room Details: {{ booking.room.name }}</p>
         <div class="text-center">
-          <button class="btn mx-auto cancel-btn main-btn">
+          <!-- <button class="btn mx-auto cancel-btn main-btn">
             Cancel <i class="mx-1 fa-solid fa-xmark"></i>
-          </button>
+          </button> -->
+          <div class="d-none" >{{ booking.id }}</div>
+          <CancelModal />
         </div>
       </div>
     </div>
 </template>
 
 <script>
+import CancelModal from './CancelModal.vue';
 export default {
   data() {
     return {
@@ -29,6 +32,9 @@ export default {
         firstImgSrc() {
             return this.booking.room.image;
         },
+    },
+    components:{
+      CancelModal
     }
 };
 </script>

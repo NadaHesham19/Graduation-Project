@@ -20,7 +20,8 @@
     "vue-router": "^4.1.6",
     "vue-slick": "^1.2.0",
     "vue3-carousel": "^0.3.1",
-    "vuetify": "^3.2.1",
+    "vuejs3-datepicker": "^1.0.16",
+    "vuetify": "^3.2.2",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

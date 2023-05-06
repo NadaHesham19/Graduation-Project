@@ -1,75 +1,82 @@
 <template>
-  <div
-    class="modal fade"
-    id="cancel"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1
-            class="modal-title fs-5"
-            id="exampleModalLabel"
-            style="color: black"
-          >
-            Cancel
-          </h1>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body" style="color: black">
-          Are you sure you want to cancel ?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">
-            Yes
-          </button>
-          <button type="button" class="btn main-btn" data-bs-dismiss="modal">
-            No
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" persistent width="auto">
+      <template v-slot:activator="{ props }">
+        <button
+          color="primary"
+          v-bind="props"
+          class="btn mx-auto cancel-btn main-btn"
+        >
+          Cancel <i class="mx-1 fa-solid fa-xmark"></i>
+        </button>
+      </template>
+      <v-card>
+        <v-card-title class="text-h5"> Cancel </v-card-title>
+        <v-card-text
+          >Are you sure you want to cancel this booking ?</v-card-text
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <button class="btn cancel-btn mx-2" @click="Cancel">Yes</button>
+          <button class="btn main-btn mx-2" @click="dialog = false">No</button>
+        </v-card-actions>
+      
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+  props:[
+
+  ]
+
+,
+  methods: {
+    Cancel(){
+      fetch(`http://localhost:8080/api/bookings/${roomId}`, { method: 'DELETE' })
+    .then(() => this.status = 'Delete successful');
+    this.dialog=false
+    }
+  },
+
+ 
+};
 </script>
 
 <style>
-.icon {
-  color: var(--darkblue);
-}
-.title {
-  padding-top: 120px !important;
-  margin-left: 90px !important;
-  margin-right: 100px !important;
-}
-.card {
-  background-color: var(--darkblue) !important;
-  border-radius: 30px !important;
-  /* width: 25rem !important; */
-}
-.card img {
-  border-radius: 30px;
-  width: 100%;
-  height: 200px;
-}
-.cancel-btn{
+.cancel-btn {
   background-color: rgb(169, 11, 11);
   color: #fff;
   border-radius: 15px;
   height: 50px;
   font-weight: 500 !important;
-  border:none;
-
+  border: none;
 }
 
+.main-btn {
+  background-color: var(--lightblue) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  border-radius: 15px !important;
+  padding: 0.5rem 1.5rem !important;
+  border: none;
+  height: 50px !important;
+}
+
+.main-btn:hover {
+  color: var(--darkblue) !important;
+  font-weight: 700 !important;
+}
+
+.cancel-btn:hover {
+  color: var(--darkblue) !important;
+  font-weight: 700 !important;
+}
 </style>
