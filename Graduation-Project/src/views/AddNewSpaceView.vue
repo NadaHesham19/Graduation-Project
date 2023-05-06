@@ -5,7 +5,7 @@
       <div class="col-lg-9 addNew">
         <h1 class="text-center my-5">Add New Spaces</h1>
         <div class="row justify-content-center">
-          <h4 class="col-lg-5 mb-4">Name :</h4>
+          <label class="col-lg-5 mb-4">Space Name </label>
           <input
             type="text"
             class="col-lg-4 mb-4 inputText"
@@ -14,7 +14,7 @@
           />
         </div>
         <div class="row justify-content-center">
-          <h4 class="col-lg-5 mb-4">Location :</h4>
+          <label class="col-lg-5 mb-4">Location </label>
           <input
             type="text"
             class="col-lg-4 mb-4 inputText"
@@ -23,7 +23,7 @@
           />
         </div>
         <div class="row justify-content-center">
-          <h4 class="col-lg-5 mb-4">Number of rooms :</h4>
+          <label class="col-lg-5 mb-4">Number of rooms</label>
           <input
             type="text"
             class="col-lg-4 mb-4 inputText"
@@ -50,6 +50,7 @@ export default {
           name:'',
           location:'',
           numberOfRooms:'',
+          userID:localStorage.getItem('userID'),
         }
     }, 
     components:{
@@ -57,7 +58,13 @@ export default {
     },
     methods:{
       AddnewSpace(){
-
+        axios.post("http://localhost:8080/api/requests", { name: this.name, address: this.location, noOfRooms:this.numberOfRooms,status:'Pending', userId:this.userID })
+       
+       .catch((err) => {
+         // Handle errors
+         console.error(err);
+         
+       });
       }
     }
 };
