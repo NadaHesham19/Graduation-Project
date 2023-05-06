@@ -4,7 +4,7 @@
 
     <div class="selection">
       <select v-model="location">
-        <option disabled value=""> </option>
+        <option disabled value="" selected>No choice Selected</option>
         <option>Nasr city</option>
         <option>Masr ElGedida</option>
         <option>Sheraton</option>

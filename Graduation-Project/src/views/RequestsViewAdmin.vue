@@ -26,7 +26,6 @@
                    <br>
                    Number of rooms: {{ Numberofrooms }}
                </div>
-               
            </div>
        </div>
       <div class="status">

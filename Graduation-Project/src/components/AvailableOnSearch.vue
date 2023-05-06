@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5">
+    <div class="container mt-5 cnt">
       <div class="row w-100">
         <h5 class="col-lg-3 mt-3">Available Rooms:</h5>
       </div>
@@ -49,7 +49,7 @@
   export default {
     data() {
       return {
-        
+       
       };
     },
     props:[
@@ -63,14 +63,11 @@
   </script>
   
   <style scoped>
-  .icon {
-    color: var(--darkblue);
-  }
-  .title {
-    padding-top: 120px !important;
-    margin-left: 90px !important;
-    margin-right: 100px !important;
-  }
+
+ .cnt{
+  background-color: var(--background);
+ }
+ 
   .card {
     background-color: var(--darkblue) !important;
     border-radius: 30px !important;
