@@ -1,13 +1,11 @@
 <template>
   <NavBar/>
   <div class="container my-5 ">
-    <h5 v-if="errorMsg">{{errorMsg}}</h5>
-  
     <div class="request">
       <div class="title t">Requests</div>
       <hr />
-      <div class="info" v-for="item in info" v-bind:key="item.spaceName">
-        <div class="title" >{{ item.spaceName }}</div>
+      <div class="info" v-for="item in info" v-bind:key="item.requestId">
+        <div class="title" >{{ item.requestId}}</div>
       </div>
     </div>
     <div class="name">
@@ -18,12 +16,19 @@
       </div>
     </div>
     <div class="status">
-      <div class="title t">Status</div>
+      <div class="title t s">Status</div>
       <hr />
-      <div class="information" v-for="item in info" v-bind:key="item.status"  >
-        <button class="accept " disabled v-if="info.status=='accepted'">{{item.status}}</button>
-        <button class="decline " disabled  v-else-if="info.status=='declined'">{{item.status}}</button>
-        <button class=" pend" disabled v-else>{{item.status}}</button>
+      <div class="information" v-for="item in info" v-bind:key="item.status">
+        <!--<div class="title" v-if="item.status=='approved'" :style="{'background-color':accept.backgroundColor ,'height':accept.height + 'px' , 'width':accept.width +'px' , 'margin-top':accept.marginTop+'px'}">{{item.status}}</div>
+        <div class="title" v-else-if="item.status=='declined'" :style="decline">{{item.status}}</div>
+        <div class="title" v-else :style="pend">{{item.status}}</div>-->
+        <button class="accepted title titleA" disabled v-if="item.status=='approved'"  >{{item.status}}</button>
+        <button class="declined title titleD"  disabled v-else-if="item.status=='declined'" >{{item.status}}</button>
+        <button class="pending title titleP" disabled  v-else >{{item.status}}</button>
+
+        <!--<button class="accept "  v-if="item.status=='approved'">{{item.status}}</button>
+        <button class="decline "  v-else-if="item.status=='declined'">{{item.status}}</button>
+        <button class=" pend"  v-else>{{item.status}}</button>-->
       </div>
     </div>
   </div>
@@ -46,39 +51,40 @@ export default {
       info:[
         {
           name:'',
-          spaceName:'',
-          status:['accepted' , 'declined' , 'pending'],
-          errorMsg:''
+          requestId:'',
+          status:'',
+          /*errorMsg:''*/
 
         }
-      ]
+      ],
+      
     }
   },
   methods:{
     getRequest(){
-      axios.get('')
+      axios.get('http://localhost:5173/api/requests')
       .then((response)=>{
         this.info = response.data
+        console.log(response.data)
       })
       .error((error)=>{
-        this.errorMsg ='Error happened'
+        /*this.errorMsg ='Error happened'*/
+        console.log(error)
       })
     },
-    created(){
-      this.getRequest();
-    }
   },
-  /*props: [
-    "FirstSpacename",
-    "SecondSpacename",
-    "ThirdSpacename",
-    "FirstClientname",
-    "SecondClientname",
-    "ThirdClientname",
-    "status",
-  ],  */
-
-};
+  created(){
+      axios.get('http://localhost:8080/api/requests')
+      .then((response)=>{
+        this.info = response.data
+        console.log(response.data)
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
+    },
+  };
 </script>
 
 
@@ -89,9 +95,11 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: var(--background);
 }
+
+
 .container {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto;
   background-color: var(--darkblue);
   border-radius: 30px;
   height: fit-content;
@@ -101,7 +109,26 @@ body {
 .title {
   color: var(--light);
   font-size: 20px;
+  text-align: center;
 }
+
+.titleA {
+  color:rgb(66, 216, 66);
+  font-size: 20px;
+  text-align: center;
+}
+.titleD {
+  color: rgb(248, 15, 15);
+  font-size: 20px;
+  text-align: center;
+}
+.titleP {
+  color:grey;
+  font-size: 20px;
+  text-align: center;
+}
+
+
 .t {
   font-weight: bold;
   font-size: 20px;
@@ -111,21 +138,7 @@ hr {
   color: var(--light);
 }
 
-.status {
-  display: flex;
-  flex-direction: column;
-}
-
-.information {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  align-content: center !important;
-  row-gap: 100px !important;
-}
-
-.accept {
+/*.accept {
   color: var(--light) !important;
   background-color: green !important;
   height: 50px !important;
@@ -146,7 +159,7 @@ hr {
   height: 50px !important;
   width: 100px !important;
   visibility: hidden;
-}
+}*/
 </style>
 
 

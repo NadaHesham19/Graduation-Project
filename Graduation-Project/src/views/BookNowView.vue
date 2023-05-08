@@ -40,7 +40,9 @@
             </div>
             <div class="decision">
               <button class="buttons" type="submit" @click.prevent="openAvailable">Search</button>
-              <button class="buttons res" @click="resetForm()">Reset</button>
+              <button class="buttons res" type="reset" @change="onChange(index)"
+
+              >Reset</button>
             </div>
         </form>
 
@@ -61,6 +63,7 @@
     import SuggestionsCard from '../components/SuggestionsCard.vue';
     import axios from "axios";
     
+    
 
     export default{
     name: "BookNowView",
@@ -69,7 +72,8 @@
     Footer,
     dropDown,
     AvailableOnSearch,
-    SuggestionsCard
+    SuggestionsCard,
+    
 },
     data(){
         return{
@@ -85,7 +89,11 @@
         }
     },
     methods:{
-        bookPost(){
+
+      onChange(index){
+         this.selected[index] = ''
+         }
+        /*bookPost(){
             axios.post('http://localhost:5173/api/bookings',this.Data)
             .then((response) => {
                 this.Data=response.data
@@ -98,7 +106,7 @@
         openAvailable(){
             let avaiability = document.getElementById('available');
             avaiability.classList.add('open-available');
-        },
+        },*/
     }
     
  }

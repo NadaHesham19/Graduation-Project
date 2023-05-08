@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+ <div class="container">
     <div class="location">Location: {{ location }}</div>
 
     <div class="selection">
@@ -29,8 +29,7 @@ body{
 .container{
   display: flex;
   flex-direction: row;
-  /*margin-top:50px;
-  margin-left:70px;*/
+  
 }
 
 .location{
@@ -47,6 +46,7 @@ body{
 </style>
 
 <script>
+
     export default{
         name:"dropdown",
         
