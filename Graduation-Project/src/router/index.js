@@ -13,6 +13,7 @@ import RequestsViewAdmin from "../views/RequestsViewAdmin.vue";
 import BookingsAdminView from "../views/BookingsAdminView.vue";
 import HistoryAdminView from "../views/HistoryAdminView.vue";
 import SpaceView from "../views/SpaceView.vue";
+import ResetPassword from "../views/ResetPassword.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -87,6 +88,11 @@ const router = createRouter({
       name: 'space',
       component: SpaceView
     },
+    {
+      path: '/resetpassword',
+     name: 'reset',
+     component: ResetPassword
+   },
   ],
 });
 

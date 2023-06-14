@@ -1,6 +1,6 @@
 <template>
   <simple-nav></simple-nav>
-  <div class="form-modal">
+  <div class="form-modal ">
     <div class="form-toggle">
       <button id="login-toggle" @click="toggleLogin()">Sign in</button>
       <button id="signup-toggle" @click="toggleSignup()">sign up</button>
@@ -44,12 +44,14 @@
       </form>
     </div>
   </div>
+  <Footer class="mt-5"></Footer>
   <router-view></router-view>
 </template>
 
 <script>
 import SimpleNav from '@/components/SimpleNav.vue';
 import axios from 'axios'
+import Footer from '../components/Footer.vue'
 
 
 export default {
@@ -84,7 +86,7 @@ export default {
     };
   },
   components: {
-    SimpleNav
+    SimpleNav ,Footer
   },
   methods: {
     toggleSignup() {
