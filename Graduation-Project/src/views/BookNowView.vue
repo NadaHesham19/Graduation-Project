@@ -1,81 +1,75 @@
 <template>
-    <NavBar/>
-    <SuggestionsCard/>
-    <div class="upper" >
-        <div class="texts">Book your room now:</div>
-        <form>
-            <div class="info1">
-                <div class="location">
-                        <label class="locate write">Location: {{ location }}</label>
-                        <div class="selection" >
-                          <select  v-model="Data.location" >
-                            <option disabled selected>No Choice Selected</option>
-                            <option>Nasr city</option>
-                            <option >Masr ElGedida</option>
-                            <option>Sheraton</option>
-                            <option>New Cairo</option>
-                            <option>6th October</option>
-                            <option>Maadi</option>
-                          </select>
-                        </div>
-                </div>
-                <div class="cap">
-                    <label for="num" class="write">Capacity:</label>
-                    <input type="number" id="num number" min="1" max="50" class="capacity" v-model="Data.capacity">
-                </div>
-                <div class="date">
-                    <label for="date" class="write">Choose Date:</label>
-                    <input type="date" id="date" v-model="Data.date">
-                </div>
-              </div>
-              <div class="info2">
-                <div class="starttime">
-                  <label for="time" class="write start">Start Time:</label>
-                  <input type="time" id="time" v-model="Data.startTime">
-              </div>
-              <div class="endtime">
-                  <label for="time" class="write end" >End Time:</label>
-                  <input type="time" id="time" v-model="Data.endTime">
-              </div>   
-            </div>
-            <div class="decision">
-              <button class="buttons" type="submit" @click.prevent="openAvailable">Search</button>
-              <button class="buttons res" type="reset" @change="onChange(index)"
-
-              >Reset</button>
-            </div>
-        </form>
-
-    </div>  
-    <div class="lower">
-      <div class="available" id="available">
-        <AvailableOnSearch/>
-      </div>
+  <NavBar></NavBar>
+  <SuggestionsCard/>
+  <!----Booking----->
+  <div class="reserve">
+    <div class="tit">
+      Book Your Room Now
     </div>
-    <Footer/>
+    <form>
+    <div class="info1">
+        <label for="location" class="req">Location:</label>
+        <select id="location" name="location">
+          <option value="" disabled selected>Please select a place</option>
+          <option value="NasrCity" required>Nasr City</option>
+          <option value="MasrElGedida" required>Masr ElGedida</option>
+          <option value="Sheraton" required>Sheraton</option>
+          <option value="Maadi" required>Maadi</option>
+          <option value="october" required>6th October</option>
+        </select>
+        
+        <div class="capacity">
+          <label for="num" class="write">Capacity:</label>
+          <input type="number" id="num number" min="1" max="50" class="cap" required>
+        </div>
+        
+
+        <div class="date">
+          <label for="date" class="write">Choose Date:</label>
+          <input type="date" id="date" required>
+        </div>
+    </div>
+
+    <div class="info2">
+        <div class="start">
+          <label for="time" class="write start">Start Time:</label>
+          <input type="time" id="time" required> 
+        </div>
+
+        <div class="end">
+          <label for="time" class="write start">End Time:</label>
+          <input type="time" id="time" required >
+        </div>
+      </div>
+
+        <div class="decision">
+          <button class="searchbtn" type="submit" @click.prevent="displayComponent()">Search</button>
+          <button class="resbtn" type="reset" @change="onChange(index)">Reset</button>
+        </div>
+    </form>
+
+    <div class="onsearch w-100" v-if="display">
+      <AvailableOnSearch/>
+    </div>
+  </div>
+
+  <Footer/>
+
 </template>
 
 <script>
-    import NavBar from '../components/NavBar.vue'
-    import Footer from '../components/Footer.vue'
-    import dropDown from '../components/dropdown.vue';
-    import AvailableOnSearch from '../components/AvailableOnSearch.vue';
-    import SuggestionsCard from '../components/SuggestionsCard.vue';
-    import axios from "axios";
-    
-    
-
-    export default{
-    name: "BookNowView",
-    components:{
+import NavBar from '../components/NavBar.vue';
+import Footer from '../components/Footer.vue';
+import SuggestionsCard from '../components/SuggestionsCard.vue';
+import AvailableOnSearch from '../components/AvailableOnSearch.vue';
+export default({
+  components:{
     NavBar,
-    Footer,
-    dropDown,
-    AvailableOnSearch,
     SuggestionsCard,
-    
+    Footer,
+    AvailableOnSearch
 },
-    data(){
+  data(){
         return{
             Data:{
                 location:'',
@@ -84,7 +78,7 @@
                 startTime:'',
                 endTime:'',
             },
-            visibility:false
+            display:false
             
         }
     },
@@ -92,143 +86,124 @@
 
       onChange(index){
          this.selected[index] = ''
-         }
+         },
+
+         displayComponent() {
+                this.display = true;
+        }
         /*bookPost(){
             axios.post('http://localhost:5173/api/bookings',this.Data)
             .then((response) => {
                 this.Data=response.data
             })
             .error((error)=> console.log(error))
-        },
-        resetForm() {
-          this.$refs.form.reset();
-        },
-        openAvailable(){
-            let avaiability = document.getElementById('available');
-            avaiability.classList.add('open-available');
         },*/
+          
+        },
     }
-    
- }
+)
+
 </script>
 
+<style>
 
-
-<style scoped>
 body{
-    padding: 0;
-    margin: 0;
-    font-family: "Roboto", sans-serif;    
-    background-color: var(--background);
-  }
-
-  .upper{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    flex-wrap: wrap;
-    column-gap: 10px;
-  }
-
-  .texts{
-    color:var(--darkblue);
-    font-weight: bold;
-    font-size: 30px;
-    padding-top:20px;
-  }
-
-  .info1{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top:20px;
-    align-items: center;
-    justify-content: center;
-    column-gap: 30px;
-
-  }
-
-  .info2{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top:20px;
-    align-items: center;
-    justify-content: center;
-    column-gap: 30px;
-  }
-  .location{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .locate{
-    margin-top: 5px;
-  }
-  .selection{
-    margin-left:10px;
-    margin-top:10px;
-    
-  }
-
-  .write{
-    font-weight: bold;
-    color: var(--darkblue);
-    font-size:20px;
-  
-  }
-
-  input[type=number]{
-    width: 100px;
-    border-color: black;
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto", sans-serif;    
+  background-color: var(--background);
  }
 
 
- .decision{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    
-}
-.buttons{
-    border-radius: 25px;
-    color: var(--light);
-    background-color:var(--lightblue);
-    border: none;
-    text-align: center;
-    width:200px;
-    height: 50px;
-    margin-top: 25px;
-    font-family: 'Roboto';
-    font-size: 20px;
-    
-
+.reserve{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  padding-bottom:30px;
 }
 
-.buttons:hover ,
-.buttons:active {
- color: var(--darkblue) !important;
- font-weight: 700 !important;
- cursor: pointer;
+.tit{
+  color:var(--darkblue);
+  font-weight: bold;
+  font-size: 30px;
+  padding-top:10px;
+  padding-bottom: 20px;
+}
+
+.info1{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top:20px;
+  align-items: center;
+  justify-content: center;
+  column-gap: 30px;
 
 }
 
-.res{
+.info2{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top:20px;
+  align-items: center;
+  justify-content: center;
+  column-gap: 30px;
+}
+
+.decision{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchbtn{
+  border-radius: 25px;
+  color: var(--light) !important;
+  background-color:var(--lightblue);
+  border: none;
+  text-align: center;
+  width:200px;
+  height: 50px;
+  margin-top: 25px;
+  font-family: 'Roboto';
+  font-size: 20px;
+}
+
+.resbtn{
+  border-radius: 25px;
+  color: var(--light) !important;
+  background-color:var(--lightblue);
+  border: none;
+  text-align: center;
+  width:200px;
+  height: 50px;
+  margin-top: 25px;
+  font-family: 'Roboto';
+  font-size: 20px;
   margin-bottom: 20px;
+
 }
 
-.available{
-  visibility: hidden;
+.searchbtn:hover , .resbtn:hover
+.searchbtn:active , .resbtn:active{
+color: var(--darkblue) !important;
+font-weight: 700 !important;
+cursor: pointer;
+
 }
 
-.open-available{
-  visibility: visible;
- }
+input[type=number]{
+  width: 100px;
+  border-color: black;
+}
+
+
 
 </style>
-

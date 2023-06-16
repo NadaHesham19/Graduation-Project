@@ -5,34 +5,36 @@
        <div class="request">
            <div class="title t">Requests</div>
            <hr>
-           <div class="info">
-               <div class="title">{{FirstSpacename}}</div>
+           <div class="info" v-for="item in req" v-bind:key="item.spaceName">
+               <div class="title">{{item.spaceName}}</div>
                
            </div>
        </div>
        <div class="name">
            <div class="title t">Name</div>
            <hr>
-           <div class="info">
-               <div class="title">{{FirstClientname}}</div>
+           <div class="info"  v-for="item in req" v-bind:key="item.userName">
+               <div class="title">{{item.userName}}</div>
               
            </div>
        </div>
        <div class="details">
            <div class="title t">Details</div>
            <hr>
-           <div class="info">
-               <div class="title det">Location:{{FirstLocation}}
+           <div class="info" v-for="item in req">
+               <div class="title det">Location:{{req.location}}
                    <br>
-                   Number of rooms: {{ Numberofrooms }}
+                   Number of rooms: {{ req.noOfRooms }}
                </div>
            </div>
        </div>
       <div class="status">
            <div class="title t">Action</div>
            <hr>
-           <div class="info b">
-               <button class="accept" @click="openPopup">Accept</button>
+           <div class="info b" v-for="item in req">
+            <AcceptModal/>
+            <DeclineModal/>
+               <!--<button class="accept" @click="openPopup">Accept</button>
                <button class="decline" @click="openPopup">Decline</button>
                <div class="popup" id="popup">
                 <div class="pop">Are you sure you want to accept this request?</div>
@@ -44,14 +46,69 @@
                 <div class="pop">Are you sure you want to decline this request?</div>
                     <button type="button" class="btn yes" @click="closePopup()">Yes</button>
                     <button type="button" class="btn no" @click="closePopup()" >No</button>
-               </div>
+               </div>-->
                
            </div>
        </div>
    </div>
-   
-    
 </template>
+
+<script>
+import AcceptModal from '../components/AcceptModal.vue';
+import AdminNav from '../components/AdminNav.vue'
+import DeclineModal from '../components/DeclineModal.vue';
+    export default{
+    name: "RequestsViewAdmin",
+    components:{
+    AdminNav,
+    AcceptModal,
+    DeclineModal
+},
+    data(){
+        return{
+            req:[{
+                spaceName:'The Bunker',
+                userName:'Nadine',
+                location:'Heliopolis',
+                noOfRooms:' 5'
+
+            },{
+                spaceName:'The Bunker',
+                userName:'Nadine',
+                location:'Heliopolis',
+                noOfRooms:' 5'
+
+            }]
+                
+
+                
+        }
+    },
+    
+    methods:{
+        /*openPopup(){
+            let popup = document.getElementById('popup');
+            popup.classList.add('open-popup');
+        },
+        closePopup(){
+            let popup = document.getElementById('popup');
+            popup.classList.remove('open-popup');
+        },
+        openPopup(){
+            let popup = document.getElementById('popup2');
+            popup.classList.add('open-popup');
+        },
+        closePopup(){
+            let popup = document.getElementById('popup2');
+            popup.classList.remove('open-popup');
+        }*/
+        
+
+
+    }
+
+}
+</script>
 
 <style scoped>
     body{
@@ -74,18 +131,17 @@
     .title{
        color:var(--light);
        font-size:20px;
-       
     }
     .t{
        font-weight: bold;
        font-size:20px;
     }
 
-    
-
     hr{
        color: var(--light);
     }
+
+    
 
     .status{
        display: flex;
@@ -95,13 +151,15 @@
    .b{
        display: flex;
        flex-direction: column;
-       justify-content:flex-start;
+       justify-content:center;
        align-items: center;
        align-content: center;
+       gap:20px;
+       padding-top:120px;
    }
     
 
-   .accept{
+   /*.accept{
        color:var(--light);
        background-color: green;
        height:50px;
@@ -183,44 +241,7 @@
    }
    .open-popup{
     visibility: visible;
-   }
+   }*/
 
 </style>
 
-<script>
-import AdminNav from '../components/AdminNav.vue'
-    export default{
-    name: "RequestsViewAdmin",
-    components:{
-   AdminNav
-    },
-    props:[
-        'FirstSpacename',
-        'FirstClientname',
-        'FirstLocation',
-        'Numberofrooms'
-    ],
-    methods:{
-        openPopup(){
-            let popup = document.getElementById('popup');
-            popup.classList.add('open-popup');
-        },
-        closePopup(){
-            let popup = document.getElementById('popup');
-            popup.classList.remove('open-popup');
-        },
-        openPopup(){
-            let popup = document.getElementById('popup2');
-            popup.classList.add('open-popup');
-        },
-        closePopup(){
-            let popup = document.getElementById('popup2');
-            popup.classList.remove('open-popup');
-        }
-        
-
-
-    }
-
-}
-</script>
