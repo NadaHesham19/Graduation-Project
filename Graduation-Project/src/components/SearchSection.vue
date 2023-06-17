@@ -2,8 +2,8 @@
   <div class="searchsec container-fluid ">
     <i class="fa-solid fa-magnifying-glass search-icon"></i>
     <form class="d-flex searchform">
-      <input class="form-control searchinput me-2" type="search" aria-label="Search" />
-      <button class="btn btn-outline-success main-btn search-btn" type="submit">
+      <input class="form-control searchinput me-2" type="search" aria-label="Search" v-model="searchinput" />
+      <button class="btn btn-outline-success main-btn search-btn" type="submit" @click="search">
         Search
       </button>
     </form>
@@ -40,3 +40,18 @@
   color: var(--darkblue);
 }
 </style>
+<script>
+export default {
+data() {
+  return {
+    searchinput:''
+  };
+},
+methods:{
+  search(){
+ //filter function
+  },
+}
+}
+
+</script>

@@ -14,6 +14,9 @@ import BookingsAdminView from "../views/BookingsAdminView.vue";
 import HistoryAdminView from "../views/HistoryAdminView.vue";
 import SpaceView from "../views/SpaceView.vue";
 import ResetPassword from "../views/ResetPassword.vue"
+import QrCodeView from "../views/QrCode.vue"
+import ExtraAddNewView from"../views/ExtraAddNewView.vue"
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -93,6 +96,16 @@ const router = createRouter({
      name: 'reset',
      component: ResetPassword
    },
+   {
+    path:'/qrcode',
+    name:'QrCode',
+    component:QrCodeView
+   },
+   {
+    path:'/extraaddnew',
+    name:'ExtraAddNew',
+    component:ExtraAddNewView
+   }
   ],
 });
 

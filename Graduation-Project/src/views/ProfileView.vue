@@ -35,6 +35,13 @@
               <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
           </div>
         </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <label class="" for="">Username:</label>
+            <span class="">{{ user.username }}
+              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
+          </div>
+        </div>
 
         <div class="row justify-content-center">
           <div class="col-lg-8">
@@ -97,8 +104,9 @@ export default {
       this.editing = false;
     },
     SaveEditting() {
-      this.value = this.tempValue;
-      this.disableEditing();
+      fetch(`http://localhost:8080/api/user/${userID}`, 'PATCH')
+    .then(response => response.json())
+    .then(data => product.value = data);
     },
   },
   beforeMount() {

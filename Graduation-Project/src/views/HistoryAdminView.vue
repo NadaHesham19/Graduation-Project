@@ -4,7 +4,7 @@
 
         <h1 class="my-4 text-center ">History</h1>
 
-        <div class="my-4 row justify-content-center align-items-center">
+        <div class="my-5 row justify-content-center align-items-center">
             <div class="col-lg-4 my-3">
                 <SearchSection></SearchSection>
             </div>
@@ -14,7 +14,7 @@
 
 
 
-    <div class="container mt-5">
+    <div class="container mt-5 pt-5">
 
         <div class="row justify-content-center align-items-between" v-for="booking in bookings" :key="booking">
 

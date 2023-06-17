@@ -23,6 +23,7 @@
         <input type="text" placeholder="First Name" required v-model="firstName" />
         <input type="text" placeholder="Last Name" required v-model="lastName" />
         <input type="email" placeholder="Email" required v-model="email" />
+        <input type="text" placeholder="Username" required v-model="username" />
         <input type="text" placeholder="Address" required v-model="location" />
         <input type="tel" placeholder="Phone number" required v-model="phoneNumber" />
         <input :type="type" placeholder="Birthdate" v-model="birthdate" @focus="this.type = 'date'"
@@ -83,6 +84,7 @@ export default {
       location: null,
       birthdate: null,
       password: "",
+      username:null,
     };
   },
   components: {
@@ -108,7 +110,7 @@ export default {
       document.getElementById("login-form").style.display = "block";
     },
     CreateAccount() {
-      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0, birthDate: this.birthdate })
+      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0, birthDate: this.birthdate , username:this.username })
        
         .catch((err) => {
           // Handle errors
