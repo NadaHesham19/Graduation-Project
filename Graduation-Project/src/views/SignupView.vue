@@ -78,7 +78,7 @@ export default {
 
       //users from api
       users: null,
-      userID: 0,
+      userID: 3,
 
       // user Data for Signup
       firstName: null,
@@ -191,6 +191,7 @@ export default {
     },
   },
   beforeMount() {
+    
     axios.get("http://localhost:8080/api/user")
       .then((response) => {
         // Handle response
@@ -201,6 +202,7 @@ export default {
         // Handle errors
         console.error(err);
       });
+      localStorage.setItem('userID',3);
   }
 };
 </script>

@@ -61,20 +61,10 @@ export default {
     }
   },
   methods:{
-    getRequest(){
-      axios.get('http://localhost:5173/api/requests')
-      .then((response)=>{
-        this.info = response.data
-        console.log(response.data)
-      })
-      .error((error)=>{
-        /*this.errorMsg ='Error happened'*/
-        console.log(error)
-      })
-    },
+    
   },
-  created(){
-      axios.get('http://localhost:8080/api/requests')
+  beforeMount(){
+      axios.get('http://localhost:8080/api/requests/users/3')
       .then((response)=>{
         this.info = response.data
         console.log(response.data)
@@ -161,5 +151,3 @@ hr {
   visibility: hidden;
 }*/
 </style>
-
-
