@@ -5,22 +5,25 @@
                 <img :src="firstImgSrc" class="h-100 w-100 ms-auto" alt="..." />
             </div>
             <div class="card-body col-lg-7">
-                <h5 class="card-title fw-bolder text-center">{{ firstTitle }}</h5>
-                <p class="card-text ">Name: {{ firstUserName }}</p>
-                <p class="card-text">Date: {{ firstDate }}</p>
-                <p class="card-text ">Time: {{ firstStartTime }} : {{ firstEndTime }}</p>
-                <p class="card-text ">Room Details: {{ firstDetails }}</p>
-                <div class="text-center">
+                <h5 class="card-title fw-bolder text-center">{{ booking.room.space }}</h5>
+                <p class="card-text ">Name: {{ booking.user.firstName }} {{ booking.user.lastName }}</p>
+                <p class="card-text">Date: {{ booking.date }}</p>
+                <p class="card-text ">Time: {{ booking.startTime }} : {{ booking.endTime}}</p>
+                <p class="card-text ">Room Details: {{ booking.room.name }}</p>
+                <p class="d-none" >{{ booking.id }}</p>
+                <CancelModal></CancelModal>
+                <!-- <div class="text-center">
                     <button class="btn mx-auto cancel-btn main-btn">
                    Cancel <i class="mx-1 fa-solid fa-xmark"></i>
                     </button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import CancelModal from './CancelModal.vue';
 export default {
     data() {
         return {
@@ -28,14 +31,12 @@ export default {
         };
     },
     props: [
-        "firstStartTime",
-        "firstTitle",
-        "firstDetails",
-        "firstDate",
-        "firstEndTime",
-        "firstUserName"
+     'booking'
         
     ],
+    components:{
+      CancelModal
+    }
 };
 </script>
 

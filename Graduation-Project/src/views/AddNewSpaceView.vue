@@ -71,7 +71,7 @@
 <script>
 import NavBar from "../components/NavBar.vue";
 import axios from "axios";
-import FlashMessage from "@smartweb/vue-flash-message";
+
 export default {
   data() {
     return {
@@ -111,6 +111,10 @@ export default {
           // Handle errors
           console.error(err);
         });
+        setTimeout(() => {
+        this.flag = false
+        this.error = false
+      }, 3000);
       }
     },
 
@@ -134,7 +138,7 @@ export default {
 
 <style>
 .addNew {
-  background-color: var(--nav);
+  background-color: var(--darkblue);
   color: white;
   border-radius: 25px;
 }

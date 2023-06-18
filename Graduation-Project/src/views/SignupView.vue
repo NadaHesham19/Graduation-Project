@@ -43,6 +43,10 @@
           Create an account
         </button>
       </form>
+      <v-alert color="success" icon="$success" title="Submitted Successfully" text="The Request is submitted successfully"
+        id="hideme" v-if="flag"></v-alert>
+      <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+        v-if="error"></v-alert>
     </div>
   </div>
   <Footer class="mt-5"></Footer>
@@ -84,11 +88,14 @@ export default {
       location: null,
       birthdate: null,
       password: "",
-      username:null,
+      username: null,
+      //success and failure
+      flag: false,
+      error: false,
     };
   },
   components: {
-    SimpleNav ,Footer
+    SimpleNav, Footer
   },
   methods: {
     toggleSignup() {
@@ -110,13 +117,24 @@ export default {
       document.getElementById("login-form").style.display = "block";
     },
     CreateAccount() {
-      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0, birthDate: this.birthdate , username:this.username })
-       
+      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0, birthDate: this.birthdate, username: this.username })
+
+      then((response) => {
+        if (response.data.error) {
+          this.error = true
+        } else {
+
+          this.flag = true
+        }
+      })
         .catch((err) => {
           // Handle errors
           console.error(err);
-          
         });
+      setTimeout(() => {
+        this.flag = false
+        this.error = false
+      }, 3000);
     },
     resetPasswords() {
       this.password = "";
@@ -358,5 +376,18 @@ export default {
 
 .error {
   color: red;
+}
+
+#hideme {
+  animation: hideAnimation 0s ease-in 1.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hideAnimation {
+  to {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
 }
 </style>

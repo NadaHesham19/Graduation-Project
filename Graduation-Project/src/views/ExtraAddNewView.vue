@@ -46,7 +46,7 @@
               type="text"
               class="col-lg-4 mb-4 inputText"
               style="background-color: #d4d4d4"
-              v-model="decription"
+              v-model="description"
             />
           </div>
           <div class="row justify-content-center">
@@ -133,6 +133,7 @@
             </button>
           </div>
         </div>
+        
       </div>
     </div>
     
@@ -145,8 +146,18 @@
     data() {
       return {
         name: "",
-        location: "",
+        address: "",
         numberOfRooms: "",
+        district:"",
+        description:"",
+        contNum:"",
+        minPrice:"",
+        maxPrice:"",
+        startTime:"",
+        EndTime:"",
+        drinks:"",
+        owner:"",
+        out:"",
         userID: localStorage.getItem("userID"),
         flag: false,
         errorMessage: "",
@@ -160,19 +171,24 @@
         axios
           .post("http://localhost:8080/api/spaces", {
             name: this.name,
-            address: this.location,
+            address: this.address,
             noOfRooms: this.numberOfRooms,
-            status: "Pending",
-            userId: this.userID,
+            district:this.district,
+            description:this.description,
+            contactNumber:this.contNum,
+            minPrice:this.minPrice,
+            maxPrice:this.maxPrice,
+            startTime:this.startTime,
+            endTime:this.EndTime,
+            drinks:this.drinks,
+            owner:this.owner,
+            outdoors:this.out,
           })
           .then((response) => {
             if (response.data.error) {
               this.errorMessage = response.data.message;
             } else {
-              (this.name = ""),
-                (this.location = ""),
-                (this.numberOfRooms = ""),
-                (this.flag = true)
+              //redirect
             }
           })
           .catch((err) => {
@@ -201,7 +217,7 @@
   
   <style>
   .addNew {
-    background-color: var(--nav);
+    background-color: var(--darkblue);
     color: white;
     border-radius: 25px;
   }

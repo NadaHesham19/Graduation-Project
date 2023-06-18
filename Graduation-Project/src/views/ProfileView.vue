@@ -2,65 +2,118 @@
   <NavBar></NavBar>
 
   <div class="container my-5">
+   
     <h1 class="text-center my-5 profile-text">Profile</h1>
     <div class="row justify-content-center w-100">
       <div class="col-lg-4 col-sm-6">
         <div class="row justify-content-center w-100">
           <h2 class="text-center profile-text">
             Bio
-            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span>
+            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit('userbio')"></i></span>
           </h2>
           <!-- <div class="col-lg-8 text-center editable-data">{{ user.bio }}</div> -->
-          <input class="col-lg-8 text-center" type="text" v-bind:disabled="!inputEnabled" v-model="userBio">
+          <input class="col-lg-8 text-center" type="text" ref="userbio" v-model="user.bio" />
         </div>
       </div>
       <div class="col-lg-4 col-sm-6">
         <div class="row justify-content-center w-100">
-          <img :src="imgSrc" alt="" class="profile-image" />
+          <img :src="imgSrc" alt="" class="profile-image col-lg-10" />
+          <input type="file" class="ms-5 ps-5" />
         </div>
       </div>
       <div class="col-lg-4 col-sm-6">
         <h2 class="text-center profile-text">Details</h2>
-        <div class="row justify-content-center w-100">
+        <div class="row justify-content-center">
           <div class="col-lg-8">
-            <label for="" class="">Name:</label>
-            <span class="">{{ user.firstName }} {{ user.lastName
-            }}<span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
+            <div class="row">
+              <label for="" class="px-1">First Name</label>
+            </div>
+            <div class="row justify-content-between">
+              <input class="col-lg-10" ref="firstname" v-model="user.firstName" />
+              <span class="editable mx-2 col-lg-1"><i class="fa-solid fa-pen-to-square"
+                  @click="EnableEdit('firstname')"></i></span>
+            </div>
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-lg-8">
-            <label class="" for="">Email:</label>
-            <span class="">{{ user.email }}
-              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <label class="" for="">Username:</label>
-            <span class="">{{ user.username }}
-              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
+            <div class="row">
+              <label for="" class="px-1">Last Name</label>
+            </div>
+            <div class="row">
+              <input class="col-lg-10" v-model="user.lastName" ref="lastname" />
+              <span class="editable mx-2 col-lg-1"><i class="fa-solid fa-pen-to-square"
+                  @click="EnableEdit('lastname')"></i></span>
+            </div>
           </div>
         </div>
 
         <div class="row justify-content-center">
           <div class="col-lg-8">
-            <label class="" for="">Birthdate:</label>
-            <span class="">{{ user.birthDate }}
-              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
+            <div class="row">
+              <label for="" class="px-1">Email</label>
+            </div>
+            <div class="row">
+              <input class="col-lg-10" v-model="user.email" ref="email" type="email" />
+              <span class="editable mx-2 col-lg-1"><i class="fa-solid fa-pen-to-square"
+                  @click="EnableEdit('email')"></i></span>
+            </div>
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-lg-8">
-            <label class="" for="">Location:</label>
-            <span class="">{{ user.address }}
-              <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit"></i></span></span>
+            <div class="row">
+              <label for="" class="px-1">Username</label>
+            </div>
+            <div class="row">
+              <input class="col-lg-10" v-model="user.username" ref="username" />
+              <span class="editable mx-2 col-lg-1"><i class="fa-solid fa-pen-to-square"
+                  @click="EnableEdit('username')"></i></span>
+            </div>
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-lg-8">
-            <label class="" for="">Points:</label>
-            <span class="">{{ user.points }}</span>
+            <div class="row">
+              <label for="" class="px-1">Mobile Number</label>
+            </div>
+            <div class="row">
+              <input class="col-lg-10" v-model="user.mobileNo" ref="mobileno" type="text" />
+              <span class="editable mx-2 col-lg-1"><i class="fa-solid fa-pen-to-square"
+                  @click="EnableEdit('mobileno')"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="row">
+              <label for="" class="px-1">Birthdate</label>
+            </div>
+            <div class="row">
+              <input class="col-lg-10" v-model="user.birthDate" ref="birth" />
+              <span class="editable mx-2 col-lg-1"><i class="fa-solid fa-pen-to-square"
+                  @click="EnableEdit('birth')"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="row">
+              <label for="" class="px-1">Location</label>
+            </div>
+            <div class="row">
+              <input class="col-lg-10" v-model="user.address" ref="address" />
+              <span class="editable mx-2 col-lg-1"><i class="fa-solid fa-pen-to-square"
+                  @click="EnableEdit('address')"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="row justify-content-start align-items-start">
+              <label class="col-lg-4 px-1" for="">Points:</label>
+              <input type="text" v-model="user.points" class="col-lg-4" disabled />
+            </div>
           </div>
         </div>
       </div>
@@ -69,6 +122,11 @@
           Save
         </button>
       </div>
+
+      <v-alert color="success" icon="$success" title="Submitted Successfully" text="Data is updated successfully"
+      id="hideme" v-if="flag"></v-alert>
+    <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+      v-if="error"></v-alert>
     </div>
   </div>
 
@@ -82,13 +140,15 @@ import axios from "axios";
 export default {
   data() {
     return {
-      userBio:"Please Enter Your Bio",
+      // userBio:this.user.bio,
       imgSrc:
-        "https://hips.hearstapps.com/hmg-prod/images/cute-cat-photos-1593441022.jpg?crop=1.00xw:0.753xh;0,0.153xh&resize=1200:*",
-  
+        "https://i.stack.imgur.com/l60Hf.png",
       user: null,
-      userID:localStorage.getItem('userID'),
-      inputEnabled:false,
+      userID: localStorage.getItem('userID'),
+      flag: false,
+      error: false,
+      userMobile: ''
+
     };
   },
   components: {
@@ -96,31 +156,50 @@ export default {
     Footer,
   },
   methods: {
-    EnableEdit() {
-      this.inputEnabled = true
-    },
-    disableEditting() {
-      this.tempValue = null;
-      this.editing = false;
+    EnableEdit(field) {
+      this.$refs[field].focus();
     },
     SaveEditting() {
-      fetch(`http://localhost:8080/api/user/${userID}`, 'PATCH')
-    .then(response => response.json())
-    .then(data => product.value = data);
-    },
+      // this.userMobile = this.user.mobileNo.toString();
+
+
+      axios.patch(`http://localhost:8080/api/user/${this.userID}`,
+        {
+          firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio
+        }).then((res) => {
+          if (res.data.error) {
+            this.error = true
+          } else {
+            this.flag = true
+          }
+          console.log(res.data)
+        })
+        .catch((e) => {
+          console.log(e)
+        });
+      setTimeout(() => {
+        this.flag = false
+        this.error = false
+      }, 3000);
+    }
   },
   beforeMount() {
-  
+
     axios
       .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
         // Handle response
         this.user = response.data;
+        console.log(this.user)
       })
       .catch((err) => {
         // Handle errors
         console.error(err);
       });
+
+    // if(this.user.bio.length == 0){
+    //   this.userBio = "Please enter your bio"
+    // }
   },
 };
 </script>
@@ -158,5 +237,18 @@ label {
 .editable {
   cursor: pointer;
   font-size: 15px;
+}
+
+#hideme {
+  animation: hideAnimation 0s ease-in 1.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hideAnimation {
+  to {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
 }
 </style>

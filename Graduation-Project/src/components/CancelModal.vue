@@ -17,8 +17,8 @@
         >
         <v-card-actions>
           <v-spacer></v-spacer>
-          <button class="btn cancel-btn mx-2" @click="Cancel">Yes</button>
-          <button class="btn main-btn mx-2" @click="dialog = false">No</button>
+          <button class="btn cancel-btn mx-2" @click="Cancel" style="width: 70px;">Yes</button>
+          <button class="btn main-btn mx-2" @click="dialog = false" >No</button>
         </v-card-actions>
       
       </v-card>
