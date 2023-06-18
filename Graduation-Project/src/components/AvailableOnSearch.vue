@@ -1,4 +1,6 @@
 <template>
+
+
   <div class="container mt-5">
     <div class="row w-100">
       <h5 class="col-lg-3 mt-3">Available Rooms</h5>
@@ -7,64 +9,54 @@
       <i class="fa-solid fa-angle-left col-lg-1 arow" style="height: 45px"></i>
       <div class="col-lg-4 my-5">
         <div class="card text-white">
-          <img :src="data.img" class="card-img-top" alt="..." />
+          <img :src="firstImgSrc" class="card-img-top" alt="..." />
           <div class="card-body">
-            <div class="c fw-bolder"> Room:{{data.room}}</div>
-            <p class="c"> Details:{{data.details}}</p>
+            <div class="c fw-bolder"> Room Name:{{room.name}}</div>
+            <p class="c"> Details:
+              <h5>Activity: {{room.activity}}</h5>
+              <h5>Type: {{room.type}}</h5>
+              <h5>Price: {{room.price}}</h5>
+            </p>
             
             <div class="text-center">
-              <button
-                class="btn mx-auto book-btn"
-                
-              >
-                Book 
-              </button>
+              <BookModal/>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 my-5">
-        <div class="card text-white">
-          <img :src="data.img" class="card-img-top" alt="..." />
-          <div class="card-body">
-            <div class="c fw-bolder">Room: {{data.room}}</div>
-            <p class="c"> Details: {{data.details}}</p>
-            <div class="text-center">
-              <button
-                class="btn mx-auto book-btn"
-            
-              >
-                Book 
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <i class="fa-solid fa-angle-right col-lg-1 arow" style="height: 45px"></i>
     </div>
   </div>
 </template>
 
 <script>
+import BookModal from './BookModal.vue';
+import axios from 'axios';
 export default {
-  data() {
-    return {
-      data:[
-        {
-          img:'',
-          room:'',
-          details:''
-        }
-
-      ]
-      
-      
-        
-
-      }
-      
+  components:{
+    BookModal
+  },
+    data() {
+        return {
+            data: [
+                {
+                    img: "",
+                    room: "",
+                    details: ""
+                }
+            ]
+        };
     },
-  }
+    props: [
+        "room"
+    ],
+    
+    computed: {
+        firstImgSrc() {
+            return this.room.images;
+        },
+    },
+    components: { BookModal }
+}
   
 </script>
 

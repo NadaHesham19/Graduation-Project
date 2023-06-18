@@ -125,7 +125,7 @@
         
      
    },
-   created(){
+   beforeMount(){
        axios.get('http://localhost:8080/api/admin/requests/?status=pending')
        .then((response)=>{
          this.req = response.data
