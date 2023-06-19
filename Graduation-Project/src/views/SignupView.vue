@@ -1,6 +1,6 @@
 <template>
   <simple-nav></simple-nav>
-  <div class="form-modal ">
+  <div class="form-modal">
     <div class="form-toggle">
       <button id="login-toggle" @click="toggleLogin()">Sign in</button>
       <button id="signup-toggle" @click="toggleSignup()">sign up</button>
@@ -8,10 +8,24 @@
 
     <div id="login-form">
       <form action="index.html">
-        <input type="email" placeholder="Enter email" v-model="signinEmail" required />
+        <input
+          type="email"
+          placeholder="Enter email"
+          v-model="signinEmail"
+          required
+        />
 
-        <input type="password" placeholder="Enter password" v-model="signinPassword" required />
-        <button type="submit" class="btn login" @click.prevent="checkIfAccountExists()">
+        <input
+          type="password"
+          placeholder="Enter password"
+          v-model="signinPassword"
+          required
+        />
+        <button
+          type="submit"
+          class="btn login"
+          @click.prevent="checkIfAccountExists()"
+        >
           Sign in
         </button>
         <p><router-link to="/forgot">Forgot Your Password ?</router-link></p>
@@ -20,44 +34,95 @@
 
     <div id="signup-form">
       <form action="">
-        <input type="text" placeholder="First Name" required v-model="firstName" />
-        <input type="text" placeholder="Last Name" required v-model="lastName" />
+        <input
+          type="text"
+          placeholder="First Name"
+          required
+          v-model="firstName"
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          required
+          v-model="lastName"
+        />
         <input type="email" placeholder="Email" required v-model="email" />
         <input type="text" placeholder="Username" required v-model="username" />
         <input type="text" placeholder="Address" required v-model="location" />
-        <input type="tel" placeholder="Phone number" required v-model="phoneNumber" />
-        <input :type="type" placeholder="Birthdate" v-model="birthdate" @focus="this.type = 'date'"
-          @blur="this.type = 'text'" />
-        <input ref="password" type="password" placeholder="Password" v-model="password" required />
+        <input
+          type="tel"
+          placeholder="Phone number"
+          required
+          v-model="phoneNumber"
+        />
+        <input
+          :type="type"
+          placeholder="Birthdate"
+          v-model="birthdate"
+          @focus="this.type = 'date'"
+          @blur="this.type = 'text'"
+        />
+        <!-- <input type="file" placeholder="Please upload your Photo" required v-on:change="photo" /> -->
+        <input
+          ref="password"
+          type="password"
+          placeholder="Password"
+          v-model="password"
+          required
+        />
 
         <div v-if="passwordValidation.errors.length > 0 && password.length > 0">
-          <span v-for="error in passwordValidation.errors" :key="error" class="error">
+          <span
+            v-for="error in passwordValidation.errors"
+            :key="error"
+            class="error"
+          >
             {{ error }}
           </span>
         </div>
-        <input type="password" placeholder="Confirm Password" v-model.lazy="checkPassword" required />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          v-model.lazy="checkPassword"
+          required
+        />
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
-        <button type="submit" class="btn signup" @click.prevent="CreateAccount()">
+        <button
+          type="submit"
+          class="btn signup"
+          @click.prevent="CreateAccount()"
+        >
           Create an account
         </button>
       </form>
-      <v-alert color="success" icon="$success" title="Submitted Successfully" text="The Request is submitted successfully"
-        id="hideme" v-if="flag"></v-alert>
-      <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
-        v-if="error"></v-alert>
+      <v-alert
+        color="success"
+        icon="$success"
+        title="Submitted Successfully"
+        text="The Request is submitted successfully"
+        id="hideme"
+        v-if="flag"
+      ></v-alert>
+      <v-alert
+        color="error"
+        icon="$error"
+        title="Submission Failed"
+        text="Please Try again"
+        id="hideme"
+        v-if="error"
+      ></v-alert>
     </div>
   </div>
-  <Footer class="mt-5"></Footer>
+  <Footer class="mt-5 pt-5"></Footer>
   <router-view></router-view>
 </template>
 
 <script>
-import SimpleNav from '@/components/SimpleNav.vue';
-import axios from 'axios'
-import Footer from '../components/Footer.vue'
-
+import SimpleNav from "@/components/SimpleNav.vue";
+import axios from "axios";
+import Footer from "../components/Footer.vue";
 
 export default {
   data() {
@@ -95,7 +160,8 @@ export default {
     };
   },
   components: {
-    SimpleNav, Footer
+    SimpleNav,
+    Footer,
   },
   methods: {
     toggleSignup() {
@@ -116,24 +182,44 @@ export default {
       document.getElementById("signup-form").style.display = "none";
       document.getElementById("login-form").style.display = "block";
     },
+    formatDate(date) {
+      var parts = date.split("-");
+      var year = parts[0];
+      var month = parts[1];
+      var day = parts[2];
+
+      return day + "-" + month + "-" + year;
+    },
     CreateAccount() {
-      axios.post("http://localhost:8080/api/user", { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, mobileNo: this.phoneNumber, address: this.location, points: 0, birthDate: this.birthdate, username: this.username })
+      axios.post("http://localhost:8080/api/user", {
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        password: this.password,
+        mobileNo: this.phoneNumber,
+        address: this.location,
+        points: 0,
+        birthDate: this.formatDate(this.birthdate),
+        username: this.username,
+      });
 
       then((response) => {
         if (response.data.error) {
-          this.error = true
+          this.error = true;
         } else {
-
-          this.flag = true
+          this.flag = true;
+          // delay
+          setTimeout(() => {
+            this.toggleSignup();
+          }, 3000);
         }
-      })
-        .catch((err) => {
-          // Handle errors
-          console.error(err);
-        });
+      }).catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
       setTimeout(() => {
-        this.flag = false
-        this.error = false
+        this.flag = false;
+        this.error = false;
       }, 3000);
     },
     resetPasswords() {
@@ -149,20 +235,25 @@ export default {
       // from response if doesn't exist route to home
       //if not display error message
       for (let i = 0; i < this.users.length; i++) {
-        if (this.users[i].email == this.signinEmail && this.users[i].password == this.signinPassword && this.users != null) {
+        if (
+          this.users[i].email == this.signinEmail &&
+          this.users[i].password == this.signinPassword &&
+          this.users != null
+        ) {
           // this.userID = this.users[i].userId
           // console.log(this.userID)
-          localStorage.setItem('userID', this.users[i].userId);
-          this.$router.push("/home")
-
-        } else if (this.signinEmail == "Admin@info.com" && this.signinPassword == "Root1234") {
-          this.$router.push({ name: "profile" })
+          localStorage.setItem("userID", this.users[i].userId);
+          this.$router.push("/home");
+        } else if (
+          this.signinEmail == "Admin@info.com" &&
+          this.signinPassword == "Root1234"
+        ) {
+          this.$router.push({ name: "profile" });
         } else {
-          console.log("error")
+          console.log("error");
           // must show error message
         }
       }
-
     },
   },
   computed: {
@@ -191,24 +282,23 @@ export default {
     },
   },
   beforeMount() {
-    
-    axios.get("http://localhost:8080/api/user")
+    axios
+      .get("http://localhost:8080/api/user")
       .then((response) => {
         // Handle response
         this.users = response.data;
-        console.log(this.users)
+        console.log(this.users);
       })
       .catch((err) => {
         // Handle errors
         console.error(err);
       });
-      localStorage.setItem('userID',3);
-  }
+  },
 };
 </script>
 
-<style >
-/* @import "~@fortawesome/fontawesome-free/css/all.min.css"; */
+<style>
+
 
 .form-modal {
   border-radius: 25px;
