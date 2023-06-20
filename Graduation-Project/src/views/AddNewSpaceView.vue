@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     AddnewSpace() {
-      if(this.name.length!=0 && this.location.length!=0 && this.noOfRooms.length !=0){
+      // if(this.name.length!=0 && this.location.length!=0 && this.noOfRooms.length !=0){
        axios
         .post("http://localhost:8080/api/requests", {
           name: this.name,
@@ -115,7 +115,7 @@ export default {
         this.flag = false
         this.error = false
       }, 3000);
-      }
+      // }
     },
 
    

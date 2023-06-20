@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       dialog: false,
+      userID:localStorage.getItem('userID'),
     };
   },
   props:[
@@ -41,7 +42,7 @@ export default {
 ,
   methods: {
     Accept(){
-      axios.patch('http://localhost:8080/api/requests/6' , {status: 'approved'})
+      axios.patch(`http://localhost:8080/api/requests/${userID}` , {status: 'approved'})
       .then((response)=>{
       this.status = 'approved'
       console.log(this.status)

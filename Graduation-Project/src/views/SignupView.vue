@@ -9,9 +9,9 @@
     <div id="login-form">
       <form action="index.html">
         <input
-          type="email"
-          placeholder="Enter email"
-          v-model="signinEmail"
+          type="text"
+          placeholder="Enter Username"
+          v-model="SignInUsername"
           required
         />
 
@@ -143,6 +143,7 @@ export default {
       submitted: false,
       signinEmail: "",
       signinPassword: "",
+      SignInUsername:"",
 
       //users from api
       users: null,
@@ -262,28 +263,46 @@ export default {
       // request for data base
       // from response if doesn't exist route to home
       //if not display error message
-      for (let i = 0; i < this.users.length; i++) {
-        if (
-          this.users[i].email == this.signinEmail &&
-          this.users[i].password == this.signinPassword &&
-          this.users != null
-        ) {
-          // this.userID = this.users[i].userId
-          // console.log(this.userID)
-          localStorage.setItem("userID", this.users[i].userId);
-          this.$router.push("/home");
-        } else if (
-          this.signinEmail == "Admin@info.com" &&
-          this.signinPassword == "Root1234"
-        ) {
-          this.$router.push({ name: "profile" });
+      // for (let i = 0; i < this.users.length; i++) {
+      //   if (
+      //     this.users[i].email == this.signinEmail &&
+      //     this.users[i].password == this.signinPassword &&
+      //     this.users != null
+      //   ) {
+      //     // this.userID = this.users[i].userId
+      //     // console.log(this.userID)
+      //     localStorage.setItem("userID", this.users[i].userId);
+      //     this.$router.push("/home");
+      //   } else if (
+      //     this.signinEmail == "Admin@info.com" &&
+      //     this.signinPassword == "Root1234"
+      //   ) {
+      //     this.$router.push({ name: "profile" });
+      //   } else {
+      //     console.log("error");
+      //     // must show error message
+      //   }
+      const username = this.SignInUsername;
+      const password = this.signinPassword;
+
+      const url = `http://localhost:8080/login?username=${username}&password=${password}`;
+
+      axios.post(url)
+      .then((response) => {
+        if (response.data.error) {
+          this.error = true;
         } else {
-          console.log("error");
-          // must show error message
+          this.flag = true;
+          // delay
+          this.$router.push('/home');
         }
+      }).catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
       }
     },
-  },
+  
   computed: {
     notSamePasswords() {
       if (this.passwordsFilled) {
