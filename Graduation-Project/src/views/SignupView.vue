@@ -146,8 +146,9 @@ export default {
       SignInUsername:"",
 
       //users from api
-      users: null,
-      userID: 3,
+      // users: null,
+      // userID: 3,
+      user:null,
 
       // user Data for Signup
       firstName: null,
@@ -294,7 +295,11 @@ export default {
         } else {
           this.flag = true;
           // delay
+          this.user=response.data
+          localStorage.setItem("userID", this.user.userId);
           this.$router.push('/home');
+          
+
         }
       }).catch((err) => {
         // Handle errors
@@ -329,17 +334,17 @@ export default {
     },
   },
   beforeMount() {
-    axios
-      .get("http://localhost:8080/api/user")
-      .then((response) => {
-        // Handle response
-        this.users = response.data;
-        console.log(this.users);
-      })
-      .catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
+    // axios
+    //   .get("http://localhost:8080/api/user")
+    //   .then((response) => {
+    //     // Handle response
+    //     this.users = response.data;
+    //     console.log(this.users);
+    //   })
+    //   .catch((err) => {
+    //     // Handle errors
+    //     console.error(err);
+    //   });
   },
 };
 </script>
