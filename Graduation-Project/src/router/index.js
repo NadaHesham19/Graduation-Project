@@ -87,7 +87,7 @@ const router = createRouter({
       component:HistoryAdminView
     },
     {
-       path: '/space/:id',
+      path: '/space/:id',
       name: 'space',
       component: SpaceView
     },
@@ -97,7 +97,7 @@ const router = createRouter({
      component: ResetPassword
    },
    {
-    path:'/qrcode',
+    path:'/qrcode/:id',
     name:'QrCode',
     component:QrCodeView
    },

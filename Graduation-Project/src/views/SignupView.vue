@@ -62,7 +62,8 @@
           @focus="this.type = 'date'"
           @blur="this.type = 'text'"
         />
-        <!-- <input type="file" placeholder="Please upload your Photo" required v-on:change="photo" /> -->
+        <!-- <label style="color: white;" for="">Please upload your image</label>
+        <input type="file" placeholder="Please upload your Photo" required v-on:change="photo"/> -->
         <input
           ref="password"
           type="password"
@@ -89,6 +90,8 @@
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
+        <label style="color: white;" for="">Please upload your image</label>
+        <input type="file" placeholder="Please upload your Photo"  accept="image/*" @change="handleFileSelect" required/>
         <button
           type="submit"
           class="btn signup"
@@ -154,6 +157,7 @@ export default {
       birthdate: null,
       password: "",
       username: null,
+      selectedImages:null,
       //success and failure
       flag: false,
       error: false,
@@ -190,6 +194,18 @@ export default {
 
       return day + "-" + month + "-" + year;
     },
+    handleFileSelect(event) {
+      const files = event.target.files;
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+      // Filter files to include only image types
+       this.selectedImages = Array.from(files).filter(file =>
+        allowedTypes.includes(file.type)
+      );
+
+      // Do something with the selected images
+      console.log(selectedImages);
+    },
     CreateAccount() {
       axios.post("http://localhost:8080/api/user", {
         email: this.email,
@@ -221,6 +237,18 @@ export default {
         this.flag = false;
         this.error = false;
       }, 3000);
+      //post image
+      axios.post("http://localhost:8080/api/images", {
+      image:this.selectedImages,userId:this.userID
+
+
+      });
+
+      then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error)
+        } })
+      
     },
     resetPasswords() {
       this.password = "";

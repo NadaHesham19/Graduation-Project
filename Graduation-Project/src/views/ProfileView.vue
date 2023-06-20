@@ -18,7 +18,7 @@
       <div class="col-lg-4 col-sm-6">
         <div class="row justify-content-center w-100">
           <img :src="imgSrc" alt="" class="profile-image col-lg-10" />
-          <input type="file" class="ms-5 ps-5" />
+        
         </div>
       </div>
       <div class="col-lg-4 col-sm-6">
@@ -141,8 +141,8 @@ export default {
   data() {
     return {
       // userBio:this.user.bio,
-      imgSrc:
-        "https://i.stack.imgur.com/l60Hf.png",
+      imgSrc:null,
+        // "https://i.stack.imgur.com/l60Hf.png",
       user: null,
       userID: localStorage.getItem('userID'),
       flag: false,
@@ -181,6 +181,7 @@ export default {
         this.flag = false
         this.error = false
       }, 3000);
+
     }
   },
   beforeMount() {
@@ -191,6 +192,18 @@ export default {
         // Handle response
         this.user = response.data;
         console.log(this.user)
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
+
+      axios
+      .get(`http://localhost:8080/api/images/user/${this.userID}`)
+      .then((response) => {
+        // Handle response
+        this.imgSrc = response.data;
+        console.log(this.imgSrc)
       })
       .catch((err) => {
         // Handle errors

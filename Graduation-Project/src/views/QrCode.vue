@@ -37,7 +37,10 @@
     </div>
     <div class="row justify-content-center my-5">
         <button class="bttn-profile col-lg-2 my-5" type="submit" @click="">
-          Mark
+          Approve
+        </button>
+        <button class="bttn-profile col-lg-2 my-5" type="submit" @click="">
+          Cancel
         </button>
       </div>
   </div>
