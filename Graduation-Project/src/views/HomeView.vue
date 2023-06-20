@@ -1,149 +1,200 @@
 <template>
-<nav-bar></nav-bar>
+  <nav-bar></nav-bar>
   <div class="body">
-       <img src="../assets/HomePage.jpg" alt="homepage" class="homepage w-100">
-       <div class="services">Check Our Services</div>
-       <div class="bodycontainer">
-         <div class="cards ourspaces">
-           <div class="left">
-             <img src="../assets/Card1.jpg" alt="spaces" class="image">  
-           </div>
-           <div class="right">
-             <div class="text">Now you can check our available spaces</div>
-             <router-link to="/ourspaces">
-               <button class="b1">Our Spaces</button>
-             </router-link>
-           </div>
-         </div>
-         <div class="cards yourbookings">
-           <div class="left">
-             <img src="../assets/Card2.jpg" alt="bookings" class="image">  
-           </div>
-           <div class="right">
-             <div class="text">You can check your previous bookings<br>Just press:</div>
-             <router-link to="/bookings">
-              <button class="b1">Your Bookings</button>
-             </router-link>
-           </div>
-         </div>
-         <div class="cards addnewspaces">
-           <div class="left">
-             <img src="../assets/Card3.jpg" alt="newspaces" class="image">  
-           </div>
-           <div class="right">
-             <div class="text">And also you can help us<br> add new<br> spaces</div>
-             <router-link to="/addnewspace">
-              <button class="b1">Add new spaces</button>
-             </router-link>
-           </div>
-         </div>
-       </div>
-     </div>
-
-     <!--ChatBot-->
-     <button class="open-button" @click="openForm()"><i class="far fa-comment" ></i></button>
-     <div class="chat-popup" id="myForm">
-        <form action="/action_page.php" class="form-container">
-          <h5>Welcome, How can we help you?</h5>
-
-          <label for="msg"><b>Message</b></label>
-          <textarea placeholder="Type message.." name="msg" required></textarea>
-
-          <button type="submit" class="btn">Send</button>
-          <button type="button" class="btn cancel" @click="closeForm()">Close</button>
-        </form>
+    <img src="../assets/HomePage.jpg" alt="homepage" class="homepage w-100">
+    <div class="services">Check Our Services</div>
+    <div class="bodycontainer">
+      <div class="cards ourspaces">
+        <div class="left">
+          <img src="../assets/Card1.jpg" alt="spaces" class="image">
+        </div>
+        <div class="right">
+          <div class="text">Now you can check our available spaces</div>
+          <router-link to="/ourspaces">
+            <button class="b1">Our Spaces</button>
+          </router-link>
+        </div>
       </div>
-     <Footer/>
+      <div class="cards yourbookings">
+        <div class="left">
+          <img src="../assets/Card2.jpg" alt="bookings" class="image">
+        </div>
+        <div class="right">
+          <div class="text">You can check your previous bookings<br>Just press:</div>
+          <router-link to="/bookings">
+            <button class="b1">Your Bookings</button>
+          </router-link>
+        </div>
+      </div>
+      <div class="cards addnewspaces">
+        <div class="left">
+          <img src="../assets/Card3.jpg" alt="newspaces" class="image">
+        </div>
+        <div class="right">
+          <div class="text">And also you can help us<br> add new<br> spaces</div>
+          <router-link to="/addnewspace">
+            <button class="b1">Add new spaces</button>
+          </router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--ChatBot-->
+  <button class="open-button" @click="openForm()"><i class="far fa-comment"></i></button>
+  <div class="chat-popup" id="myForm">
+    <form class="form-container" @submit.prevent="sendEmail()">
+      <h5>Welcome, How can we help you?</h5>
+
+      <label for="msg"><b>Message</b></label>
+      <textarea placeholder="Type message.." name="msg" required v-model="chat.msg"></textarea>
+
+      <button type="submit" class="btn">
+        <sendChatModel @click.prevent="sendEmail()" />
+      </button>
+      <button type="button" class="btn cancel" @click="closeForm()">Close</button>
+    </form>
+  </div>
+  <Footer />
 </template>
 
+<script>
+import NavBar from '../components/NavBar.vue'
+import Footer from '../components/Footer.vue'
+import sendChatModel from '../components/sendChatModel.vue';
+import axios from 'axios'
+export default {
+  name: "HomeView",
+  components: {
+    NavBar,
+    Footer,
+    sendChatModel
+  },
+  data(){
+    return{
+      chat:[{
+        userId : localStorage.getItem('userID'),
+        msg: ''
+
+      }]
+      
+
+    }
+  },
+  methods: {
+    openForm() {
+      document.getElementById("myForm").style.display = "block";
+    },
+
+    closeForm() {
+      document.getElementById("myForm").style.display = "none";
+    },
+    sendEmail() {
+      axios.post(`http://localhost:8080/api/message?userId=${this.userId}&message=${this.msg}` , this.chat)
+        .then(response => {
+          // Handle response
+          this.chat = response.data
+        })
+        .catch(err => {
+          // Handle errors
+          console.error(err);
+        });
+    }
+  }
+}
+</script>
+
+
 <style scoped>
-body{
- padding: 0;
- margin: 0;
- font-family: "Roboto", sans-serif;    
- background-color: var(--background);
- box-sizing: border-box;
- 
-}
-.homepage{
- height:645.25px;
- width: 100%;
-}
-.services{
-   font-family: 'Roboto';
-   font-size: 45px;
-   text-align: center;
-   display: flex;
-   justify-content: center;
-   padding:50px;
-   color: var(--darkblue);
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--background);
+  box-sizing: border-box;
+
 }
 
-.bodycontainer{
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
- 
+.homepage {
+  height: 645.25px;
+  width: 100%;
 }
 
-.cards{
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   justify-content: center;
-   width: 900px;
-   height: 450px;
-   border-radius: 30px;
-   background-color: var(--darkblue);
-   margin-bottom: 50px;
-     
+.services {
+  font-family: 'Roboto';
+  font-size: 45px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+  color: var(--darkblue);
 }
 
-.image{
-   width:450px;
-   height: 450px;
-   border-radius: 30px;
-   margin-right:450px;
+.bodycontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
 }
 
-.right{
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   align-content: center;
-   margin-left: -350px;
-   margin-right: 60px; 
+.cards {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 900px;
+  height: 450px;
+  border-radius: 30px;
+  background-color: var(--darkblue);
+  margin-bottom: 50px;
+
 }
 
-.text{
- color: var(--light);
- font-size: 50px;
- font-family: 'Roboto';
- font-weight: bold;
- margin-top: 20px;
- margin-left:-50px;
+.image {
+  width: 450px;
+  height: 450px;
+  border-radius: 30px;
+  margin-right: 450px;
 }
 
-.b1{
-   border-radius: 25px;
-   color: var(--light);
-   background-color:var(--lightblue);
-   border: none;
-   text-align: center;
-   width:220px;
-   height: 64.3px;
-   margin-top: 40px;
-   margin-left:-180px;
-   font-family: 'Roboto';
-   font-size: 20px;
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  margin-left: -350px;
+  margin-right: 60px;
 }
 
-.b1:hover ,
+.text {
+  color: var(--light);
+  font-size: 50px;
+  font-family: 'Roboto';
+  font-weight: bold;
+  margin-top: 20px;
+  margin-left: -50px;
+}
+
+.b1 {
+  border-radius: 25px;
+  color: var(--light);
+  background-color: var(--lightblue);
+  border: none;
+  text-align: center;
+  width: 220px;
+  height: 64.3px;
+  margin-top: 40px;
+  margin-left: -180px;
+  font-family: 'Roboto';
+  font-size: 20px;
+}
+
+.b1:hover,
 .b1:active,
 .open-button:hover,
-.open-button:active{
+.open-button:active {
   color: var(--darkblue) !important;
   font-weight: 700 !important;
   cursor: pointer;
@@ -163,7 +214,7 @@ body{
   right: 28px;
   width: 50px;
   height: 50px;
-  
+
 }
 
 /* The popup chat - hidden by default */
@@ -201,53 +252,37 @@ body{
 }
 
 /* Set a style for the submit/send button */
-.form-container .btn {
+/*.form-container .btn {
   background-color: green;
   color: white;
   padding: 16px 20px;
   border: none;
   cursor: pointer;
   width: 100%;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   opacity: 0.8;
-}
+}*/
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: red;
-}
+  /*background-color: red;*/
+  background-color: var(--lightblue) !important;
+    color: white !important;
+    font-weight: 500 !important;
+    border-radius: 15px !important;
+    padding: 0.5rem 1.5rem !important;
+    border: none;
+    height: 50px !important;
+  }
+
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .btn:active {
+.form-container .btn:hover,
+.btn:active , 
+.cancel:hover , .cancel:active {
   color: var(--darkblue) !important;
   font-weight: 700 !important;
   cursor: pointer;
 }
-
 </style>
 
-<script>
-import NavBar from '../components/NavBar.vue'
-import Footer from '../components/Footer.vue'
- export default{
-   name: "HomeView",
-   components:{
-    NavBar , Footer
-  },
-  methods:{
-    openForm() {
-      document.getElementById("myForm").style.display = "block";
-},
-
-closeForm() {
-    document.getElementById("myForm").style.display = "none";
-} 
-    
-    
-
-  
-
-  }
-   
-}
-</script>
