@@ -91,7 +91,7 @@
           <p>Passwords don't match.</p>
         </div>
         <label style="color: white;" for="">Please upload your image</label>
-        <input type="file" placeholder="Please upload your Photo"  accept="image/*" @change="handleFileSelect" required/>
+        <!-- <input type="file" placeholder="Please upload your Photo"  accept="image/*" @change="handleFileSelect" required/> -->
         <button
           type="submit"
           class="btn signup"
@@ -196,18 +196,18 @@ export default {
 
       return day + "-" + month + "-" + year;
     },
-    handleFileSelect(event) {
-      const files = event.target.files;
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    // handleFileSelect(event) {
+    //   const files = event.target.files;
+    //   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-      // Filter files to include only image types
-       this.selectedImages = Array.from(files).filter(file =>
-        allowedTypes.includes(file.type)
-      );
+    //   // Filter files to include only image types
+    //    this.selectedImages = Array.from(files).filter(file =>
+    //     allowedTypes.includes(file.type)
+    //   );
 
-      // Do something with the selected images
-      console.log(selectedImages);
-    },
+    //   // Do something with the selected images
+    //   console.log(selectedImages);
+    // },
     CreateAccount() {
       axios.post("http://localhost:8080/api/user", {
         email: this.email,
