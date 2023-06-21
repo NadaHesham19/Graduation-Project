@@ -15,7 +15,7 @@
             <h4 class="mt-5 pt-5">Our Spaces</h4>
         </div>
         <div class="row justify-content-evenly">
-            <div class="col-4" v-for="(space, index) in pagedSpaces" :key="index">
+            <div class="col-4" v-for="(space) in pagedSpaces" :key="space.spaceId">
                 <SpaceCard :space="space" />
             </div>
         </div>
@@ -42,23 +42,6 @@ export default {
     }, data() {
         return {
             spaces: [],
-            //  {
-            //         spaceId: 1,
-            //         address: "nasrcity",
-            //         district: "cairo",
-            //         roomNumbers: 4,
-            //         description: "test123",
-            //         name: "nadine",
-            //         contactNumber: "123",
-            //         minPrice: 10,
-            //         maxPrice: 20,
-            //         startTime: "10:00:00",
-            //         endTime: "12:00:00",
-            //         drinks: true,
-            //         owner: "weza",
-            //         outdoors: false,
-            //         ratingAverage: 4
-            //     },
             currentPage: 1,
             spacesPerPage: 6,
             searchTerm: ''
@@ -70,8 +53,8 @@ export default {
             const filteredSpaces = this.spaces.filter(space => space.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
             return Math.ceil(filteredSpaces.length / this.spacesPerPage);
         },
-        pagedSpaces() {
 
+        pagedSpaces() {
             let filteredSpaces = this.spaces;
             if (this.searchTerm) {
                 filteredSpaces = this.spaces.filter(space => space.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
@@ -81,9 +64,9 @@ export default {
             return filteredSpaces.slice(startIndex, endIndex);
         },
     },
+
     methods: {
         search() {
-
             this.currentPage = 1;
         }
     },
@@ -95,7 +78,6 @@ export default {
                 this.spaces = response.data;
             })
             .catch((err) => {
-
                 console.error(err);
             });
     }
