@@ -92,7 +92,7 @@ const router = createRouter({
       component: SpaceView
     },
     {
-      path: '/resetpassword/:id',
+      path: '/resetpassword',
      name: 'reset',
      component: ResetPassword
    },
