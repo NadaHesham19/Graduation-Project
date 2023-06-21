@@ -144,7 +144,7 @@ export default {
       imgSrc:
         "https://i.stack.imgur.com/l60Hf.png",
       user: null,
-      userID: localStorage.getItem('userID'),
+      userID: null,
       flag: false,
       error: false,
       userMobile: ''
@@ -165,6 +165,7 @@ export default {
 
       axios.put(`http://localhost:8080/api/user/${this.userID}`,
         {
+          userId:this.userID,
           firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio
         }).then((res) => {
           if (res.data.error) {
@@ -172,10 +173,8 @@ export default {
           } else {
             this.flag = true
           }
-          if(this.user.bio==null){
-          this.user.bio="Please write your bio"
-        }
-          console.log(res.data)
+          
+        
         })
         .catch((e) => {
           console.log(e)
@@ -188,13 +187,15 @@ export default {
     }
   },
   beforeMount() {
-
+  this.userID=localStorage.getItem('userID')
     axios
       .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
         // Handle response
         this.user = response.data;
         console.log(this.user)
+        if(this.user.bio==null){
+          this.user.bio="Please write your bio"}
       })
       .catch((err) => {
         // Handle errors

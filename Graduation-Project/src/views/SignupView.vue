@@ -24,7 +24,7 @@
         <button
           type="submit"
           class="btn login"
-          @click.prevent="checkIfAccountExists()"
+          @click.prevent="login()"
         >
           Sign in
         </button>
@@ -62,8 +62,7 @@
           @focus="this.type = 'date'"
           @blur="this.type = 'text'"
         />
-        <!-- <label style="color: white;" for="">Please upload your image</label>
-        <input type="file" placeholder="Please upload your Photo" required v-on:change="photo"/> -->
+      
         <input
           ref="password"
           type="password"
@@ -90,8 +89,7 @@
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
-        <!-- <label style="color: white;" for="">Please upload your image</label> -->
-        <!-- <input type="file" placeholder="Please upload your Photo"  accept="image/*" @change="handleFileSelect" required/> -->
+       
         <button
           type="submit"
           class="btn signup"
@@ -141,7 +139,6 @@ export default {
       checkPassword: "",
       passwordVisible: false,
       submitted: false,
-      signinEmail: "",
       signinPassword: "",
       SignInUsername:"",
 
@@ -159,7 +156,7 @@ export default {
       birthdate: null,
       password: "",
       username: null,
-      selectedImages:null,
+      // selectedImages:null,
       //success and failure
       flag: false,
       error: false,
@@ -196,18 +193,7 @@ export default {
 
       return day + "-" + month + "-" + year;
     },
-    // handleFileSelect(event) {
-    //   const files = event.target.files;
-    //   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-    //   // Filter files to include only image types
-    //    this.selectedImages = Array.from(files).filter(file =>
-    //     allowedTypes.includes(file.type)
-    //   );
-
-    //   // Do something with the selected images
-    //   console.log(selectedImages);
-    // },
     CreateAccount() {
       axios.post("http://localhost:8080/api/user", {
         email: this.email,
@@ -238,16 +224,16 @@ export default {
         this.error = false;
       }, 3000);
       //post image
-      axios.post("http://localhost:8080/api/images", {
-      image:this.selectedImages,userId:this.userID
+      // axios.post("http://localhost:8080/api/images", {
+      // image:this.selectedImages,userId:this.userID
 
 
-      });
+      // });
 
-      then((response) => {
-        if (response.data.error) {
-          console.log(response.data.error)
-        } })
+      // then((response) => {
+      //   if (response.data.error) {
+      //     console.log(response.data.error)
+      //   } })
       
     },
     resetPasswords() {
@@ -258,51 +244,35 @@ export default {
         this.submitted = false;
       }, 2000);
     },
-    checkIfAccountExists() {
-      // request for data base
-      // from response if doesn't exist route to home
-      //if not display error message
-      // for (let i = 0; i < this.users.length; i++) {
-      //   if (
-      //     this.users[i].email == this.signinEmail &&
-      //     this.users[i].password == this.signinPassword &&
-      //     this.users != null
-      //   ) {
-      //     // this.userID = this.users[i].userId
-      //     // console.log(this.userID)
-      //     localStorage.setItem("userID", this.users[i].userId);
-      //     this.$router.push("/home");
-      //   } else if (
-      //     this.signinEmail == "Admin@info.com" &&
-      //     this.signinPassword == "Root1234"
-      //   ) {
-      //     this.$router.push({ name: "profile" });
-      //   } else {
-      //     console.log("error");
-      //     // must show error message
-      //   }
+    login() {
+  
       const username = this.SignInUsername;
       const password = this.signinPassword;
 
       const url = `http://localhost:8080/login?username=${username}&password=${password}`;
 
-      axios.post(url)
-      .then((response) => {
-        if (response.data.error) {
-          this.error = true;
-        } else {
-          this.flag = true;
-          // delay
-          this.user=response.data
-          localStorage.setItem("userID", this.user.userId);
-          this.$router.push('/home');
-          
+      axios
+        .post(url, { withCredentials: true })
+        .then((response) => {
+          // const setCookieHeader = response.headers['set-cookie'];
 
-        }
-      }).catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
+          // // Do something with the header value
+          // console.log(setCookieHeader);
+          if (response.data.error) {
+            this.error = true;
+          } else {
+            this.flag = true;
+            // delay
+            this.user = response.data;
+            localStorage.setItem("userID", this.user.userId);
+            this.$router.push("/home");
+          }
+        })
+        .catch((err) => {
+          // Handle errors
+          console.error(err);
+        });
+    
       }
     },
   
