@@ -118,7 +118,7 @@
         </div>
       </div>
       <div class="row justify-content-center my-5">
-        <button class="bttn-profile col-lg-2 my-5" type="submit" @click="SaveEditting">
+        <button class="main-btn col-lg-2 my-5" type="submit" @click="SaveEditting">
           Save
         </button>
       </div>
@@ -141,8 +141,8 @@ export default {
   data() {
     return {
       // userBio:this.user.bio,
-      imgSrc:null,
-        // "https://i.stack.imgur.com/l60Hf.png",
+      imgSrc:
+        "https://i.stack.imgur.com/l60Hf.png",
       user: null,
       userID: localStorage.getItem('userID'),
       flag: false,
@@ -163,7 +163,7 @@ export default {
       // this.userMobile = this.user.mobileNo.toString();
 
 
-      axios.patch(`http://localhost:8080/api/user/${this.userID}`,
+      axios.put(`http://localhost:8080/api/user/${this.userID}`,
         {
           firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio
         }).then((res) => {
@@ -172,6 +172,9 @@ export default {
           } else {
             this.flag = true
           }
+          if(this.user.bio==null){
+          this.user.bio="Please write your bio"
+        }
           console.log(res.data)
         })
         .catch((e) => {
@@ -198,17 +201,17 @@ export default {
         console.error(err);
       });
 
-      axios
-      .get(`http://localhost:8080/api/images/user/${this.userID}`)
-      .then((response) => {
-        // Handle response
-        this.imgSrc = response.data;
-        console.log(this.imgSrc)
-      })
-      .catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
+      // axios
+      // .get(`http://localhost:8080/api/images/user/${this.userID}`)
+      // .then((response) => {
+      //   // Handle response
+      //   this.imgSrc = response.data;
+      //   console.log(this.imgSrc)
+      // })
+      // .catch((err) => {
+      //   // Handle errors
+      //   console.error(err);
+      // });
 
     // if(this.user.bio.length == 0){
     //   this.userBio = "Please enter your bio"
