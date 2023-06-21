@@ -1,6 +1,19 @@
 <template>
   <NavBar></NavBar>
-  <SuggestionsCard/>
+  <div class="ourspaces-section pb-5">
+    <div class="head d-flex container pt-5 mb-5 pt-5">
+      <h4 class="mt-5 pt-5">Suggested Spaces</h4>
+    </div>
+    <div class="row justify-content-evenly">
+      <div class="col-4" v-for="(space) in pagedSpaces" :key="space.spaceId">
+        <SpaceCard :space="space"  v-model="user.address"/>
+      </div>
+    </div>
+    <div class=" row numbers mt-5 mb-5 text-center">
+      <v-pagination active-color="#007CC7" color="#007CC7" v-model="currentPage" :length="totalPages" :total-visible="7"
+        prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
+    </div>
+  </div>
   <!--<div class="col-4" v-for="(space, index) in spaces" :key="index">
     <SpaceCard :space="space" />
   </div>-->
@@ -84,9 +97,16 @@ export default ({
         endTime: '',
       },
       display: false,*/
-      final: [],
       spaces: [],
-      searchTerm: ''
+      currentPage: 1,
+      spacesPerPage: 6,
+      searchTerm: '',
+      user:[
+        {
+          address:''
+        }
+        
+      ],
 
     }
   },
@@ -162,8 +182,24 @@ export default ({
         console.log(error)
       )*/
   },
+  computed: {
+    totalPages() {
+      const filteredSpaces = this.spaces.filter(space => space.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+      return Math.ceil(filteredSpaces.length / this.spacesPerPage);
+    },
+
+    pagedSpaces() {
+      let filteredSpaces = this.spaces;
+      if (this.searchTerm) {
+        filteredSpaces = this.spaces.filter(space => space.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+      }
+      const startIndex = (this.currentPage - 1) * this.spacesPerPage;
+      const endIndex = startIndex + this.spacesPerPage;
+      return filteredSpaces.slice(startIndex, endIndex);
+    },
+  },
   beforeMount() {
-    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.address}`)
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.user.address}`)
       .then((response) => {
         this.spaces = response.data
         console.log(response.data)
@@ -172,9 +208,6 @@ export default ({
         console.log(error)
       )
   },
-  computed: {
-    
-  }
 })
 
 
@@ -291,5 +324,10 @@ body {
 input[type=number] {
   width: 100px;
   border-color: black;
+}
+
+.ourspaces-section {
+  background-color: var(--background);
+
 }
 </style>

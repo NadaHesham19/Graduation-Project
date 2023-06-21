@@ -64,6 +64,7 @@ export default {
   methods:{
     
   },
+ 
   beforeMount(){
     this.userId = localStorage.getItem('userID')
       axios.get(`http://localhost:8080/api/requests/users/${this.userId}`)
