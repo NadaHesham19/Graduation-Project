@@ -9,7 +9,7 @@
          <div class="action">Action</div>
      </div>
      <hr/>
-     <div class="info" v-for="item  in req">
+     <div class="info" v-for="item in req">
          <div class="spacename align-self-start justify-content-start" :key="requestId">{{ item.requestId }}</div>
          <div class="person align-self-start justify-content-start " :key="name">{{ item.name }}</div>
          <div class="dets">
@@ -17,7 +17,7 @@
              <div class="numberofrooms align-self-start justify-content-start" :key="noOfRooms">Number Of Rooms: {{ item.noOfRooms }} </div>
          </div>
          <div class="decide align-self-start justify-content-start">
-             <AcceptModal  />
+             <AcceptModal />
              <DeclineModal/>
          </div>
      </div>
@@ -123,9 +123,7 @@
              popup.classList.remove('open-popup');
          }*/
 
-         removeWhenYes(){
-            delete(this.req)
-         }
+         
         
      
    },
