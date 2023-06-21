@@ -17,7 +17,7 @@
           >
           <v-card-actions>
             <v-spacer></v-spacer>
-            <button class="btn decline-btn mx-2" @click="Decline">Yes</button>
+            <button class="btn decline-btn mx-2" @click="Decline()">Yes</button>
             <button class="btn main-btn mx-2" @click="dialog = false">No</button>
           </v-card-actions>
         
@@ -27,10 +27,13 @@
   </template>
   
   <script>
-  export default {
+   import axios from 'axios'
+   export default {
+   
     data() {
       return {
         dialog: false,
+        userID: localStorage.getItem('userID'),
       };
     },
     props:[
@@ -40,14 +43,26 @@
   ,
     methods: {
       Decline(){
-        fetch(``, {  })
-      .then(() => this.status = 'Accepted successful');
+        /*fetch(`http://localhost:8080/api/requests/${this.userId}`, { method: 'DELETE' })
+      .then(() => this.status = 'Declined successful');
       this.dialog=false
-      }
+      }*/
+      axios.post('http://localhost:8080/api/user', {status: 'Declined'} )
+      .then((response)=>{
+      this.status = 'declined',
+      console.log(this.status) 
+    })
+    this.dialog=false
+    console.log(this.dialog)
+    .catch((err) => {
+      // Handle errors
+      console.error(err);
+    })
+
+    
     },
+  },}
   
-   
-  };
   </script>
   
   <style>

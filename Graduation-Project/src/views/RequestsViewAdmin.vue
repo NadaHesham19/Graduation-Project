@@ -17,7 +17,7 @@
              <div class="numberofrooms align-self-start justify-content-start" :key="noOfRooms">Number Of Rooms: {{ item.noOfRooms }} </div>
          </div>
          <div class="decide align-self-start justify-content-start">
-             <AcceptModal/>
+             <AcceptModal  />
              <DeclineModal/>
          </div>
      </div>
@@ -122,6 +122,10 @@
              let popup = document.getElementById('popup2');
              popup.classList.remove('open-popup');
          }*/
+
+         removeWhenYes(){
+            delete(this.req)
+         }
         
      
    },

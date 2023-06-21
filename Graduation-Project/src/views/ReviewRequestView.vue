@@ -4,8 +4,8 @@
     <div class="request">
       <div class="title t">Requests</div>
       <hr />
-      <div class="info" v-for="item in info" v-bind:key="item.requestId">
-        <div class="title" >{{ item.requestId}}</div>
+      <div class="info" v-for="item in info" v-bind:key="item.userId">
+        <div class="title" >{{ item.userId}}</div>
       </div>
     </div>
     <div class="name">
@@ -53,6 +53,7 @@ export default {
           name:'',
           requestId:'',
           status:'',
+          userId: ''
           /*errorMsg:''*/
 
         }
@@ -64,7 +65,7 @@ export default {
     
   },
   beforeMount(){
-      axios.get('http://localhost:8080/api/requests/users/1')
+      axios.get(`http://localhost:8080/api/requests/users/${this.userId}`)
       .then((response)=>{
         this.info = response.data
         console.log(response.data)

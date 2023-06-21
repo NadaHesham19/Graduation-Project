@@ -17,7 +17,7 @@
         >
         <v-card-actions>
           <v-spacer></v-spacer>
-          <button class="btn accept-btn mx-2" @click="Accept()">Yes</button>
+          <button class="btn accept-btn mx-2" @click="Accept()" >Yes</button>
           <button class="btn main-btn mx-2" @click="dialog = false">No</button>
         </v-card-actions>
       
@@ -33,6 +33,7 @@ export default {
     return {
       dialog: false,
       userID:localStorage.getItem('userID'),
+      
     };
   },
   props:[
@@ -42,16 +43,19 @@ export default {
 ,
   methods: {
     Accept(){
-      axios.patch(`http://localhost:8080/api/requests/${userID}` , {status: 'approved'})
+      axios.patch("http://localhost:8080/api/requests/3" , {status: 'approved'})
       .then((response)=>{
-      this.status = 'approved'
-      console.log(this.status)
+      /*this.status = 'approved'
+      console.log(this.status)*/
     })
+    this.dialog=false
+    console.log(this.dialog)
     .catch((err) => {
       // Handle errors
       console.error(err);
     });
   },
+ 
 },
 };
 </script>
