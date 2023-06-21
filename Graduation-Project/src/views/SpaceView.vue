@@ -60,7 +60,7 @@
                         </form>
                     </div>
                     <div class="row justify-content-evenly">
-                        <div class="col-4" v-for="(room, index) in pagedRooms" :key="index">
+                        <div class="col-4" v-for="(room) in pagedRooms" :key="room.id">
                             <RoomCard :room="room" />
                         </div>
                     </div>
@@ -102,21 +102,6 @@ export default {
     components: { NavBar, RoomCard, Footer },
 
     mounted() {
-        // this.latitude = this.location[0];   //parseFloat(lat)
-        // this.longitude = this.location[1];
-        // console.log(this.latitude, "mounted")
-        // console.log(this.longitude, "mounted")
-
-        // this.map = new google.maps.Map(document.getElementById('map'), {
-        //     center: { lat: this.latitude, lng: this.longitude },
-        //     zoom: 12
-        // });
-
-        // this.marker = new google.maps.Marker({
-        //     position: { lat: this.latitude, lng: this.longitude },
-        //     map: this.map
-        // });
-
         this.fetchImage();
     },
     beforeMount() {
@@ -250,7 +235,7 @@ export default {
 
 .search-icon {
     position: absolute;
-    top: 1463px;
+    top: 1526px;
     left: 150px !important;
     z-index: 1;
     left: 40px;

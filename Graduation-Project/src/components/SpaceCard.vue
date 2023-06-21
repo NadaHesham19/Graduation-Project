@@ -26,11 +26,6 @@ export default {
     , props: [
         'space'
     ],
-    // computed: {
-    //     imgSrc() {
-    //         return this.imageSrc;
-    //     },
-    // },
 
     mounted() {
         this.fetchImage();
