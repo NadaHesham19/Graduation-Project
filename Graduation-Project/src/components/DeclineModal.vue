@@ -23,7 +23,10 @@
         
         </v-card>
       </v-dialog>
+      <span class="d-none req" >{{ requestId }}</span>
     </v-row>
+
+    
   </template>
   
   <script>
@@ -34,7 +37,7 @@
       return {
         dialog: false,
         userID: localStorage.getItem('userID'),
-        requestId : '',
+        
         status : 'declined'
       };
     },

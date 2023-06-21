@@ -20,8 +20,8 @@
             </div>
             <div class="decide align-self-start justify-content-start">
                 <div class="box">
-                    <AcceptModal  :requestId="requestId"/>
-                    <DeclineModal  :requestId="requestId"/>
+                    <AcceptModal  :requestId="item.requestId"/>
+                    <DeclineModal  :requestId="item.requestId"/>
 
                 </div>
 

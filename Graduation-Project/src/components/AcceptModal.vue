@@ -22,9 +22,12 @@
         </v-card-actions>
       
       </v-card>
+      <span class="d-none req" >{{ requestId }}</span>
     </v-dialog>
   </v-row>
-  <div >{{requestId}}</div>
+  
+ 
+  
 </template>
 
 <script>
@@ -34,7 +37,7 @@ export default {
     return {
       dialog: false,
       userID:localStorage.getItem('userID'),
-      requestId: '',
+      
       /*status: 'approved'*/
       
     };
@@ -47,11 +50,12 @@ export default {
 ,
   methods: {
     Accept(){
-      const url = `http://localhost:8080/api/admin/requests/?status=approved&requestID=${this.requestId}`
+     const url = `http://localhost:8080/api/admin/requests/?status=approved&requestID=${this.requestId}`
       axios.post(url)
       .then((response)=>{
       this.status = 'approved'
-      console.log(this.status)
+      //console.log(this.status)
+      
     })
     this.dialog=false
     console.log(this.dialog)
@@ -60,9 +64,13 @@ export default {
       // Handle errors
       console.error(err);
     });
+    
+
   },
+
  
 },
+  
 };
 </script>
 
@@ -88,6 +96,8 @@ export default {
   height: 50px !important;
 }
 
+
+
 .main-btn:hover {
   color: var(--darkblue) !important;
   font-weight: 700 !important;
@@ -100,5 +110,9 @@ export default {
 
 .question{
   font-family: 'Roboto';
+}
+
+.req{
+  display: none !important;
 }
 </style>
