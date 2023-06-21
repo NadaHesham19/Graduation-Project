@@ -58,7 +58,7 @@
             v-model="contNum"
           />
         </div>
-        <div class="row justify-content-center">
+        <!-- <div class="row justify-content-center">
           <label class="col-lg-5 mb-4">Minimum Price</label>
           <input
             type="text"
@@ -75,7 +75,7 @@
             style="background-color: #d4d4d4"
             v-model="maxPrice"
           />
-        </div>
+        </div> -->
         <div class="row justify-content-center">
           <label class="col-lg-5 mb-4">Start Time</label>
           <input
@@ -153,11 +153,12 @@
         </div>
         
       </div>
-      <v-alert color="success" icon="$success" title="Submitted Successfully" text="The data is submitted successfully"
+     
+    </div>
+    <v-alert color="success" icon="$success" title="Submitted Successfully" text="The data is submitted successfully"
         id="hideme" v-if="flag"></v-alert>
       <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
         v-if="error"></v-alert>
-    </div>
   </div>
 </template>
 
@@ -173,8 +174,8 @@ export default {
       district: "",
       description: "",
       contNum: "",
-      minPrice: "",
-      maxPrice: "",
+      // minPrice: "",
+      // maxPrice: "",
       startTime: "",
       EndTime: "",
       drinks: "",
@@ -215,8 +216,8 @@ export default {
           district: this.district,
           description: this.description,
           contactNumber: this.contNum,
-          minPrice: this.minPrice,
-          maxPrice: this.maxPrice,
+          // minPrice: this.minPrice,
+          // maxPrice: this.maxPrice,
           startTime: this.convertTime12to24(this.startTime),
           endTime: this.convertTime12to24(this.EndTime),
           drinks: this.drinks,
