@@ -90,7 +90,7 @@
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
-        <label style="color: white;" for="">Please upload your image</label>
+        <!-- <label style="color: white;" for="">Please upload your image</label> -->
         <!-- <input type="file" placeholder="Please upload your Photo"  accept="image/*" @change="handleFileSelect" required/> -->
         <button
           type="submit"
@@ -219,9 +219,7 @@ export default {
         points: 0,
         birthDate: this.formatDate(this.birthdate),
         username: this.username,
-      });
-
-      then((response) => {
+      }).thenthen((response) => {
         if (response.data.error) {
           this.error = true;
         } else {
