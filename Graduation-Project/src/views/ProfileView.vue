@@ -118,7 +118,7 @@
         </div>
       </div>
       <div class="row justify-content-center my-5">
-        <button class="main-btn col-lg-2 my-5" type="submit" @click="SaveEditting">
+        <button class="bttn-profile col-lg-2 my-5" type="submit" @click="SaveEditting">
           Save
         </button>
       </div>
@@ -141,10 +141,10 @@ export default {
   data() {
     return {
       // userBio:this.user.bio,
-      imgSrc:
-        "https://i.stack.imgur.com/l60Hf.png",
+      imgSrc:null,
+        // "https://i.stack.imgur.com/l60Hf.png",
       user: null,
-      userID: null,
+      userID: localStorage.getItem('userID'),
       flag: false,
       error: false,
       userMobile: ''
@@ -163,9 +163,8 @@ export default {
       // this.userMobile = this.user.mobileNo.toString();
 
 
-      axios.put(`http://localhost:8080/api/user/${this.userID}`,
+      axios.patch(`http://localhost:8080/api/user/${this.userID}`,
         {
-          userId:this.userID,
           firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio
         }).then((res) => {
           if (res.data.error) {
@@ -173,8 +172,7 @@ export default {
           } else {
             this.flag = true
           }
-          
-        
+          console.log(res.data)
         })
         .catch((e) => {
           console.log(e)
@@ -187,32 +185,30 @@ export default {
     }
   },
   beforeMount() {
-  this.userID=localStorage.getItem('userID')
+
     axios
       .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
         // Handle response
         this.user = response.data;
         console.log(this.user)
-        if(this.user.bio==null){
-          this.user.bio="Please write your bio"}
       })
       .catch((err) => {
         // Handle errors
         console.error(err);
       });
 
-      // axios
-      // .get(`http://localhost:8080/api/images/user/${this.userID}`)
-      // .then((response) => {
-      //   // Handle response
-      //   this.imgSrc = response.data;
-      //   console.log(this.imgSrc)
-      // })
-      // .catch((err) => {
-      //   // Handle errors
-      //   console.error(err);
-      // });
+      axios
+      .get(`http://localhost:8080/api/images/user/${this.userID}`)
+      .then((response) => {
+        // Handle response
+        this.imgSrc = response.data;
+        console.log(this.imgSrc)
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
 
     // if(this.user.bio.length == 0){
     //   this.userBio = "Please enter your bio"

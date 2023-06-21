@@ -1,29 +1,35 @@
 <template>
     <AdminNav></AdminNav>
- 
+
     <div class="container ">
-     <div class="headings">
-         <div class="request">Request</div>
-         <div class="name">Name</div>
-         <div class="details">Details</div>
-         <div class="action">Action</div>
-     </div>
-     <hr/>
-     <div class="info" v-for="item in req">
-         <div class="spacename align-self-start justify-content-start" :key="requestId">{{ item.requestId }}</div>
-         <div class="person align-self-start justify-content-start " :key="name">{{ item.name }}</div>
-         <div class="dets">
-             <div class="location align-self-start justify-content-start" :key="address">Location: {{ item.address }} </div>
-             <div class="numberofrooms align-self-start justify-content-start" :key="noOfRooms">Number Of Rooms: {{ item.noOfRooms }} </div>
-         </div>
-         <div class="decide align-self-start justify-content-start">
-             <AcceptModal />
-             <DeclineModal/>
-         </div>
-     </div>
-       
+        <div class="headings">
+            <div class="request">Request</div>
+            <div class="name">Name</div>
+            <div class="details">Details</div>
+            <div class="action">Action</div>
+        </div>
+        <hr />
+        <div class="info" v-for="item  in req">
+            <div class="spacename align-self-start justify-content-start" :key="requestId">{{ item.requestId }}</div>
+            <div class="person align-self-start justify-content-start " :key="name">{{ item.name }}</div>
+            <div class="dets">
+                <div class="location align-self-start justify-content-start" :key="address">Location: {{ item.address }}
+                </div>
+                <div class="numberofrooms align-self-start justify-content-start" :key="noOfRooms">Number Of Rooms: {{
+                    item.noOfRooms }} </div>
+            </div>
+            <div class="decide align-self-start justify-content-start">
+                <div class="box">
+                    <AcceptModal  :requestId="requestId"/>
+                    <DeclineModal  :requestId="requestId"/>
+
+                </div>
+
+            </div>
+        </div>
+
     </div>
-    
+
     <!--<div class="container my-5">
         <div class="request">
             <div class="title t">Requests</div>
@@ -74,131 +80,139 @@
             </div>
         </div>
     </div>-->
- </template>
+</template>
  
- <script>
- import AcceptModal from '../components/AcceptModal.vue';
- import AdminNav from '../components/AdminNav.vue'
- import DeclineModal from '../components/DeclineModal.vue';
- import axios from 'axios'
-     export default{
-     name: "RequestsViewAdmin",
-     components:{
-     AdminNav,
-     AcceptModal,
-     DeclineModal
-     },
-     data(){
-         return{
-             req:[
-             {
-                 requestId:'',
-                 name:'',
-                 address:'',
-                 noOfRooms:' '
- 
-             },
-         ]
-                 
- 
-                 
-         }
-     },
-     
-     methods:{
-         /*openPopup(){
-             let popup = document.getElementById('popup');
-             popup.classList.add('open-popup');
-         },
-         closePopup(){
-             let popup = document.getElementById('popup');
-             popup.classList.remove('open-popup');
-         },
-         openPopup(){
-             let popup = document.getElementById('popup2');
-             popup.classList.add('open-popup');
-         },
-         closePopup(){
-             let popup = document.getElementById('popup2');
-             popup.classList.remove('open-popup');
-         }*/
+<script>
+import AcceptModal from '../components/AcceptModal.vue';
+import AdminNav from '../components/AdminNav.vue'
+import DeclineModal from '../components/DeclineModal.vue';
+import axios from 'axios'
+export default {
+    name: "RequestsViewAdmin",
+    components: {
+        AdminNav,
+        AcceptModal,
+        DeclineModal
+    },
+    data() {
+        return {
+            req: [
+                {
+                    requestId:'',
+                    name: '',
+                    address: '',
+                    noOfRooms: ' '
 
-         
-        
-     
-   },
-   beforeMount(){
-       axios.get('http://localhost:8080/api/admin/requests/?status=pending')
-       .then((response)=>{
-         this.req = response.data
-         console.log(response.data)
-       })
-       .catch((error) => 
-         console.log(error)
-       )
-     },
-   };
- </script>
+                },
+            ]
+
+
+
+        }
+    },
+
+    methods: {
+        /*openPopup(){
+            let popup = document.getElementById('popup');
+            popup.classList.add('open-popup');
+        },
+        closePopup(){
+            let popup = document.getElementById('popup');
+            popup.classList.remove('open-popup');
+        },
+        openPopup(){
+            let popup = document.getElementById('popup2');
+            popup.classList.add('open-popup');
+        },
+        closePopup(){
+            let popup = document.getElementById('popup2');
+            popup.classList.remove('open-popup');
+        }*/
+
+
+
+
+    },
+    beforeMount() {
+        axios.get('http://localhost:8080/api/admin/requests/?status=pending')
+            .then((response) => {
+                this.req = response.data
+                console.log(response.data)
+            })
+            .catch((error) =>
+                console.log(error)
+            )
+    },
+};
+</script>
  
- <style scoped>
-     body{
-         padding: 0;
-         margin: 0;
-         font-family: "Roboto", sans-serif;    
-         background-color: var(--background);
-     
-     }
- 
-     .container{
-         display:grid !important;
-         grid-template-rows: auto auto auto auto !important;
-         background-color: var(--darkblue);
-         border-radius: 30px;
-         height: fit-content;
-         width:2000px;
-         padding-bottom:50px;
-         column-gap: 50px;
-         row-gap:50px;
-         margin-top:30px;
-     }
- 
-     .headings{
-         color: var(--light);
-         display: grid;
-         grid-template-columns: auto auto auto auto;
-         padding-top:40px;
-         font-size: 20px;
-         margin-left:50px;
-     }
- 
-     hr{
-         color:var(--light);
-         
-     }
- 
-     .info{
-         display: grid;
-         grid-template-columns: auto auto auto auto;
-         color: var(--light);
-         font-size: 15px;
-         margin-left:50px;
-       
-         
-     }
- 
-     .decide{
-        display: grid;
-        grid-template-rows: auto auto;
-        row-gap:10px;
-     }
- 
-     .spacename , .person , .dets{
-         display: flex;
-         flex-direction: column;
-         align-content: center;
-     }
- 
-     /*.request{
+<style scoped>
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    background-color: var(--background);
+
+}
+
+.container {
+    display: grid !important;
+    grid-template-rows: auto auto auto auto !important;
+    background-color: var(--darkblue);
+    border-radius: 30px;
+    height: fit-content;
+    width: 2000px;
+    padding-bottom: 50px;
+    column-gap: 50px;
+    row-gap: 50px;
+    margin-top: 30px;
+}
+
+.headings {
+    color: var(--light);
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding-top: 40px;
+    font-size: 20px;
+    margin-left: 50px;
+}
+
+hr {
+    color: var(--light);
+
+}
+
+.info {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    color: var(--light);
+    font-size: 15px;
+    margin-left: 50px;
+
+
+}
+
+.decide {
+    display: grid;
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+}
+
+.spacename,
+.person,
+.dets {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.box {
+    display: grid;
+    grid-template-rows: auto auto;
+    row-gap: 15px;
+}
+
+/*.request{
          padding-left:10px;
      }
  
@@ -206,12 +220,12 @@
          margin-left:25px;
      }
  */
-     
-    
-     
- 
- 
-     /*.container{
+
+
+
+
+
+/*.container{
         display: grid;
         grid-template-columns: auto auto auto auto;
         background-color: var(--darkblue);
@@ -335,5 +349,4 @@
     .open-popup{
      visibility: visible;
     }*/
- 
- </style>
+</style>
