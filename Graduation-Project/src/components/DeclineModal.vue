@@ -34,9 +34,12 @@
       return {
         dialog: false,
         userID: localStorage.getItem('userID'),
+        requestId : '',
+        status : 'declined'
       };
     },
     props:[
+      'requestId'
   
     ]
   
@@ -47,7 +50,8 @@
       .then(() => this.status = 'Declined successful');
       this.dialog=false
       }*/
-      axios.post('http://localhost:8080/api/user', {status: 'Declined'} )
+      const url = `http://localhost:8080/api/admin/requests/?status=declined&requestID=${this.requestId}`
+      axios.post(url)
       .then((response)=>{
       this.status = 'declined',
       console.log(this.status) 

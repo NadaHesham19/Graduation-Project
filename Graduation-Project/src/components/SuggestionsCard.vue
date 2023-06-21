@@ -7,17 +7,15 @@
       <i class="fa-solid fa-angle-left col-lg-1 arow" style="height: 45px"></i>
       <div class="col-lg-4 my-5">
         <div class="card text-white">
-          <img :src="firstImgSrc" class="card-img-top" alt="..." />
-          <div class="card-body">
-            <div class="c fw-bolder"> Room:{{ room.name }}</div>
-            <p class="c"> Details:
-            <h5>Activity: {{ room.activity }}</h5>
-            <h5>Type: {{ room.type }}</h5>
-            <h5>Price: {{ room.price }}</h5>
-            </p>
-
+          <img class="card-img-top" alt="..." /> <!--:src="firstImgSrc"-->
+          <div class="card-body" v-for="item in space">
+            <div class="c fw-bolder" :key="name"> Space Name:{{ item.name }}</div>
+            <div class="c" > Details:
+            <div class="ad" :key="address">Address: {{ item.address }}</div>
+            <div  class="ad" :key="ratingAverage">Rating: {{ item.ratingAverage }}</div>
+            </div>
             <div class="text-center">
-              <BookModal />
+              <button class="book-btn" > Visit </button>
             </div>
           </div>
         </div>
@@ -37,27 +35,47 @@ export default {
   },
   data() {
     return {
-      suggest: null,
-      appear: null,
-      userID: localStorage.getItem('userID'),
-      user: null,
-      rooms:null
+      user: [
+        {
+          userID: localStorage.getItem('userID'),
+          address: ''
+
+        }
+      ],
+      space: [
+        {
+        name: '',
+        address: '',
+        ratingAverage: '',
+       }
+      ],
 
     };
   },
   props: [
-    'room',
-    
+    'address'
+   
+
   ],
-  computed: {
+  /*computed: {
     firstImgSrc() {
       return this.room.images;
     },
-  },
+  },*/
   methods: {
 
   },
-  
+  beforeMount() {
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.address}`)
+      .then((response) => {
+        this.final = response.data
+        console.log(response.data)
+      })
+      .catch((error) =>
+        console.log(error)
+      )
+  }
+
 };
 </script>
   
@@ -87,8 +105,14 @@ export default {
 .c {
   color: var(--light);
   font-weight: bold;
-  font-size: 15px;
+  font-size: 20px;
   margin-top: 50px;
+
+}
+
+.ad{
+  font-family:'Roboto';
+  font-size:15px;
 
 }
 
@@ -100,6 +124,7 @@ export default {
   font-weight: 500 !important;
   border: none;
   text-align: center;
+  width:70px;
 }
 
 .book-btn:hover,
@@ -109,5 +134,6 @@ export default {
   cursor: pointer;
   background-color: var(--lightblue);
 
-}</style>
+}
+</style>
   

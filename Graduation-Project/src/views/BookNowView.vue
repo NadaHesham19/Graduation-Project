@@ -1,8 +1,11 @@
 <template>
   <NavBar></NavBar>
-  <!--<SuggestionsCard/>-->
+  <SuggestionsCard/>
+  <!--<div class="col-4" v-for="(space, index) in spaces" :key="index">
+    <SpaceCard :space="space" />
+  </div>-->
   <!----Booking----->
-  <div class="reserve">
+  <!--<div class="reserve">
     <div class="tit">
       Book Your Room Now
     </div>
@@ -49,9 +52,9 @@
     </form>
 
     <div class="onsearch w-100" v-if="display">
-      <!--<AvailableOnSearch/>-->
+      <AvailableOnSearch/>
     </div>
-  </div>
+  </div>-->
 
   <Footer />
 </template>
@@ -61,40 +64,47 @@ import NavBar from '../components/NavBar.vue';
 import Footer from '../components/Footer.vue';
 import SuggestionsCard from '../components/SuggestionsCard.vue';
 import AvailableOnSearch from '../components/AvailableOnSearch.vue';
+import SpaceCard from '../components/SpaceCard.vue';
 import axios from 'axios';
 export default ({
   components: {
     NavBar,
     SuggestionsCard,
     Footer,
-    AvailableOnSearch
+    AvailableOnSearch,
+    SpaceCard
   },
   data() {
     return {
-      Data: {
+      /*Data: {
         location: '',
         capacity: '',
         date: '',
         startTime: '',
         endTime: '',
       },
-      display: false,
-      final: []
+      display: false,*/
+      final: [],
+      spaces: [],
+      searchTerm: ''
 
     }
   },
+  props: [
+    'space'
+  ],
   methods: {
-    onChange(index) {
+    /*onChange(index) {
       this.selected[index] = ''
     },
 
     displayComponent() {
       this.display = true;
-    },
+    },*/
   },
 
   created() {
-    axios.get('http://localhost:8080/api/room/allrooms')
+    /*axios.get('http://localhost:8080/api/room/allrooms')
       .then((response) => {
         this.Data = response.data
         console.log(response.data)
@@ -139,7 +149,31 @@ export default ({
       .catch((error) =>
         console.log(error)
       )
-    )
+    )*/
+
+
+    //-------------
+    /*axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.Data.location}`)
+    .then((response) => {
+        this.final = response.data
+        console.log(response.data)
+      })
+      .catch((error) =>
+        console.log(error)
+      )*/
+  },
+  beforeMount() {
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.address}`)
+      .then((response) => {
+        this.spaces = response.data
+        console.log(response.data)
+      })
+      .catch((error) =>
+        console.log(error)
+      )
+  },
+  computed: {
+    
   }
 })
 

@@ -33,23 +33,28 @@ export default {
     return {
       dialog: false,
       userID:localStorage.getItem('userID'),
+      requestId: '',
+      /*status: 'approved'*/
       
     };
   },
   props:[
+    'requestId'
 
   ]
 
 ,
   methods: {
     Accept(){
-      axios.patch("http://localhost:8080/api/requests/3" , {status: 'approved'})
+      const url = `http://localhost:8080/api/admin/requests/?status=approved&requestID=${this.requestId}`
+      axios.post(url)
       .then((response)=>{
-      /*this.status = 'approved'
-      console.log(this.status)*/
+      this.status = 'approved'
+      console.log(this.status)
     })
     this.dialog=false
     console.log(this.dialog)
+    
     .catch((err) => {
       // Handle errors
       console.error(err);
