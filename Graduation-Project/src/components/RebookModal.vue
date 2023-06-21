@@ -17,7 +17,8 @@
             </v-row>
             <v-row>
               <v-col cols="12" sm="10" md="8">
-                <datepicker @selected="availableTime"></datepicker>
+                <!-- <VueDatePicker @selected="availableTime" :min-date="new Date()"/> -->
+                <VueDatePicker :model-value="date" :min-date="new Date()"  :enable-time-picker="false" @update:model-value="getAvailableTime"/>
               </v-col>
             </v-row>
             <v-row>
@@ -52,8 +53,11 @@
           >
             Cancel
           </button>
-          <button class="btn main-btn mx-2" variant="text" @click="rebookRoom">
-            Book
+          <button class="btn main-btn mx-2" variant="text" @click="rebookPoints" :disabled="value">
+            Pay by Points
+          </button>
+          <button class="btn main-btn mx-2" variant="text" @click="rebookCash">
+            Pay by Cash
           </button>
         </v-card-actions>
       </v-card>
@@ -62,9 +66,13 @@
 </template>
 
 <script>
-import Datepicker from "vuejs3-datepicker";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import axios from 'axios'
 export default {
-  data: () => ({
+  data(){
+    return{
+    value:true,
     dialog: false,
     date: null,
     menu: false,
@@ -82,15 +90,27 @@ export default {
     ],
     disabledTimes: ["10:00", "12:00", "14:00"], // set the times that should be disabled
     selectedTime: "",
-  }),
+    userID: localStorage.getItem('userID'),
+  }
+},
+  components: { 
+    VueDatePicker 
+  },
   methods: {
-    rebookRoom() {
+    rebookPoints() {
+      this.dialog = false;
+      
+    },
+    rebookCash() {
       this.dialog = false;
     },
-    availableTime() {},
-    save(date) {
-      this.$refs.menu.save(date);
+    getAvailableTime() {
+
+      //api call to get disabled time
     },
+    // save(date) {
+    //   this.$refs.menu.save(date);
+    // },
     convertTime12to24(time12h){ 
         const [time, modifier] = time12h.split(" ");
 
@@ -112,9 +132,23 @@ export default {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     },
   },
-  components: {
-    Datepicker,
-  },
+  beforeMount(){
+    axios
+      .get(`http://localhost:8080/api/user/${this.userID}`)
+      .then((response) => {
+      
+        // Handle response
+        this.user = response.data;
+        if(this.user.points>10){
+           this.value=false
+        }
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
+
+  }
 };
 </script>
 

@@ -40,9 +40,9 @@
             <router-link to="/profile" class="dropdown-toggle nav-link nav-item" @mouseover="isProfileOpen = true">
               <i class="icon fa-regular fa-circle-user ms-sm-0 mx-5 text-white user"></i>
             </router-link>
-            <ul class="dropdown-menu "  :class="{ show: isProfileOpen }" @mouseleave="isProfileOpen = false ">
+            <ul class="dropdown-menu " :class="{ show: isProfileOpen }" @mouseleave="isProfileOpen = false">
               <li class="">
-                <router-link class="nav-item nav-link item-drop " to="/" style="font-size: 15px">
+                <router-link class="nav-item nav-link item-drop " to="/" style="font-size: 15px" @click="logout">
                   Log Out</router-link>
               </li>
             </ul>
@@ -61,6 +61,14 @@ export default {
       isProfileOpen: false,
     };
   },
+  methods: {
+    logout() {
+      history.pushState(null, document.title, location.href);
+      window.addEventListener('popstate', function (event) {
+        history.pushState(null, document.title, location.href);
+      });
+    }
+  }
 };
 </script>
 
@@ -123,5 +131,4 @@ export default {
 .item-drop {
   margin: 0 !important;
 }
-
 </style>

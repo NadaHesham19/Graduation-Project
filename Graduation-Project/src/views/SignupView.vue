@@ -8,24 +8,10 @@
 
     <div id="login-form">
       <form action="index.html">
-        <input
-          type="text"
-          placeholder="Enter Username"
-          v-model="SignInUsername"
-          required
-        />
+        <input type="text" placeholder="Enter Username" v-model="SignInUsername" required />
 
-        <input
-          type="password"
-          placeholder="Enter password"
-          v-model="signinPassword"
-          required
-        />
-        <button
-          type="submit"
-          class="btn login"
-          @click.prevent="checkIfAccountExists()"
-        >
+        <input type="password" placeholder="Enter password" v-model="signinPassword" required />
+        <button type="submit" class="btn login" @click.prevent="login()">
           Sign in
         </button>
         <p><router-link to="/forgot">Forgot Your Password ?</router-link></p>
@@ -34,88 +20,42 @@
 
     <div id="signup-form">
       <form action="">
-        <input
-          type="text"
-          placeholder="First Name"
-          required
-          v-model="firstName"
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          required
-          v-model="lastName"
-        />
+        <input type="text" placeholder="First Name" required v-model="firstName" />
+        <input type="text" placeholder="Last Name" required v-model="lastName" />
         <input type="email" placeholder="Email" required v-model="email" />
         <input type="text" placeholder="Username" required v-model="username" />
         <input type="text" placeholder="Address" required v-model="location" />
-        <input
-          type="tel"
-          placeholder="Phone number"
-          required
-          v-model="phoneNumber"
-        />
-        <input
-          :type="type"
-          placeholder="Birthdate"
-          v-model="birthdate"
-          @focus="this.type = 'date'"
-          @blur="this.type = 'text'"
-        />
+        <input type="tel" placeholder="Phone number" required v-model="phoneNumber" />
+        <input :type="type" placeholder="Birthdate" v-model="birthdate" @focus="this.type = 'date'"
+          @blur="this.type = 'text'" />
         <!-- <label style="color: white;" for="">Please upload your image</label>
         <input type="file" placeholder="Please upload your Photo" required v-on:change="photo"/> -->
-        <input
-          ref="password"
-          type="password"
-          placeholder="Password"
-          v-model="password"
-          required
-        />
+        <input ref="password" type="password" placeholder="Password" v-model="password" required />
 
         <div v-if="passwordValidation.errors.length > 0 && password.length > 0">
-          <span
-            v-for="error in passwordValidation.errors"
-            :key="error"
-            class="error"
-          >
+          <span v-for="error in passwordValidation.errors" :key="error" class="error">
             {{ error }}
           </span>
         </div>
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          v-model.lazy="checkPassword"
-          required
-        />
+        <input type="password" placeholder="Confirm Password" v-model.lazy="checkPassword" required />
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
-        <label style="color: white;" for="">Please upload your image</label>
-        <input type="file" placeholder="Please upload your Photo"  accept="image/*" @change="handleFileSelect" required/>
-        <button
-          type="submit"
-          class="btn signup"
-          @click.prevent="CreateAccount()"
-        >
+        <!-- <label style="color: white" for="">Please upload your image</label>
+        <input
+          type="file"
+          accept="image/*"
+          @change="handleFileSelect"
+          required
+        /> -->
+        <button type="submit" class="btn signup" @click.prevent="CreateAccount()">
           Create an account
         </button>
       </form>
-      <v-alert
-        color="success"
-        icon="$success"
-        title="Submitted Successfully"
-        text="The Request is submitted successfully"
-        id="hideme"
-        v-if="flag"
-      ></v-alert>
-      <v-alert
-        color="error"
-        icon="$error"
-        title="Submission Failed"
-        text="Please Try again"
-        id="hideme"
-        v-if="error"
-      ></v-alert>
+      <v-alert color="success" icon="$success" title="Submitted Successfully" text="The Request is submitted successfully"
+        id="hideme" v-if="flag"></v-alert>
+      <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+        v-if="error"></v-alert>
     </div>
   </div>
   <Footer class="mt-5 pt-5"></Footer>
@@ -143,12 +83,12 @@ export default {
       submitted: false,
       signinEmail: "",
       signinPassword: "",
-      SignInUsername:"",
+      SignInUsername: "",
 
       //users from api
       // users: null,
       // userID: 3,
-      user:null,
+      user: null,
 
       // user Data for Signup
       firstName: null,
@@ -159,7 +99,7 @@ export default {
       birthdate: null,
       password: "",
       username: null,
-      selectedImages:null,
+      selectedImages: "",
       //success and failure
       flag: false,
       error: false,
@@ -196,61 +136,71 @@ export default {
 
       return day + "-" + month + "-" + year;
     },
-    handleFileSelect(event) {
-      const files = event.target.files;
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    // handleFileSelect(event) {
+    //   // const files = event.target.files;
+    //   // const allowedTypes = ['image/jpg', 'image/png', 'image/gif'];
 
-      // Filter files to include only image types
-       this.selectedImages = Array.from(files).filter(file =>
-        allowedTypes.includes(file.type)
-      );
+    //   // // Filter files to include only image types
+    //   //  this.selectedImages = Array.from(files).filter(file =>
+    //   //   allowedTypes.includes(file.type)
+    //   // );
 
-      // Do something with the selected images
-      console.log(selectedImages);
-    },
+    //   // // Do something with the selected images
+    //   // console.log(selectedImages);
+    //   const files = event.target.files;
+    //   if (files && files.length > 0) {
+    //     const image = files[0];
+    //     this.selectedImage = image;
+    //   }
+    // },
     CreateAccount() {
-      axios.post("http://localhost:8080/api/user", {
-        email: this.email,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        password: this.password,
-        mobileNo: this.phoneNumber,
-        address: this.location,
-        points: 0,
-        birthDate: this.formatDate(this.birthdate),
-        username: this.username,
-      });
-
-      then((response) => {
-        if (response.data.error) {
-          this.error = true;
-        } else {
-          this.flag = true;
-          // delay
-          setTimeout(() => {
-            this.toggleSignup();
-          }, 3000);
-        }
-      }).catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
+      // const formData = new FormData();
+      // formData.append("image", this.selectedImage);
+      axios
+        .post("http://localhost:8080/api/user", {
+          email: this.email,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          password: this.password,
+          mobileNo: this.phoneNumber,
+          address: this.location,
+          points: 0,
+          birthDate: this.formatDate(this.birthdate),
+          username: this.username,
+        })
+        .then((response) => {
+          if (response.data.error) {
+            this.error = true;
+          } else {
+            this.flag = true;
+            // delay
+            setTimeout(() => {
+              this.toggleSignup();
+            }, 2000);
+          }
+        })
+        .catch((err) => {
+          // Handle errors
+          console.error(err);
+        });
       setTimeout(() => {
         this.flag = false;
         this.error = false;
       }, 3000);
       //post image
-      axios.post("http://localhost:8080/api/images", {
-      image:this.selectedImages,userId:this.userID
+      // axios
+      //   .post("http://localhost:8080/api/images", {
+      //     image: this.selectedImages,
+      //     userId: this.userID,
+      //     spaceId: 0,
+      //     roomId: 0,
+      //   })
 
-
-      });
-
-      then((response) => {
-        if (response.data.error) {
-          console.log(response.data.error)
-        } })
-      
+      //   .then((response) => {
+      //     if (response.data.error) {
+      //       console.log(response.data.error);
+      //     }
+      //   });
     },
     resetPasswords() {
       this.password = "";
@@ -260,54 +210,36 @@ export default {
         this.submitted = false;
       }, 2000);
     },
-    checkIfAccountExists() {
-      // request for data base
-      // from response if doesn't exist route to home
-      //if not display error message
-      // for (let i = 0; i < this.users.length; i++) {
-      //   if (
-      //     this.users[i].email == this.signinEmail &&
-      //     this.users[i].password == this.signinPassword &&
-      //     this.users != null
-      //   ) {
-      //     // this.userID = this.users[i].userId
-      //     // console.log(this.userID)
-      //     localStorage.setItem("userID", this.users[i].userId);
-      //     this.$router.push("/home");
-      //   } else if (
-      //     this.signinEmail == "Admin@info.com" &&
-      //     this.signinPassword == "Root1234"
-      //   ) {
-      //     this.$router.push({ name: "profile" });
-      //   } else {
-      //     console.log("error");
-      //     // must show error message
-      //   }
+    login() {
       const username = this.SignInUsername;
       const password = this.signinPassword;
 
       const url = `http://localhost:8080/login?username=${username}&password=${password}`;
 
-      axios.post(url)
-      .then((response) => {
-        if (response.data.error) {
-          this.error = true;
-        } else {
-          this.flag = true;
-          // delay
-          this.user=response.data
-          localStorage.setItem("userID", this.user.userId);
-          this.$router.push('/home');
-          
+      axios
+        .post(url, { withCredentials: true })
+        .then((response) => {
+          // const setCookieHeader = response.headers['set-cookie'];
 
-        }
-      }).catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
-      }
+          // // Do something with the header value
+          // console.log(setCookieHeader);
+          if (response.data.error) {
+            this.error = true;
+          } else {
+            this.flag = true;
+            // delay
+            this.user = response.data;
+            localStorage.setItem("userID", this.user.userId);
+            this.$router.push("/home");
+          }
+        })
+        .catch((err) => {
+          // Handle errors
+          console.error(err);
+        });
     },
-  
+  },
+
   computed: {
     notSamePasswords() {
       if (this.passwordsFilled) {
@@ -350,8 +282,6 @@ export default {
 </script>
 
 <style>
-
-
 .form-modal {
   border-radius: 25px;
   position: relative;

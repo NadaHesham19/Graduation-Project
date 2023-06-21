@@ -64,7 +64,7 @@ export default {
     
   },
   beforeMount(){
-      axios.get('http://localhost:8080/api/requests/users/1')
+      axios.get(`http://localhost:8080/api/requests/users/${this.userID}`)
       .then((response)=>{
         this.info = response.data
         console.log(response.data)

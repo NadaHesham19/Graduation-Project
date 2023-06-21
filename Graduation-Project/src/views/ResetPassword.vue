@@ -1,34 +1,67 @@
 <template>
   <simple-nav></simple-nav>
   <div class="container mt-5">
-    <v-alert color="success" icon="$success" title="Submitted Successfully" text="Data is updated successfully"
-      id="hideme" v-if="flag"></v-alert>
-    <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
-      v-if="error"></v-alert>
-    <div class="row justify-content-center align-items-center mb-5 ">
+    <v-alert
+      color="success"
+      icon="$success"
+      title="Submitted Successfully"
+      text="Data is updated successfully"
+      id="hideme"
+      v-if="flag"
+    ></v-alert>
+    <v-alert
+      color="error"
+      icon="$error"
+      title="Submission Failed"
+      text="Please Try again"
+      id="hideme"
+      v-if="error"
+    ></v-alert>
+    <div class="row justify-content-center align-items-center mb-5">
       <div class="col-lg-7 addNew">
         <h1 class="text-center my-5">Reset Password</h1>
         <div class="row justify-content-center">
-
-          <input type="password" class="col-lg-7 mb-4 inputText" style="background-color: #d4d4d4"
-            placeholder="New Password" v-model="newPass" required />
-            <div v-if="passwordValidation.errors.length > 0 && newPass.length > 0" class="col-lg-7 mb-4">
-          <span v-for="error in passwordValidation.errors" :key="error" class="error">
-            {{ error }}
-          </span>
-        </div>
-
+          <input
+            type="password"
+            class="col-lg-7 mb-4 inputText"
+            style="background-color: #d4d4d4"
+            placeholder="New Password"
+            v-model="newPass"
+            required
+          />
+          <div
+            v-if="passwordValidation.errors.length > 0 && newPass.length > 0"
+            class="col-lg-7 mb-4"
+          >
+            <span
+              v-for="error in passwordValidation.errors"
+              :key="error"
+              class="error"
+            >
+              {{ error }}
+            </span>
+          </div>
         </div>
         <div class="row justify-content-center">
-          <input type="password" class="col-lg-7 mb-4 inputText" style="background-color: #d4d4d4"
-           placeholder="Confirm Your Password" v-model.lazy="newpassCon" required />
-           <div class="error col-lg-7" v-if="notSamePasswords">
-          <p>Passwords don't match</p>
-        </div>       
+          <input
+            type="password"
+            class="col-lg-7 mb-4 inputText"
+            style="background-color: #d4d4d4"
+            placeholder="Confirm Your Password"
+            v-model.lazy="newpassCon"
+            required
+          />
+          <div class="error col-lg-7" v-if="notSamePasswords">
+            <p>Passwords don't match</p>
           </div>
-        
+        </div>
+
         <div class="row justify-content-center align-items-center mt-3">
-          <button class="col-lg-3 mb-5 text-center main-btn" type="submit" @click="ResetPassword()">
+          <button
+            class="col-lg-3 mb-5 text-center main-btn"
+            type="submit"
+            @click="ResetPassword()"
+          >
             Update
           </button>
         </div>
@@ -36,15 +69,16 @@
     </div>
   </div>
 </template>
-  
+
 <script>
-import SimpleNav from '@/components/SimpleNav.vue';
-import axios from 'axios';
+import SimpleNav from "@/components/SimpleNav.vue";
+import axios from "axios";
 export default {
   data() {
     return {
-      newPass: '',
-      newpassCon: '',
+      newPass: "",
+      newpassCon: "",
+      userId:null,
       //success and failure
       flag: false,
       error: false,
@@ -54,38 +88,33 @@ export default {
         { message: "8 characters minimum.", regex: /.{8,}/ },
         { message: "One number required.", regex: /[0-9]+/ },
       ],
-    }
+    };
   },
   methods: {
     ResetPassword() {
       //user id will be from the url
 
-      axios.patch(`http://localhost:8080/api/user/${this.userID}`,
-        {
-          password: this.newPass
+      axios
+        .patch(`http://localhost:8080/api/user/${this.userId}`, {
+          password: this.newPass,
         })
         .then((res) => {
           if (res.data.error) {
-            this.error = true
+            this.error = true;
           } else {
             this.flag = true;
-            this.newPass="";
-            this.newpassCon="";
-
+            setTimeout(() => {
+         this.$router.push('/')
+      }, 2000);
           }
-          console.log(res.data)
+          console.log(res.data);
         })
         .catch((e) => {
-          console.log(e)
+          console.log(e);
         });
-      setTimeout(() => {
-        this.flag = false
-        this.error = false
-      }, 3000);
-    }
-
+   
+    },
   },
-
 
   computed: {
     notSamePasswords() {
@@ -112,19 +141,21 @@ export default {
       }
     },
   },
-  //userid from the url
-  // mounted() {
-  //   // Access the userID parameter from the URL
-  //   const userID = this.$route.params.userID;
-  //   console.log(userID);
-  // },
+  // userid from the url
+  mounted() {
+    // Access the userID parameter from the URL
+    this.userId = this.$route.params.id;
+    console.log(this.userId);
+  },
 
   components: {
-    SimpleNav
-  }
+    SimpleNav,
+  },
+
+
 };
 </script>
-  
+
 <style>
 .addNew {
   background-color: var(--nav);
@@ -139,7 +170,6 @@ export default {
   font-weight: bold;
   outline: none;
   transition: 0.4s;
-
 }
 
 .main-btn {
@@ -166,4 +196,3 @@ export default {
   color: #222;
 }
 </style>
-  
