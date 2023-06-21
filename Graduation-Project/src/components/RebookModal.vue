@@ -13,47 +13,47 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <b >Please Enter date and time</b>
+              <b>Please Enter date and time</b>
             </v-row>
             <v-row>
               <v-col cols="12" sm="10" md="8">
-                <datepicker @selected="availableTime"></datepicker>
+                <VueDatePicker :model-value="date" :min-date="new Date()" :enable-time-picker="false"
+                  @update:model-value="getAvailableTime" />
               </v-col>
             </v-row>
             <v-row>
-              
+
               <v-col cols="12" sm="6" md="4">
-          <label for="start time">Start Time</label>
+                <label for="start time">Start Time</label>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <input type="time" v-model="start" />
-                
+
               </v-col>
             </v-row>
             <v-row>
-              
+
               <v-col cols="12" sm="6" md="4">
-          <label for="End Time">End Time</label>
+                <label for="End Time">End Time</label>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <input type="time" v-model="End" />
-                
+
               </v-col>
-            
+
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <button
-            class="btn cancel-btn mx-2"
-            variant="text"
-            @click="dialog = false"
-          >
+          <button class="btn cancel-btn mx-2" variant="text" @click="dialog = false">
             Cancel
           </button>
-          <button class="btn main-btn mx-2" variant="text" @click="rebookRoom">
-            Book
+          <button class="btn main-btn mx-2" variant="text" @click="rebookPoints" :disabled="value">
+            Pay by Points
+          </button>
+          <button class="btn main-btn mx-2" variant="text" @click="rebookCash">
+            Pay by Cash
           </button>
         </v-card-actions>
       </v-card>
@@ -62,9 +62,12 @@
 </template>
 
 <script>
-import Datepicker from "vuejs3-datepicker";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import axios from 'axios'
 export default {
   data: () => ({
+    value: true,
     dialog: false,
     date: null,
     menu: false,
@@ -82,38 +85,66 @@ export default {
     ],
     disabledTimes: ["10:00", "12:00", "14:00"], // set the times that should be disabled
     selectedTime: "",
+    userID: localStorage.getItem('userID'),
   }),
+  components: {
+    VueDatePicker
+  },
   methods: {
+    rebookPoints() {
+      this.dialog = false;
+
+    },
     rebookRoom() {
       this.dialog = false;
     },
-    availableTime() {},
+    availableTime() { },
     save(date) {
       this.$refs.menu.save(date);
     },
-    convertTime12to24(time12h){ 
-        const [time, modifier] = time12h.split(" ");
+    convertTime12to24(time12h) {
+      const [time, modifier] = time12h.split(" ");
 
-        let [hours, minutes] = time.split(":");
+      let [hours, minutes] = time.split(":");
 
-        if (hours === "12") {
-          hours = "00";
-        }
-
-        if (modifier === "PM") {
-          hours = parseInt(hours, 10) + 12;
-        }
-
-        return `${hours}:${minutes}:00`;
+      if (hours === "12") {
+        hours = "00";
       }
+
+      if (modifier === "PM") {
+        hours = parseInt(hours, 10) + 12;
+      }
+
+      return `${hours}:${minutes}:00`;
+    },
+    getAvailableTime() {
+
+      //api call to get disabled time
+    },
   },
   watch: {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     },
+  },beforeMount(){
+    axios
+      .get(`http://localhost:8080/api/user/${this.userID}`)
+      .then((response) => {
+      
+        // Handle response
+        this.user = response.data;
+        if(this.user.points>10){
+           this.value=false
+        }
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
+
   },
   components: {
-    Datepicker,
+   VueDatePicker,
   },
 };
 </script>

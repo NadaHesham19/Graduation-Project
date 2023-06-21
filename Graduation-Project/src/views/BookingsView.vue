@@ -69,13 +69,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 import NavBar from "../components/NavBar.vue";
 import Footer from "../components/Footer.vue";
 import CancelModal from "../components/CancelModal.vue";
 import RebookModal from "../components/RebookModal.vue";
 import UpcomingCards from "@/components/UpcomingCards.vue";
 import PastCards from "@/components/PastCards.vue";
-import moment from "moment";
+
 
 export default {
   data() {
@@ -345,7 +346,7 @@ export default {
       // ],
       currentSlide: 0,
       currentSlidePast: 0,
-      userID: null,
+      userID: localStorage.getItem("userID"),
       pastBookings:[],
       upComingBookings:[],
     };
@@ -359,13 +360,15 @@ export default {
     PastCards,
   },
   beforeMount() {
-    this.userID = localStorage.getItem("userID");
+    
+    console.log(this.userID)
     //upcoming bookings
     axios
-      .get(`http://localhost:8080/api/bookings/upComingBookings/${userID}`)
+      .get(`http://localhost:8080/api/bookings/upComingBookings/18`)
       .then((response) => {
         // Handle response
         this.upComingBookings = response.data;
+        console.log(this.upComingBookings)
       })
       .catch((err) => {
         // Handle errors
@@ -374,10 +377,10 @@ export default {
 
       //past bookings
       axios
-      .get(`http://localhost:8080/api/bookings/pastBookings/${userID}`)
+      .get(`http://localhost:8080/api/bookings/pastBookings/18`)
       .then((response) => {
         // Handle response
-        this.upComingBookings = response.data;
+        this.pastBookings = response.data;
       })
       .catch((err) => {
         // Handle errors

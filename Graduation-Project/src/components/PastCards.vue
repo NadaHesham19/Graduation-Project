@@ -1,7 +1,7 @@
 <template>
 
  <div class="card text-white">
-      <img :src="firstImgSrc" class="card-img-top" alt="..." />
+      <img src="" class="card-img-top" alt="..." />
       <div class="card-body">
         <h5 class="card-title fw-bolder">{{ booking.spaceName }}</h5>
         <p class="card-text">Date: {{ booking.date }}</p>
@@ -31,9 +31,7 @@ export default {
     'booking',
   ],
   computed: {
-    firstImgSrc() {
-      return this.booking.room.image;
-    },
+   
   }
 };
 </script>
