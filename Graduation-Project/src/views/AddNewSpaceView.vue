@@ -88,13 +88,14 @@ export default {
     NavBar,
   },
   methods: {
+    
     AddnewSpace() {
       // if(this.name.length!=0 && this.location.length!=0 && this.noOfRooms.length !=0){
        axios
-        .post("http://localhost:8080/api/requests",
+        .post("http://localhost:8080/api/requests",  
         {
         headers:{
-          'Cookie': this.jsessionId,
+          'Cookie':this.jsessionId ,
         }
           
       }, {
@@ -129,18 +130,20 @@ export default {
   },
   beforeMount() {
     axios
-      .get("http://localhost:8080/api/requests" , 
+      .get("http://localhost:8080/api/requests" ,  
       {
         headers:{
-          'Cookie': this.jsessionId,
+          'Cookie': this.jsessionId 
         }
           
       },)
+      
       .then((response) => {
         // Handle response
         this.users = response.data;
         console.log(this.users);
       })
+      
       .catch((err) => {
         // Handle errors
         console.error(err);

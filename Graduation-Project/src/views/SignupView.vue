@@ -196,7 +196,7 @@ export default {
 
           })
           
-         // console.log(jsessionidValue)
+         console.log(jsessionidValue)
           localStorage.setItem("jsessionidValue", jsessionidValue);
           if (response.data.error) {
             this.error = true;
