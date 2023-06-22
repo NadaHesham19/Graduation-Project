@@ -41,7 +41,6 @@
 <script>
 import SimpleNav from '@/components/SimpleNav.vue';
 import axios from 'axios';
-import CryptoJS from 'crypto-js';
 export default {
   data() {
     return {
@@ -63,7 +62,7 @@ export default {
     ResetPassword() {
       //user id will be from the url
 
-      axios.patch(`http://localhost:8080/api/user/${this.userEmail}`,
+      axios.patch(`http://localhost:8080/api/user/updatePassword?email=${this.userEmail}`,
         {
           password: this.newPass
         })
@@ -84,7 +83,12 @@ export default {
           console.log(e)
         });
 
-    }
+    },
+    decryptValue(encodedValue) {
+      const base64 = encodedValue.replace(/_/g, '/').replace(/-/g, '+');
+      const decrypted = atob(base64);
+      return decrypted;
+    },
 
   },
 
@@ -118,9 +122,10 @@ export default {
  beforeMount() {
     // Access the userID parameter from the URL
     const encryptedEmail = this.$route.params.email;
-    const bytes = CryptoJS.AES.decrypt(encryptedEmail, 'SecretKey');
+    // const bytes = CryptoJS.AES.decrypt(encryptedEmail, 'secretkey');
     
-    this.userEmail = bytes.toString(CryptoJS.enc.Utf8);
+    this.userEmail = this.decryptValue(encryptedEmail);
+    
 
   },
 

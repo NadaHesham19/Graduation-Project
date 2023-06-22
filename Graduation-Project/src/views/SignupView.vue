@@ -16,6 +16,10 @@
         </button>
         <p><router-link to="/forgot">Forgot Your Password ?</router-link></p>
       </form>
+      <v-alert color="success" icon="$success" title="Submitted Successfully" text="The Request is submitted successfully"
+        id="hideme" v-if="flag"></v-alert>
+      <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+        v-if="error"></v-alert>
     </div>
 
     <div id="signup-form">
@@ -203,6 +207,7 @@ export default {
         })
         .catch((err) => {
           // Handle errors
+          this.error = true;
           console.error(err);
         });
     },

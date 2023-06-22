@@ -26,7 +26,6 @@
 <script>
 import axios from 'axios';
 import SimpleNav from '@/components/SimpleNav.vue';
-import CryptoJS from 'crypto-js';
 export default {
   data() {
     return {
@@ -36,8 +35,10 @@ export default {
   },
   methods: {
     SendAnEmail() {
-      const encryptedData = CryptoJS.AES.encrypt(this.email, 'SecretKey').toString(); 
-      console.log(this.email)
+
+      const encryptedData = this.encryptValue(this.email)
+
+      // console.log(this.email)
       console.log(encryptedData)   
       const userEmail = this.email;
       const link = 'http://localhost:5173/resetpassword/'+encryptedData;
@@ -51,6 +52,7 @@ export default {
             this.error = true;
           } else {
             this.flag = true;
+          
              
           }
         })
@@ -59,7 +61,13 @@ export default {
           this.error = true;
           console.error(err);
         });
-    }
+    },
+    encryptValue(value) {
+      const base64 = btoa(value);
+      const encoded = base64.replace(/\//g, '_').replace(/\+/g, '-');
+      return encoded;
+    },
+    
   },
   beforeMount() {
 
