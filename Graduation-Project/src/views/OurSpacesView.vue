@@ -1,7 +1,7 @@
 <template>
     <NavBar />
     <div class="searchsec container-fluid position-relative">
-        <img class="img-fluid w-100  ps-5" src="../assets/main1.jpeg" alt="" />
+        <img class="img-fluid w-100  ps-5" src="../assets/main1.gif" alt="" />
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
         <form class="d-flex searchform" @submit.prevent>
             <input class="form-control searchinput me-2" type="search" aria-label="Search" v-model="searchTerm" />

@@ -5,7 +5,7 @@
         <button
           color="primary"
           v-bind="props"
-          class="btn mx-auto cancel-btn main-btn"
+          class="btn mx-auto cancel-btn my-2"
         >
           Cancel <i class="mx-1 fa-solid fa-xmark"></i>
         </button>
@@ -20,7 +20,7 @@
           <button class="btn cancel-btn mx-2" @click="Cancel" style="width: 70px;">Yes</button>
           <button class="btn main-btn mx-2" @click="dialog = false" >No</button>
         </v-card-actions>
-      
+      <div class="d-none">{{ bookingId }}</div>
       </v-card>
     </v-dialog>
   </v-row>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -35,13 +36,13 @@ export default {
     };
   },
   props:[
-
+    'bookingId'
   ]
 
 ,
   methods: {
     Cancel(){
-      fetch(`http://localhost:8080/api/bookings/${roomId}`, { method: 'DELETE' })
+      axios.delete(`http://localhost:8080/api/bookings/${this.bookingId}`)
     .then(() => this.status = 'Delete successful');
     this.dialog=false
     }
@@ -53,7 +54,7 @@ export default {
 
 <style>
 .cancel-btn {
-  background-color: rgb(169, 11, 11);
+  background-color: rgb(169, 11, 11) !important;
   color: #fff;
   border-radius: 15px;
   height: 50px;

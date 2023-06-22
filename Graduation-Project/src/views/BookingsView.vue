@@ -81,269 +81,7 @@ import PastCards from "@/components/PastCards.vue";
 export default {
   data() {
     return {
-      // allbookings: [
-        // {
-        //   id: 4,
-        //   startTime: "12:00:00",
-        //   endTime: "20:00:00",
-        //   date: "15-05-2023",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room1",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: 'https://www.propertyfinder.eg/blog/wp-content/uploads/2020/02/coworking.jpg',
-        //     space: "Comma",
-        //   },
-        //   user: {
-        //     userId: 1,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 5,
-        //   startTime: "12:00:00",
-        //   endTime: "14:00:00",
-        //   date: "15-03-2023",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room2",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "Woork Hub",
-        //   },
-        //   user: {
-        //     userId: 1,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 6,
-        //   startTime: "12:00:00",
-        //   endTime: "14:00:00",
-        //   date: "15-03-2023",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room3",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "302 Labs",
-        //   },
-        //   user: {
-        //     userId: 1,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 9,
-        //   startTime: "12:00:00",
-        //   endTime: "20:00:00",
-        //   date: "15-03-2024",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room1",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "Square",
-        //   },
-        //   user: {
-        //     userId: 3,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 4,
-        //   startTime: "12:00:00",
-        //   endTime: "20:00:00",
-        //   date: "15-03-2023",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room 5",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "Geeks Hub",
-        //   },
-        //   user: {
-        //     userId: 1,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 5,
-        //   startTime: "12:00:00",
-        //   endTime: "14:00:00",
-        //   date: "15-03-2023",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room1",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "Your Space",
-        //   },
-        //   user: {
-        //     userId: 1,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 6,
-        //   startTime: "12:00:00",
-        //   endTime: "14:00:00",
-        //   date: "15-03-2023",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room 7",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "Maqar",
-        //   },
-        //   user: {
-        //     userId: 1,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 9,
-        //   startTime: "12:00:00",
-        //   endTime: "20:00:00",
-        //   date: "15-03-2024",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room 8",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "Erro 404",
-        //   },
-        //   user: {
-        //     userId: 3,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-        // {
-        //   id: 9,
-        //   startTime: "12:00:00",
-        //   endTime: "20:00:00",
-        //   date: "15-03-2024",
-        //   room: {
-        //     roomId: 1,
-        //     number: 0,
-        //     name: "room 9",
-        //     activity: null,
-        //     type: null,
-        //     price: 0.0,
-        //     image: null,
-        //     space: "Hello",
-        //   },
-        //   user: {
-        //     userId: 3,
-        //     email: "test",
-        //     firstName: null,
-        //     lastName: null,
-        //     password: null,
-        //     mobileNo: null,
-        //     address: null,
-        //     birthDate: null,
-        //     bio: null,
-        //     points: 0,
-        //     picture: null,
-        //   },
-        // },
-      // ],
+      
       currentSlide: 0,
       currentSlidePast: 0,
       userID: localStorage.getItem("userID"),
@@ -361,10 +99,9 @@ export default {
   },
   beforeMount() {
     
-    console.log(this.userID)
     //upcoming bookings
     axios
-      .get(`http://localhost:8080/api/bookings/upComingBookings/18`)
+      .get(`http://localhost:8080/api/bookings/upComingBookings/${this.userID}`)
       .then((response) => {
         // Handle response
         this.upComingBookings = response.data;
@@ -377,10 +114,11 @@ export default {
 
       //past bookings
       axios
-      .get(`http://localhost:8080/api/bookings/pastBookings/18`)
+      .get(`http://localhost:8080/api/bookings/pastBookings/${this.userID}`)
       .then((response) => {
         // Handle response
         this.pastBookings = response.data;
+        console.log(this.pastBookings)
       })
       .catch((err) => {
         // Handle errors
@@ -392,38 +130,38 @@ export default {
   },
   methods: {
     nextSlide() {
-      if (this.currentSlide == this.bookings.length / 2 - 0.5) {
+      if (this.currentSlide == this.upComingBookings.length / 2 - 0.5) {
         this.currentSlide = 0;
       } else {
         this.currentSlide =
-          (this.currentSlide + 1) % (this.bookings.length / 2);
+          (this.currentSlide + 1) % (this.upComingBookings.length / 2);
       }
     },
     prevSlide() {
       if (this.currentSlide == 0) {
-        this.currentSlide = this.bookings.length / 2 - 0.5;
+        this.currentSlide = this.upComingBookings.length / 2 - 0.5;
       } else {
         this.currentSlide =
-          (this.currentSlide + this.bookings.length - 1) %
-          (this.bookings.length / 2);
+          (this.currentSlide + this.upComingBookings.length - 1) %
+          (this.upComingBookings.length / 2);
       }
     },
 
     nextSlidePast() {
-      if (this.currentSlidePast == this.pastbookings.length / 2 - 0.5) {
+      if (this.currentSlidePast == this.pastBookings.length / 2 - 0.5) {
         this.currentSlidePast = 0;
       } else {
         this.currentSlidePast =
-          (this.currentSlidePast + 1) % (this.pastbookings.length / 2);
+          (this.currentSlidePast + 1) % (this.pastBookings.length / 2);
       }
     },
     prevSlidePast() {
       if (this.currentSlidePast == 0) {
-        this.currentSlidePast = this.pastbookings.length / 2 - 0.5;
+        this.currentSlidePast = this.pastBookings.length / 2 - 0.5;
       } else {
         this.currentSlidePast =
-          (this.currentSlidePast + this.pastbookings.length - 1) %
-          (this.pastbookings.length / 2);
+          (this.currentSlidePast + this.pastBookings.length - 1) %
+          (this.pastBookings.length / 2);
       }
     },
   },
