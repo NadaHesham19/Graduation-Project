@@ -15,11 +15,14 @@
 
     <div class="container mt-5 pt-5">
 
-        <div class="row justify-content-center align-items-between" v-for="booking in bookings" :key="booking">
+        <div class="row justify-content-center align-items-between" v-for="booking in pagedBookings" :key="booking">
 
-            <BookingsAminCards class="slide my-3 col-lg-10"  :booking="booking"  />
+            <BookingsAminCards class="slide my-3 col-lg-10" :booking="booking" />
         </div>
-
+        <div class=" row numbers mt-5 mb-5 text-center">
+            <v-pagination active-color="#007CC7" color="#007CC7" v-model="currentPage" :length="totalPages"
+                :total-visible="7" prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
+        </div>
     </div>
 
     <Footer class="mt-5"></Footer>
@@ -35,29 +38,45 @@ import axios from 'axios'
 export default {
     data() {
         return {
-        bookings:[],
-        
+            bookings: [],
+            currentPage: 1,
+            bookingsPerPage: 4,
+            searchTerm: '',
         }
 
     },
     components: {
         AdminNav, BookingsAminCards, Footer, SearchSection
     },
-    beforeMount(){
-    //     axios.get("http://localhost:8080/api/bookings")
-    //   .then((response) => {
-    //     // Handle response
-    //     this.bookings = response.data;
-    //     console.log(this.bookings)
-    //   })
-    //   .catch((err) => {
-    //     // Handle errors
-    //     console.error(err);
-    //   });
+    computed: {
+        totalPages() {
+            const filteredBookings = this.bookings.filter(booking => booking.spaceName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+            return Math.ceil(filteredBookings.length / this.bookingsPerPage);
+        },
+
+        pagedBookings() {
+            let filteredBookings = this.bookings;
+            if (this.searchTerm) {
+                filteredBookings = this.bookings.filter(booking => booking.spaceName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+            }
+            const startIndex = (this.currentPage - 1) * this.bookingsPerPage;
+            const endIndex = startIndex + this.bookingsPerPage;
+            return filteredBookings.slice(startIndex, endIndex);
+        },
+    },
+    beforeMount() {
+        //     axios.get("http://localhost:8080/api/bookings")
+        //   .then((response) => {
+        //     // Handle response
+        //     this.bookings = response.data;
+        //     console.log(this.bookings)
+        //   })
+        //   .catch((err) => {
+        //     // Handle errors
+        //     console.error(err);
+        //   });
     }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
