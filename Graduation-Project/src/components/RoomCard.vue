@@ -4,7 +4,7 @@
         <div class="card-body">
             <h5 class="card-title fw-bolder"> {{ room.name }}</h5>
             <p class="card-text">Type: {{ room.type }}</p>
-            <p class="card-text">Capacity: {{ room.number }}</p>
+            <!-- <p class="card-text">Capacity: {{ room.number }}</p> -->
             <p class="card-text">Price: {{ room.price }}</p>
             <div class="text-center">
                 <BookCard :spaceId="spaceId" />
