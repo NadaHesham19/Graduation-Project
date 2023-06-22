@@ -38,8 +38,15 @@
                 </div>
                 <div class="col-6 mb-5">
                     <img class="img-fluid image mt-5 " :src="imageSrc" alt="" width="520">
+
                 </div>
             </div>
+
+            <div class="text-center">
+                <v-rating v-model="rating" hover half-increments></v-rating>
+                <pre>{{ rating }}</pre>
+            </div>
+
             <div class="row mt-5 pt-5">
                 <div class="location">
                     <h3 class="mb-5 pb-5 fw-bold">Our Locations:</h3>
@@ -98,6 +105,7 @@ export default {
             roomsPerPage: 3,
             searchTerm: '',
             imageSrc: "",
+            rating: 2.5
         }
     },
     components: { NavBar, RoomCard, Footer },

@@ -26,7 +26,8 @@
                                 <label for="start time">Start Time</label>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                                <input class="mt-2" type="time" v-model="start" list="timeOptions" />
+                                <input class="mt-2" type="time" v-model="start" list="timeOptions"
+                                    :disabled="disabledTimes.includes(start)" />
                                 <datalist id="timeOptions">
                                     <option value="01:00"></option>
                                     <option value="01:30"></option>
@@ -84,7 +85,8 @@
                                 <label for="End Time">End Time </label>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                                <input class="mt-2" type="time" v-model="End" list="timeOptions" />
+                                <input class="mt-2" type="time" v-model="end" list="timeOptions"
+                                    :disabled="disabledTimes.includes(end)" />
                                 <datalist id="timeOptions">
                                     <option value="01:00"></option>
                                     <option value="01:30"></option>
@@ -166,7 +168,12 @@ export default {
         menu: false,
         start: null,
         end: null,
-    }),
+
+    }), props: ['spaceId'],
+    mounted() {
+        console.log(this.spaceId, "id")
+
+    },
     methods: {
         book() {
             this.dialog = false;
@@ -198,7 +205,28 @@ export default {
     },
     components: {
         VueDatePicker,
-    },
+    }, computed: {
+        disabledTimes() {
+            const startTime = '10:00:00';
+            const endTime = '12:00:00';
+            const timeOptions = [
+                '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00',
+                '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30',
+                '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00',
+                '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30',
+                '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00',
+                '23:30', '00:00', '00:30'
+            ];
+
+            // Filter out the time options that are outside the specified range
+            const disabledTimes = timeOptions.filter(time => {
+                const timeValue = this.convertTime12to24(time);
+                return timeValue < startTime || timeValue > endTime;
+            });
+            console.log(disabledTimes)
+            return disabledTimes;
+        }
+    }
 };
 </script>
 

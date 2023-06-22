@@ -7,7 +7,7 @@
             <p class="card-text">Capacity: {{ room.number }}</p>
             <p class="card-text">Price: {{ room.price }}</p>
             <div class="text-center">
-                <BookCard />
+                <BookCard :spaceId="spaceId" />
             </div>
         </div>
     </div>
@@ -21,6 +21,7 @@ export default {
     data() {
         return {
             imageSrc: "",
+            spaceId: this.$route.params.id,
         };
     }, components: { BookCard },
     props: [
