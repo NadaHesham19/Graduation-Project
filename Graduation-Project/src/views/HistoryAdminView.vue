@@ -6,7 +6,7 @@
 
         <div class="my-5 row justify-content-center align-items-center">
             <div class="col-lg-4 my-3">
-
+                
             </div>
 
         </div>
@@ -38,35 +38,28 @@ export default {
     data() {
         return {
 
-
+        
             currentPage: 1,
             bookingsPerPage: 4,
             searchTerm: '',
-            bookings: [],
+            bookings:[],
         }
 
     },
     components: {
         AdminNav, HistoryCard, Footer
-    },
-    beforeMount() {
-        this.jsessionId = localStorage.getItem('jsessionidValue')
-        axios.get("http://localhost:8080/api/bookings/admin/pastBookings",
-            {
-                headers: {
-                    'Cookie': this.jsessionId,
-                }
-
-            },)
-            .then((response) => {
-                // Handle response
-                this.bookings = response.data;
-                // console.log(this.bookings)
-            })
-            .catch((err) => {
-                // Handle errors
-                console.error(err);
-            });
+    }, 
+    beforeMount(){
+         axios.get("http://localhost:8080/api/bookings/admin/pastBookings")
+      .then((response) => {
+        // Handle response
+        this.bookings = response.data;
+        // console.log(this.bookings)
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
     },
     computed: {
         totalPages() {
@@ -87,4 +80,5 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

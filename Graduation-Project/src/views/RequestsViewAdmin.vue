@@ -134,13 +134,7 @@ export default {
 
     },
     beforeMount() {
-        this.jsessionId = localStorage.getItem('jsessionidValue')
-        axios.get('http://localhost:8080/api/admin/requests/?status=pending' , {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },)
+        axios.get('http://localhost:8080/api/admin/requests/?status=pending')
             .then((response) => {
                 this.req = response.data
                 console.log(response.data)

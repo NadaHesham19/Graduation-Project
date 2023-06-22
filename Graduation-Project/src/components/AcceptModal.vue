@@ -37,7 +37,6 @@ export default {
     return {
       dialog: false,
       userID:localStorage.getItem('userID'),
-      jsessionId : localStorage.getItem('jsessionidValue')
       
       /*status: 'approved'*/
       
@@ -52,13 +51,7 @@ export default {
   methods: {
     Accept(){
      const url = `http://localhost:8080/api/admin/requests/?status=approved&requestID=${this.requestId}`
-      axios.post(url,
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },)
+      axios.post(url)
       .then((response)=>{
       this.status = 'approved'
       //console.log(this.status)

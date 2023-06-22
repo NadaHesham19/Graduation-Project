@@ -114,14 +114,8 @@ export default {
         this.fetchImage();
     },
     beforeMount() {
-        this.jsessionId = localStorage.getItem('jsessionidValue')
         axios
-            .get(`http://localhost:8080/api/spaces/${this.spaceId}`, {
-                headers: {
-                    'Cookie': this.jsessionId,
-                }
-
-            },)
+            .get(`http://localhost:8080/api/spaces/${this.spaceId}`)
             .then((response) => {
                 console.log(response.data)
                 this.spaceDetails = response.data;
@@ -130,12 +124,7 @@ export default {
                 console.error(err);
             });
         axios
-            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}`, {
-                headers: {
-                    'Cookie': this.jsessionId,
-                }
-
-            },)
+            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}`)
             .then((response) => {
                 console.log(response.data)
                 this.rooms = response.data;
@@ -144,12 +133,7 @@ export default {
                 console.error(err);
             });
         axios
-            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}`, {
-                headers: {
-                    'Cookie': this.jsessionId,
-                }
-
-            },)
+            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}`)
             .then((response) => {
                 console.log(response.data, "location")
                 this.location = response.data;

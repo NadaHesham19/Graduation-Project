@@ -33,8 +33,6 @@ export default {
   data() {
     return {
       dialog: false,
-      jsessionId : localStorage.getItem('jsessionidValue')
-
     };
   },
   props:[
@@ -44,14 +42,7 @@ export default {
 ,
   methods: {
     Cancel(){
-      axios.delete(`http://localhost:8080/api/bookings/${this.bookingId}`,
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },
-      )
+      axios.delete(`http://localhost:8080/api/bookings/${this.bookingId}`)
     .then(() => this.status = 'Delete successful');
     this.dialog=false
     }

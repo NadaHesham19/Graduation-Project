@@ -56,21 +56,13 @@ export default {
         { message: "One number required.", regex: /[0-9]+/ },
       ],
       userEmail: '',
-      jsessionId : localStorage.getItem('jsessionidValue')
     }
   },
   methods: {
-    
     ResetPassword() {
       //user id will be from the url
 
       axios.patch(`http://localhost:8080/api/user/updatePassword?email=${this.userEmail}`,
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },
         {
           password: this.newPass
         })

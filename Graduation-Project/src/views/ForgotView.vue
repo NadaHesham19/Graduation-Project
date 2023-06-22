@@ -31,8 +31,6 @@ export default {
     return {
       email: "",
       userID: null,
-      jsessionId : localStorage.getItem('jsessionidValue')
-
     }
   },
   methods: {
@@ -48,13 +46,7 @@ export default {
       const url = `http://localhost:8080/api/user/resetPassword?email=${userEmail}&link=${link}`;
 
       axios
-        .post(url , 
-        {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },)
+        .post(url)
         .then((response) => {
           if (response.data.error) {
             this.error = true;

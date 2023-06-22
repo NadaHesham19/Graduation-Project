@@ -48,7 +48,6 @@ export default {
     return {
       booking: null,
       id: "",
-      jsessionId : localStorage.getItem('jsessionidValue')
     };
   },
   // beforeMount() {
@@ -91,13 +90,7 @@ export default {
   methods:{
     approve(){
  
-    axios.post(`http://localhost:8080/api/bookings/scan/${this.id}`,
-    {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },)
+    axios.post(`http://localhost:8080/api/bookings/scan/${this.id}`,{})
     }
   }
 };

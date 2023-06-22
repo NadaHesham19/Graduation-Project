@@ -37,9 +37,8 @@
       return {
         dialog: false,
         userID: localStorage.getItem('userID'),
-        status : 'declined',
-        jsessionId : localStorage.getItem('jsessionidValue')
-
+        
+        status : 'declined'
       };
     },
     props:[
@@ -55,13 +54,7 @@
       this.dialog=false
       }*/
       const url = `http://localhost:8080/api/admin/requests/?status=declined&requestID=${this.requestId}`
-      axios.post(url,
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },)
+      axios.post(url)
       .then((response)=>{
       this.status = 'declined',
       console.log(this.status) 
