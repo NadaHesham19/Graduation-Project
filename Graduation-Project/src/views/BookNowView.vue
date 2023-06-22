@@ -6,7 +6,7 @@
     </div>
     <div class="row justify-content-evenly">
       <div class="col-4" v-for="(space) in pagedSpaces" :key="space.spaceId">
-        <SpaceCard :space="space"  v-model="user.address"/>
+        <SpaceCard :space="space" v-model="user.address" />
       </div>
     </div>
     <div class=" row numbers mt-5 mb-5 text-center">
@@ -101,11 +101,11 @@ export default ({
       currentPage: 1,
       spacesPerPage: 6,
       searchTerm: '',
-      user:[
+      user: [
         {
-          address:''
+          address: ''
         }
-        
+
       ],
 
     }

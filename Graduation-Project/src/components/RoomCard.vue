@@ -6,9 +6,8 @@
             <p class="card-text">Type: {{ room.type }}</p>
             <p class="card-text">Capacity: {{ room.number }}</p>
             <p class="card-text">Price: {{ room.price }}</p>
-
             <div class="text-center">
-                <button class="btn mx-auto main-btn">Book</button>
+                <BookCard />
             </div>
         </div>
     </div>
@@ -16,12 +15,14 @@
 
 <script>
 import axios from "axios";
+import BookCard from "./BookCard.vue";
+
 export default {
     data() {
         return {
             imageSrc: "",
         };
-    },
+    }, components: { BookCard },
     props: [
         'room'
     ],
