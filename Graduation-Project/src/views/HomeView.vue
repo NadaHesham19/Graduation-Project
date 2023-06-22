@@ -41,7 +41,7 @@
   </div>
 
   <!--ChatBot-->
-  <button class="open-button" @click="openForm()"><i class="far fa-comment"></i></button>
+  <button class="open-button" @click="openForm()"><i class="far fa-comment justify-content-center align-items-center"></i></button>
   <div class="chat-popup" id="myForm">
     <form class="form-container" @submit.prevent="sendEmail()">
       <h5>Welcome, How can we help you?</h5>

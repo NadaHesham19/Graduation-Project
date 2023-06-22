@@ -175,6 +175,7 @@ body {
     padding-top: 40px;
     font-size: 20px;
     margin-left: 50px;
+
 }
 
 hr {
@@ -187,7 +188,7 @@ hr {
     grid-template-columns: auto auto auto auto;
     color: var(--light);
     font-size: 15px;
-    margin-left: 50px;
+    margin-left: 100px;
 
 
 }
