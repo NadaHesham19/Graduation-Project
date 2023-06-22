@@ -92,7 +92,7 @@ const router = createRouter({
       component: SpaceView
     },
     {
-      path: '/resetpassword',
+      path: '/resetpassword/:id',
      name: 'reset',
      component: ResetPassword
    },
@@ -102,7 +102,7 @@ const router = createRouter({
     component:QrCodeView
    },
    {
-    path:'/extraaddnew',
+    path:'/extraaddnew/:id',
     name:'ExtraAddNew',
     component:ExtraAddNewView
    }

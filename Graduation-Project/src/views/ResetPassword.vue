@@ -1,10 +1,7 @@
 <template>
   <simple-nav></simple-nav>
   <div class="container mt-5">
-    <v-alert color="success" icon="$success" title="Submitted Successfully" text="Data is updated successfully"
-      id="hideme" v-if="flag"></v-alert>
-    <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
-      v-if="error"></v-alert>
+
     <div class="row justify-content-center align-items-center mb-5 ">
       <div class="col-lg-7 addNew">
         <h1 class="text-center my-5">Reset Password</h1>
@@ -12,21 +9,21 @@
 
           <input type="password" class="col-lg-7 mb-4 inputText" style="background-color: #d4d4d4"
             placeholder="New Password" v-model="newPass" required />
-            <div v-if="passwordValidation.errors.length > 0 && newPass.length > 0" class="col-lg-7 mb-4">
-          <span v-for="error in passwordValidation.errors" :key="error" class="error">
-            {{ error }}
-          </span>
-        </div>
+          <div v-if="passwordValidation.errors.length > 0 && newPass.length > 0" class="col-lg-7 mb-4">
+            <span v-for="error in passwordValidation.errors" :key="error" class="error">
+              {{ error }}
+            </span>
+          </div>
 
         </div>
         <div class="row justify-content-center">
           <input type="password" class="col-lg-7 mb-4 inputText" style="background-color: #d4d4d4"
-           placeholder="Confirm Your Password" v-model.lazy="newpassCon" required />
-           <div class="error col-lg-7" v-if="notSamePasswords">
-          <p>Passwords don't match</p>
-        </div>       
+            placeholder="Confirm Your Password" v-model.lazy="newpassCon" required />
+          <div class="error col-lg-7" v-if="notSamePasswords">
+            <p>Passwords don't match</p>
           </div>
-        
+        </div>
+
         <div class="row justify-content-center align-items-center mt-3">
           <button class="col-lg-3 mb-5 text-center main-btn" type="submit" @click="ResetPassword()">
             Update
@@ -34,6 +31,10 @@
         </div>
       </div>
     </div>
+    <v-alert color="success" icon="$success" title="Submitted Successfully" text="Data is updated successfully"
+      id="hideme" v-if="flag"></v-alert>
+    <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+      v-if="error"></v-alert>
   </div>
 </template>
   
@@ -69,8 +70,9 @@ export default {
             this.error = true
           } else {
             this.flag = true;
-            this.newPass="";
-            this.newpassCon="";
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 2000);
 
           }
           console.log(res.data)
@@ -78,10 +80,7 @@ export default {
         .catch((e) => {
           console.log(e)
         });
-      setTimeout(() => {
-        this.flag = false
-        this.error = false
-      }, 3000);
+
     }
 
   },
@@ -112,12 +111,12 @@ export default {
       }
     },
   },
-  //userid from the url
-  // mounted() {
-  //   // Access the userID parameter from the URL
-  //   const userID = this.$route.params.userID;
-  //   console.log(userID);
-  // },
+  // userid from the url
+  mounted() {
+    // Access the userID parameter from the URL
+    const userID = this.$route.params.userID;
+    console.log(userID);
+  },
 
   components: {
     SimpleNav

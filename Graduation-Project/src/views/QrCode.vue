@@ -6,20 +6,20 @@
       <h4 class="text-center profile-text">Booking Details</h4>
     </div>
       <div class="row justify-content-center w-100">
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-sm-10">
           <label for="" class="">Space Name:</label>
           <span class="">{{ booking.spaceName }} </span>
         </div>
       </div>
       <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-sm-10">
           <label class="" for="">Start Time:</label>
           <span class="">{{ booking.startTime }} </span>
 
         </div>
       </div>
       <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-sm-10">
           <label class="" for="">End Time:</label>
           <span class="">{{ booking.endTime }}</span>
 
@@ -27,7 +27,7 @@
       </div>
 
       <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-sm-10">
           <label class="" for="">Date:</label>
           <span class="">{{ booking.date }}
           </span>
@@ -36,10 +36,10 @@
       
     </div>
     <div class="row justify-content-center my-5">
-        <button class="bttn-profile col-lg-2 my-5" type="submit" @click="">
+        <button class="main-btn col-lg-2 my-5  mx-2" type="submit" @click="">
           Approve
         </button>
-        <button class="bttn-profile col-lg-2 my-5" type="submit" @click="">
+        <button class="main-btn col-lg-2 my-5  mx-2" type="submit" @click="">
           Cancel
         </button>
       </div>
@@ -63,6 +63,7 @@ export default {
         "spaceName": "space1",
         "qrScan": false
       },
+      id:''
     };
   },
   beforeMount() {
@@ -85,6 +86,11 @@ export default {
     // console.log(header)
     // console.log(payload)
 
+  },
+  mounted(){
+      // Access ID from the URL
+      // this.id = this.$route.params.id;
+      
   },
   components: {
     SimpleNav,

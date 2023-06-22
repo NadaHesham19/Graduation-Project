@@ -118,7 +118,7 @@
         </div>
       </div>
       <div class="row justify-content-center my-5">
-        <button class="bttn-profile col-lg-2 my-5" type="submit" @click="SaveEditting">
+        <button class="main-btn col-lg-2 my-5" type="submit" @click="SaveEditting">
           Save
         </button>
       </div>
@@ -163,9 +163,9 @@ export default {
       // this.userMobile = this.user.mobileNo.toString();
 
 
-      axios.patch(`http://localhost:8080/api/user/${this.userID}`,
+      axios.put(`http://localhost:8080/api/user/${this.userID}`,
         {
-          firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio
+          firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio , userId:this.userID
         }).then((res) => {
           if (res.data.error) {
             this.error = true

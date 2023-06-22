@@ -9,8 +9,9 @@ import { createVuetify } from 'vuetify'
 import '@mdi/font/css/materialdesignicons.css'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-// import FlashMessage from '@smartweb/vue-flash-message';
-// import { useJwt } from 'jwt-decode'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import { VueCryptojs } from 'vue-cryptojs'
 
 
 const vuetify = createVuetify({
@@ -27,5 +28,6 @@ app.use(vuetify)
 app.use(router)
 // app.use(useJwt)
 // app.use(FlashMessage);
-
+app.component('VueDatePicker', VueDatePicker);
+app.use(VueCryptojs);
 app.mount('#app')
