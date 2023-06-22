@@ -65,16 +65,23 @@ export default {
         },
     },
     beforeMount() {
-            axios.get("http://localhost:8080/api/bookings/admin/upcomingBookings")
-          .then((response) => {
-            // Handle response
-            this.bookings = response.data;
-            console.log(this.bookings)
-          })
-          .catch((err) => {
-            // Handle errors
-            console.error(err);
-          });
+        this.jsessionId = localStorage.getItem('jsessionidValue')
+        axios.get("http://localhost:8080/api/bookings/admin/upcomingBookings",
+            {
+                headers: {
+                    'Cookie': this.jsessionId,
+                }
+
+            },)
+            .then((response) => {
+                // Handle response
+                this.bookings = response.data;
+                console.log(this.bookings)
+            })
+            .catch((err) => {
+                // Handle errors
+                console.error(err);
+            });
     }
 }
 </script>

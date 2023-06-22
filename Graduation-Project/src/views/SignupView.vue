@@ -183,18 +183,21 @@ export default {
       axios
         .post(url, { withCredentials: true })
         .then((response) => {
-          const cookies = document.cookie.split(';');
+         const cookies = document.cookie.split(';');
+         
 
           // Find the 'jsessionid' cookie
           let jsessionidValue = null;
           cookies.forEach(cookie => {
             const [name, value] = cookie.trim().split('=');
-            if (name === 'jsessionid') {
+            if (name === 'JSESSIONID') {
               jsessionidValue = value;
             }
 
           })
-          console.log(jsessionidValue)
+          
+         console.log(jsessionidValue)
+          localStorage.setItem("jsessionidValue", jsessionidValue);
           if (response.data.error) {
             this.error = true;
           } else {
@@ -204,6 +207,8 @@ export default {
             localStorage.setItem("userID", this.user.userId);
             this.$router.push("/home");
           }
+
+          /*this.$cookies.get(jsessionid)*/
         })
         .catch((err) => {
           // Handle errors

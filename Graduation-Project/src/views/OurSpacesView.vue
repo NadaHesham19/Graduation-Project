@@ -71,8 +71,14 @@ export default {
         }
     },
     beforeMount() {
+        this.jsessionId = localStorage.getItem('jsessionidValue')
         axios
-            .get("http://localhost:8080/api/spaces")
+            .get("http://localhost:8080/api/spaces", {
+                headers: {
+                    'Cookie': this.jsessionId,
+                }
+
+            },)
             .then((response) => {
                 console.log(response.data)
                 this.spaces = response.data;

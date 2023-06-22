@@ -1,11 +1,11 @@
 <template>
-  <NavBar/>
-  <div class="container my-5 ">
+  <NavBar />
+  <div class="container my-5">
     <div class="request">
       <div class="title t">Requests</div>
       <hr />
       <div class="info" v-for="item in info" v-bind:key="item.requestId">
-        <div class="title" >{{ item.requestId}}</div>
+        <div class="title">{{ item.requestId }}</div>
       </div>
     </div>
     <div class="name">
@@ -22,9 +22,15 @@
         <!--<div class="title" v-if="item.status=='approved'" :style="{'background-color':accept.backgroundColor ,'height':accept.height + 'px' , 'width':accept.width +'px' , 'margin-top':accept.marginTop+'px'}">{{item.status}}</div>
         <div class="title" v-else-if="item.status=='declined'" :style="decline">{{item.status}}</div>
         <div class="title" v-else :style="pend">{{item.status}}</div>-->
-        <button class="accepted title titleA" disabled v-if="item.status=='approved'"  >{{item.status}}</button>
-        <button class="declined title titleD"  disabled v-else-if="item.status=='declined'" >{{item.status}}</button>
-        <button class="pending title titleP" disabled  v-else >{{item.status}}</button>
+        <button class="accepted title titleA" disabled v-if="item.status == 'approved'">
+          {{ item.status }}
+        </button>
+        <button class="declined title titleD" disabled v-else-if="item.status == 'declined'">
+          {{ item.status }}
+        </button>
+        <button class="pending title titleP" disabled v-else>
+          {{ item.status }}
+        </button>
 
         <!--<button class="accept "  v-if="item.status=='approved'">{{item.status}}</button>
         <button class="decline "  v-else-if="item.status=='declined'">{{item.status}}</button>
@@ -46,29 +52,40 @@ export default {
     NavBar,
     Footer,
   },
-  data(){
-    return{
-      info:[
+  data() {
+    return {
+      info: [
         {
-          name:'',
-          requestId:'',
-          status:'',
-          userId: ''
+          name: '',
+          requestId: '',
+          status: '',
+          userId: '',
           /*errorMsg:''*/
+          jsessionId:''
+          
 
         }
       ],
-      
+
     }
   },
-  methods:{
-    
+  methods: {
+
   },
- 
-  beforeMount(){
+
+  beforeMount() {
     this.userId = localStorage.getItem('userID')
-      axios.get(`http://localhost:8080/api/requests/users/${this.userId}`)
-      .then((response)=>{
+    this.jsessionId = localStorage.getItem('jsessionidValue')
+
+    axios.get(`http://localhost:8080/api/requests/users/${this.userId}`,
+      {
+        headers:{
+          'Cookie': this.jsessionId,
+        }
+          
+      },
+    )
+      .then((response) => {
         this.info = response.data
         console.log(response.data)
       })
@@ -76,10 +93,9 @@ export default {
         // Handle errors
         console.error(err);
       });
-    },
-  };
+  },
+};
 </script>
-
 
 <style scoped>
 body {
@@ -88,7 +104,6 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: var(--background);
 }
-
 
 .container {
   display: grid;
@@ -99,6 +114,7 @@ body {
   width: fit-content;
   padding-bottom: 50px;
 }
+
 .title {
   color: var(--light);
   font-size: 20px;
@@ -106,21 +122,22 @@ body {
 }
 
 .titleA {
-  color:rgb(66, 216, 66);
+  color: rgb(66, 216, 66);
   font-size: 20px;
   text-align: center;
 }
+
 .titleD {
   color: rgb(248, 15, 15);
   font-size: 20px;
   text-align: center;
 }
+
 .titleP {
-  color:grey;
+  color: grey;
   font-size: 20px;
   text-align: center;
 }
-
 
 .t {
   font-weight: bold;

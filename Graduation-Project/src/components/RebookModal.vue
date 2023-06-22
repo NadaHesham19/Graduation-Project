@@ -18,26 +18,30 @@
             <v-row>
               <v-col cols="12" sm="10" md="8">
                 <VueDatePicker :model-value="date" :min-date="new Date()" :enable-time-picker="false"
-                  @update:model-value="getAvailableTime" />
+                  @update:model-value="getAvailableTime" v-model="date" />
               </v-col>
             </v-row>
             <v-row>
 
               <v-col cols="12" sm="6" md="4">
-                <label for="start time">Start Time</label>
+                <label for="start time" class="time-dropdown__label">Start Time</label>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <input type="time" v-model="start" />
+                <select id="time" v-model="selectedTime" :disabled="flag" class="time-dropdown__select">
+                  <option v-for="time in times" :value="start" class="time-dropdown__option">{{ time }}</option>
+                </select>
 
               </v-col>
             </v-row>
             <v-row>
 
               <v-col cols="12" sm="6" md="4">
-                <label for="End Time">End Time</label>
+                <label for="End Time" class="time-dropdown__label">End Time</label>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <input type="time" v-model="End" />
+                <select id="time" v-model="selectedTime" :disabled="flag" class="time-dropdown__select">
+                  <option v-for="time in times" :value="end" class="time-dropdown__option">{{ time }}</option>
+                </select>
 
               </v-col>
 
@@ -73,6 +77,7 @@ export default {
     menu: false,
     start: null,
     end: null,
+    flag: true,
     times: [
       "09:00",
       "10:00",
@@ -126,15 +131,24 @@ export default {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     },
-  },beforeMount(){
+  },
+  beforeMount() {
+    this.jsessionId = localStorage.getItem('jsessionidValue')
     axios
-      .get(`http://localhost:8080/api/user/${this.userID}`)
+      .get(`http://localhost:8080/api/user/${this.userID}`,
+        {
+          headers: {
+            'Cookie': this.jsessionId,
+          }
+
+        },
+      )
       .then((response) => {
-      
+
         // Handle response
         this.user = response.data;
-        if(this.user.points>10){
-           this.value=false
+        if (this.user.points > 10) {
+          this.value = false
         }
       })
       .catch((err) => {
@@ -144,7 +158,7 @@ export default {
 
   },
   components: {
-   VueDatePicker,
+    VueDatePicker,
   },
 };
 </script>
@@ -177,5 +191,27 @@ export default {
 .cancel-btn:hover {
   color: var(--darkblue) !important;
   font-weight: 700 !important;
+}
+
+
+.time-dropdown__label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.time-dropdown__select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.time-dropdown__option {
+  padding: 5px;
+}
+
+.time-dropdown__selected {
+  font-style: italic;
 }
 </style>

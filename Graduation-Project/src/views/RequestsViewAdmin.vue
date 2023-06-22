@@ -134,7 +134,13 @@ export default {
 
     },
     beforeMount() {
-        axios.get('http://localhost:8080/api/admin/requests/?status=pending')
+        this.jsessionId = localStorage.getItem('jsessionidValue')
+        axios.get('http://localhost:8080/api/admin/requests/?status=pending' , {
+        headers:{
+          'Cookie': this.jsessionId,
+        }
+          
+      },)
             .then((response) => {
                 this.req = response.data
                 console.log(response.data)
@@ -175,6 +181,7 @@ body {
     padding-top: 40px;
     font-size: 20px;
     margin-left: 50px;
+
 }
 
 hr {
@@ -187,7 +194,7 @@ hr {
     grid-template-columns: auto auto auto auto;
     color: var(--light);
     font-size: 15px;
-    margin-left: 50px;
+    margin-left: 100px;
 
 
 }

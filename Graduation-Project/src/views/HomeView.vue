@@ -41,7 +41,7 @@
   </div>
 
   <!--ChatBot-->
-  <button class="open-button" @click="openForm()"><i class="far fa-comment"></i></button>
+  <button class="open-button" @click="openForm()"><i class="far fa-comment justify-content-center align-items-center"></i></button>
   <div class="chat-popup" id="myForm">
     <form class="form-container" @submit.prevent="sendEmail()">
       <h5>Welcome, How can we help you?</h5>
@@ -74,7 +74,8 @@ export default {
     return{
       chat:[{
         userId : localStorage.getItem('userID'),
-        msg: ''
+        msg: '',
+        jsessionId : localStorage.getItem('jsessionidValue')
 
       }]
       
@@ -90,7 +91,13 @@ export default {
       document.getElementById("myForm").style.display = "none";
     },
     sendEmail() {
-      axios.post(`http://localhost:8080/api/message?userId=${this.userId}&message=${this.msg}` , this.chat)
+      axios.post(`http://localhost:8080/api/message?userId=${this.userId}&message=${this.msg}` , this.chat , 
+      {
+        headers:{
+          'Cookie': this.jsessionId,
+        }
+          
+      },)
         .then(response => {
           // Handle response
           this.chat = response.data

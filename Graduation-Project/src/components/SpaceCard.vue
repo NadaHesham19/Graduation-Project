@@ -21,6 +21,8 @@ export default {
     data() {
         return {
             imageSrc: "",
+            jsessionId: localStorage.getItem('jsessionidValue')
+
         };
     }
     , props: [
@@ -34,9 +36,16 @@ export default {
     methods: {
         fetchImage() {
             axios
-                .get(`http://localhost:8080/api/images/space/${this.space.spaceId}/0`, {
-                    responseType: "arraybuffer",
-                })
+                .get(`http://localhost:8080/api/images/space/${this.space.spaceId}/0`,
+                    {
+                        headers: {
+                            'Cookie': this.jsessionId,
+                        }
+
+                    },
+                    {
+                        responseType: "arraybuffer",
+                    })
                 .then((response) => {
                     const blob = new Blob([response.data], { type: "image/jpeg" }); // Create a Blob 
                     this.imageSrc = URL.createObjectURL(blob); //  URL for the Blob

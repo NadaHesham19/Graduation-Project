@@ -98,10 +98,17 @@ export default {
     PastCards,
   },
   beforeMount() {
+    this.jsessionId = localStorage.getItem('jsessionidValue')
     
     //upcoming bookings
     axios
-      .get(`http://localhost:8080/api/bookings/upComingBookings/${this.userID}`)
+      .get(`http://localhost:8080/api/bookings/upComingBookings/${this.userID}` , 
+      {
+        headers:{
+          'Cookie': this.jsessionId,
+        }
+          
+      },)
       .then((response) => {
         // Handle response
         this.upComingBookings = response.data;
@@ -114,7 +121,13 @@ export default {
 
       //past bookings
       axios
-      .get(`http://localhost:8080/api/bookings/pastBookings/${this.userID}`)
+      .get(`http://localhost:8080/api/bookings/pastBookings/${this.userID}` , 
+      {
+        headers:{
+          'Cookie': this.jsessionId,
+        }
+          
+      },)
       .then((response) => {
         // Handle response
         this.pastBookings = response.data;
