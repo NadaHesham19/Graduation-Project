@@ -141,8 +141,8 @@ export default {
   data() {
     return {
       // userBio:this.user.bio,
-      imgSrc:null,
-        // "https://i.stack.imgur.com/l60Hf.png",
+      imgSrc:
+        "https://i.stack.imgur.com/l60Hf.png",
       user: null,
       userID: localStorage.getItem('userID'),
       flag: false,
@@ -192,23 +192,26 @@ export default {
         // Handle response
         this.user = response.data;
         console.log(this.user)
+        if(this.user.bio.length == 0){
+      this.userBio = "Please enter your bio"
+        }
       })
       .catch((err) => {
         // Handle errors
         console.error(err);
       });
 
-      axios
-      .get(`http://localhost:8080/api/images/user/${this.userID}`)
-      .then((response) => {
-        // Handle response
-        this.imgSrc = response.data;
-        console.log(this.imgSrc)
-      })
-      .catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
+      // axios
+      // .get(`http://localhost:8080/api/images/user/${this.userID}`)
+      // .then((response) => {
+      //   // Handle response
+      //   this.imgSrc = response.data;
+      //   console.log(this.imgSrc)
+      // })
+      // .catch((err) => {
+      //   // Handle errors
+      //   console.error(err);
+      // });
 
     // if(this.user.bio.length == 0){
     //   this.userBio = "Please enter your bio"

@@ -90,8 +90,7 @@
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
-        <label style="color: white;" for="">Please upload your image</label>
-        <input type="file" placeholder="Please upload your Photo"  accept="image/*" @change="handleFileSelect" required/>
+        
         <button
           type="submit"
           class="btn signup"
@@ -239,17 +238,7 @@ export default {
         this.flag = false;
         this.error = false;
       }, 3000);
-      //post image
-      axios.post("http://localhost:8080/api/images", {
-      image:this.selectedImages,userId:this.userID
-
-
-      });
-
-      then((response) => {
-        if (response.data.error) {
-          console.log(response.data.error)
-        } })
+    
       
     },
     resetPasswords() {
