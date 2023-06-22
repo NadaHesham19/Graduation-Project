@@ -16,6 +16,10 @@
         </div>
       </div>
     </div>
+    <v-alert color="success" icon="$success" title="Submitted Successfully" text="Data is updated successfully"
+      id="hideme" v-if="flag"></v-alert>
+    <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+      v-if="error"></v-alert>
   </div>
 </template>
 
@@ -32,12 +36,13 @@ export default {
   },
   methods: {
     SendAnEmail() {
-      const encryptedData = CryptoJS.AES.encrypt(this.email, 'Secret Key').toString(); 
+      const encryptedData = CryptoJS.AES.encrypt(this.email, 'SecretKey').toString(); 
+      console.log(this.email)
       console.log(encryptedData)   
       const userEmail = this.email;
-      const link = `http://localhost:5173/resetpassword/${encryptedData}`
+      const link = 'http://localhost:5173/resetpassword/'+encryptedData;
 
-      const url = `http://localhost:8080/api/user/resetPassword?${userEmail}&${link}`;
+      const url = `http://localhost:8080/api/user/resetPassword?email=${userEmail}&link=${link}`;
 
       axios
         .post(url)
@@ -51,6 +56,7 @@ export default {
         })
         .catch((err) => {
           // Handle errors
+          this.error = true;
           console.error(err);
         });
     }

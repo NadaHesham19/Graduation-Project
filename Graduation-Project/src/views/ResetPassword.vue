@@ -80,6 +80,7 @@ export default {
           console.log(res.data)
         })
         .catch((e) => {
+          this.error = true
           console.log(e)
         });
 
@@ -114,13 +115,12 @@ export default {
     },
   },
   // userid from the url
-  beforeMount() {
+ beforeMount() {
     // Access the userID parameter from the URL
-    const encryptedEmail = this.$route.params.id;
-    const bytes = CryptoJS.AES.decrypt(encryptedEmail, 'Secret Key');
+    const encryptedEmail = this.$route.params.email;
+    const bytes = CryptoJS.AES.decrypt(encryptedEmail, 'SecretKey');
     
     this.userEmail = bytes.toString(CryptoJS.enc.Utf8);
-    console.log(this.userEmail)
 
   },
 

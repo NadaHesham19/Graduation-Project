@@ -65,16 +65,16 @@ export default {
         },
     },
     beforeMount() {
-        //     axios.get("http://localhost:8080/api/bookings")
-        //   .then((response) => {
-        //     // Handle response
-        //     this.bookings = response.data;
-        //     console.log(this.bookings)
-        //   })
-        //   .catch((err) => {
-        //     // Handle errors
-        //     console.error(err);
-        //   });
+            axios.get("http://localhost:8080/api/bookings/admin/upcomingBookings")
+          .then((response) => {
+            // Handle response
+            this.bookings = response.data;
+            console.log(this.bookings)
+          })
+          .catch((err) => {
+            // Handle errors
+            console.error(err);
+          });
     }
 }
 </script>

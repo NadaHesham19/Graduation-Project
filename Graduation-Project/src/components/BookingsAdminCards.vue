@@ -12,7 +12,7 @@
                 <p class="card-text ">Paymen Method: {{ booking.paymentMethod }}</p>
                 <p class="d-none" >{{ booking.id }}</p>
                 <p class="d-none" >{{ booking.roomId }}</p>
-                <CancelModal></CancelModal>
+                <CancelModal :booking-id="booking.id"></CancelModal>
 
             </div>
         </div>

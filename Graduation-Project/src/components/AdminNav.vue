@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <router-link class="navbar-brand logo" to="/home">
+        <router-link class="navbar-brand logo" to="/ourspacesadmin">
           <img
             class="img-fluid pb-1 ps-0"
             width="83.5"
