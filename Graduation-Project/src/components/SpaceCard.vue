@@ -37,12 +37,7 @@ export default {
         fetchImage() {
             axios
                 .get(`http://localhost:8080/api/images/space/${this.space.spaceId}/0`,
-                    {
-                        headers: {
-                            'Cookie': this.jsessionId,
-                        }
 
-                    },
                     {
                         responseType: "arraybuffer",
                     })

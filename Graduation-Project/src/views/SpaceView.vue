@@ -46,7 +46,7 @@
                     <h3>Review:</h3>
                     <v-rating v-model="rating" hover half-increments></v-rating>
                     <!-- <pre class="text-center">{{ rating }}</pre> -->
-                    <form class="d-flex searchform" @submit.prevent>
+                    <form class="d-flex searchform">
                         <input class="form-control searchinput me-2 mt-4 " type="text" aria-label="Search"
                             v-model="comment" />
                         <button class="btn btn-outline-success main-btn  commentbtn mt-5" type="submit" @click="submit">

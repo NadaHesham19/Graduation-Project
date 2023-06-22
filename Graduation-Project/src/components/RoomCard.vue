@@ -35,13 +35,8 @@ export default {
             axios
                 .get(`http://localhost:8080/api/images/room/${this.room.id}/0`,
                     {
-                        headers: {
-                            'Cookie': this.jsessionId,
-                        }
-
-                    }, {
-                    responseType: "arraybuffer",
-                })
+                        responseType: "arraybuffer",
+                    })
                 .then((response) => {
                     const blob = new Blob([response.data], { type: "image/jpeg" }); // Create a Blob 
                     this.imageSrc = URL.createObjectURL(blob); //  URL for the Blob
