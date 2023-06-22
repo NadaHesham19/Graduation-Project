@@ -41,6 +41,7 @@
 <script>
 import SimpleNav from '@/components/SimpleNav.vue';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
 export default {
   data() {
     return {
@@ -55,13 +56,14 @@ export default {
         { message: "8 characters minimum.", regex: /.{8,}/ },
         { message: "One number required.", regex: /[0-9]+/ },
       ],
+      userEmail: '',
     }
   },
   methods: {
     ResetPassword() {
       //user id will be from the url
 
-      axios.patch(`http://localhost:8080/api/user/${this.userID}`,
+      axios.patch(`http://localhost:8080/api/user/${this.userEmail}`,
         {
           password: this.newPass
         })
@@ -112,10 +114,14 @@ export default {
     },
   },
   // userid from the url
-  mounted() {
+  beforeMount() {
     // Access the userID parameter from the URL
-    const userID = this.$route.params.userID;
-    console.log(userID);
+    const encryptedEmail = this.$route.params.id;
+    const bytes = CryptoJS.AES.decrypt(encryptedEmail, 'Secret Key');
+    
+    this.userEmail = bytes.toString(CryptoJS.enc.Utf8);
+    console.log(this.userEmail)
+
   },
 
   components: {

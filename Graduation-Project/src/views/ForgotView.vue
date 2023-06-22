@@ -26,30 +26,27 @@ import CryptoJS from 'crypto-js';
 export default {
   data() {
     return {
-      email: null,
+      email: "",
       userID: null,
     }
   },
   methods: {
     SendAnEmail() {
+      const encryptedData = CryptoJS.AES.encrypt(this.email, 'Secret Key').toString(); 
+      console.log(encryptedData)   
       const userEmail = this.email;
-      const link = `http://localhost:5173/resetpassword/${this.userID}`
+      const link = `http://localhost:5173/resetpassword/${encryptedData}`
 
       const url = `http://localhost:8080/api/user/resetPassword?${userEmail}&${link}`;
 
       axios
         .post(url)
         .then((response) => {
-          // const setCookieHeader = response.headers['set-cookie'];
-
-          // // Do something with the header value
-          // console.log(setCookieHeader);
           if (response.data.error) {
             this.error = true;
           } else {
             this.flag = true;
-            // delay
-            this.user = response.data;
+             
           }
         })
         .catch((err) => {
@@ -57,14 +54,9 @@ export default {
           console.error(err);
         });
     }
-  }, beforeMount() {
-    this.userID = localStorage.getItem('userID')
-    const encryptedData = CryptoJS.AES.encrypt('Your Token', 'Secret Key').toString();
+  },
+  beforeMount() {
 
-    // Decrypt
-    const bytes = CryptoJS.AES.decrypt(encryptedData, 'Secret Key');
-    const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-    console.log(decryptedData)
   },
   components: {
     SimpleNav
