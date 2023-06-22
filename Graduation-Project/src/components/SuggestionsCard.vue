@@ -66,7 +66,15 @@ export default {
 
   },
   beforeMount() {
-    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.address}`)
+    this.jsessionId = localStorage.getItem('jsessionidValue')
+
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.address}` , 
+    {
+        headers:{
+          'Cookie': this.jsessionId,
+        }
+          
+      },)
       .then((response) => {
         this.final = response.data
         console.log(response.data)

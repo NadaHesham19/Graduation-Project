@@ -37,8 +37,15 @@ export default {
     CancelModal
   },
   beforeMount() {
+    this.jsessionId = localStorage.getItem('jsessionidValue')
     axios
-      .get(`http://localhost:8080/api/images/room/${this.booking.roomId}/0`, {
+      .get(`http://localhost:8080/api/images/room/${this.booking.roomId}/0`,
+      {
+        headers:{
+          'Cookie': this.jsessionId,
+        }
+          
+      }, {
         responseType: "arraybuffer",
       })
       .then((response) => {

@@ -22,6 +22,7 @@ export default {
         return {
             imageSrc: "",
             spaceId: this.$route.params.id,
+            jsessionId: localStorage.getItem('jsessionidValue')
         };
     }, components: { BookCard },
     props: [
@@ -32,7 +33,13 @@ export default {
     }, methods: {
         fetchImage() {
             axios
-                .get(`http://localhost:8080/api/images/room/${this.room.id}/0`, {
+                .get(`http://localhost:8080/api/images/room/${this.room.id}/0`,
+                    {
+                        headers: {
+                            'Cookie': this.jsessionId,
+                        }
+
+                    }, {
                     responseType: "arraybuffer",
                 })
                 .then((response) => {
