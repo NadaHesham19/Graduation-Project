@@ -370,7 +370,7 @@ export default {
 
 .search-icon {
     position: absolute;
-    top: 1822px;
+    top: 858px;
     left: 150px !important;
     z-index: 1;
     left: 40px;
