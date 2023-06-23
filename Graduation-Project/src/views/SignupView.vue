@@ -8,53 +8,126 @@
 
     <div id="login-form">
       <form action="index.html">
-        <input type="text" placeholder="Enter Username" v-model="SignInUsername" required />
+        <input
+          type="text"
+          placeholder="Enter Username"
+          v-model="SignInUsername"
+          required
+        />
 
-        <input type="password" placeholder="Enter password" v-model="signinPassword" required />
+        <input
+          type="password"
+          placeholder="Enter password"
+          v-model="signinPassword"
+          required
+        />
         <button type="submit" class="btn login" @click.prevent="login()">
           Sign in
         </button>
         <p><router-link to="/forgot">Forgot Your Password ?</router-link></p>
       </form>
-      <v-alert color="success" icon="$success" title="Submitted Successfully" text="The Request is submitted successfully"
-        id="hideme" v-if="flag"></v-alert>
-      <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
-        v-if="error"></v-alert>
+      <v-alert
+        color="success"
+        icon="$success"
+        title="Submitted Successfully"
+        text="The Request is submitted successfully"
+        id="hideme"
+        v-if="flag"
+      ></v-alert>
+      <v-alert
+        color="error"
+        icon="$error"
+        title="Submission Failed"
+        text="Please Try again"
+        id="hideme"
+        v-if="error"
+      ></v-alert>
     </div>
 
     <div id="signup-form">
       <form action="">
-        <input type="text" placeholder="First Name" required v-model="firstName" />
-        <input type="text" placeholder="Last Name" required v-model="lastName" />
+        <input
+          type="text"
+          placeholder="First Name"
+          required
+          v-model="firstName"
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          required
+          v-model="lastName"
+        />
         <input type="email" placeholder="Email" required v-model="email" />
         <input type="text" placeholder="Username" required v-model="username" />
         <input type="text" placeholder="Address" required v-model="location" />
-        <input type="tel" placeholder="Phone number" required v-model="phoneNumber" />
-        <input :type="type" placeholder="Birthdate" v-model="birthdate" @focus="this.type = 'date'"
-          @blur="this.type = 'text'" />
+        <input
+          type="tel"
+          placeholder="Phone number"
+          required
+          v-model="phoneNumber"
+        />
+        <input
+          :type="type"
+          placeholder="Birthdate"
+          v-model="birthdate"
+          @focus="this.type = 'date'"
+          @blur="this.type = 'text'"
+        />
 
-        <input ref="password" type="password" placeholder="Password" v-model="password" required />
+        <input
+          ref="password"
+          type="password"
+          placeholder="Password"
+          v-model="password"
+          required
+        />
 
         <div v-if="passwordValidation.errors.length > 0 && password.length > 0">
-          <span v-for="error in passwordValidation.errors" :key="error" class="error">
+          <span
+            v-for="error in passwordValidation.errors"
+            :key="error"
+            class="error"
+          >
             {{ error }}
           </span>
         </div>
-        <input type="password" placeholder="Confirm Password" v-model.lazy="checkPassword" required />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          v-model.lazy="checkPassword"
+          required
+        />
         <div class="error" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
 
-        <button type="submit" class="btn signup" @click.prevent="CreateAccount()">
+        <button
+          type="submit"
+          class="btn signup"
+          @click.prevent="CreateAccount()"
+        >
           Create an account
         </button>
       </form>
-      <v-alert color="success" icon="$success" title="Submitted Successfully" text="The Request is submitted successfully"
-        id="hideme" v-if="flag"></v-alert>
-      <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
-        v-if="error"></v-alert>
     </div>
   </div>
+  <v-alert
+    color="success"
+    icon="$success"
+    title="Submitted Successfully"
+    text="The Request is submitted successfully"
+    id="hideme"
+    v-if="flag"
+  ></v-alert>
+  <v-alert
+    color="error"
+    icon="$error"
+    title="Submission Failed"
+    text="Please Try again"
+    id="hideme"
+    v-if="error"
+  ></v-alert>
   <Footer class="mt-5 pt-5"></Footer>
   <router-view></router-view>
 </template>
@@ -107,10 +180,9 @@ export default {
     Footer,
   },
   methods: {
-    redirectPage(){
-      this.$router.push('/')
-    }
-,
+    redirectPage() {
+      this.$router.push("/");
+    },
     toggleSignup() {
       document.getElementById("login-toggle").style.backgroundColor = "#007cc7";
       document.getElementById("login-toggle").style.color = "#ffff";
@@ -138,36 +210,46 @@ export default {
       return day + "-" + month + "-" + year;
     },
     CreateAccount() {
-      axios.post("http://localhost:8080/api/user", {
-        email: this.email,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        password: this.password,
-        mobileNo: this.phoneNumber,
-        address: this.location,
-        points: 0,
-        birthDate: this.formatDate(this.birthdate),
-        username: this.username,
-      });
-
-      then((response) => {
-        if (response.data.error) {
+      axios
+        .post("http://localhost:8080/api/user", {
+          email: this.email,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          password: this.password,
+          mobileNo: this.phoneNumber,
+          address: this.location,
+          points: 0,
+          birthDate: this.formatDate(this.birthdate),
+          username: this.username,
+        })
+        .then((response) => {
+          if (response.data.error) {
+            this.error = true;
+          } else {
+            this.flag = true;
+            // delay
+            setTimeout(() => {
+              document.getElementById("login-toggle").style.backgroundColor =
+                "#12232E";
+              document.getElementById("login-toggle").style.color = "#ffff";
+              document.getElementById("signup-toggle").style.backgroundColor =
+                "#007cc7";
+              document.getElementById("signup-toggle").style.color = "#ffff";
+              document.getElementById("signup-form").style.display = "none";
+              document.getElementById("login-form").style.display = "block";
+            }, 2500);
+          }
+        })
+        .catch((err) => {
+          // Handle errors
           this.error = true;
-        } else {
-          this.flag = true;
-          // delay
-          setTimeout(() => {
-            this.toggleSignup();
-          }, 3000);
-        }
-      }).catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
+          console.error(err);
+        });
+
       setTimeout(() => {
         this.flag = false;
         this.error = false;
-      }, 3000);
+      }, 2000);
     },
     resetPasswords() {
       this.password = "";
@@ -179,7 +261,6 @@ export default {
     },
 
     login() {
-
       const username = this.SignInUsername;
       const password = this.signinPassword;
 
@@ -188,42 +269,16 @@ export default {
       axios
         .post(url, { withCredentials: true })
         .then((response) => {
-          this.flag = true;
-          // delay
-          this.user = response.data;
-          localStorage.setItem("userID", this.user.userId);
-          this.$router.push("/home");
-          localStorage.setItem("securityFlag", this.user.securityFlag);
-          //console.log(this.user.securityFlag)
-
-          /*const cookies = document.cookie.split(';');
-          
- 
-           // Find the 'jsessionid' cookie
-           let jsessionidValue = null;
-           cookies.forEach(cookie => {
-             const [name, value] = cookie.trim().split('=');
-             if (name === 'JSESSIONID') {
-               jsessionidValue = value;
-             }
- 
-           })
-           
-          // console.log(jsessionidValue)
-           localStorage.setItem("jsessionidValue", jsessionidValue);
-           if (response.data.error) {
-             this.error = true;
-           } else {
-             this.flag = true;
-             // delay
-             this.user = response.data;
-             localStorage.setItem("userID", this.user.userId);
-             this.$router.push("/home");
-           }
- 
-           /*this.$cookies.get(jsessionid)*/
-
-
+          if (response.data.error) {
+            this.error = true;
+          } else {
+            this.flag = true;
+            // delay
+            this.user = response.data;
+            localStorage.setItem("userID", this.user.userId);
+            this.$router.push("/home");
+            localStorage.setItem("securityFlag", this.user.securityFlag);
+          }
         })
         .catch((err) => {
           // Handle errors
@@ -275,22 +330,22 @@ export default {
 </script>
 
 <style>
-.goButton{
-  background-color: var(--light)!important;
-  color: black!important;
+.goButton {
+  background-color: var(--light) !important;
+  color: black !important;
   border-radius: 15px !important;
   height: 40px !important;
-  width:100px !important;
+  width: 100px !important;
   font-weight: 500 !important;
   border: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top:10px;
-
+  margin-top: 10px;
 }
-.alert{
-  width:400px;
+
+.alert {
+  width: 400px;
   display: flex;
   border-radius: 25px;
 }

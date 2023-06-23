@@ -20,7 +20,7 @@
           <img src="../assets/Card2.jpg" alt="bookings" class="image">
         </div>
         <div class="right">
-          <div class="text">You can check your previous bookings<br>Just press:</div>
+          <div class="text">You can check your previous bookings<br>Just press</div>
           <router-link to="/bookings">
             <button class="b1">Your Bookings</button>
           </router-link>
