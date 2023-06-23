@@ -9,16 +9,12 @@
             <div class="d-flex justify-content-center">
 
                 <div class="col-5 ">
-                    <button @click="deleteRoom" class="btn mx-auto main-btn deletebtn">Delete <i
+                    <button @click="deleteRoom" class="btn mx-auto  deletebtn">Delete <i
                             class="fa-solid fa-x ms-2"></i></button>
                 </div>
             </div>
         </div>
     </div>
-    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
-            v-if="this.authorizationFlag" class="alert align-items-center">
-            <button class="goButton" @click="redirectPage()">Go to Log In</button>
-          </v-alert>
 </template>
 
 <script>
@@ -75,9 +71,9 @@ export default {
 
             // this.isVisible = false;
         },
-        redirectPage(){
-      this.$router.push('/')
-    }
+        redirectPage() {
+            this.$router.push('/')
+        }
     },
 };
 
@@ -85,28 +81,28 @@ export default {
 </script>
 
 <style>
-
-.goButton{
-    background-color: var(--light)!important;
-    color: black!important;
+.goButton {
+    background-color: var(--light) !important;
+    color: black !important;
     border-radius: 15px !important;
     height: 40px !important;
-    width:100px !important;
+    width: 100px !important;
     font-weight: 500 !important;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top:10px;
-  
-  }
-  .alert{
-    width:400px;
+    margin-top: 10px;
+
+}
+
+.alert {
+    width: 400px;
     display: flex;
     border-radius: 25px;
-  }
+}
 
-  
+
 .card {
     background-color: var(--darkblue) !important;
     border-radius: 30px !important;
@@ -117,5 +113,22 @@ export default {
     border-radius: 30px;
     width: 100%;
     height: 200px;
+}
+
+.deletebtn {
+    width: 130px !important;
+    background-color: #C82333 !important;
+    color: white !important;
+    font-weight: 500 !important;
+    border-radius: 15px !important;
+    padding: 0.5rem 1.5rem !important;
+    border: none;
+    height: 50px;
+}
+
+.deletebtn:hover {
+    color: var(--darkblue) !important;
+    font-weight: 700 !important;
+
 }
 </style>

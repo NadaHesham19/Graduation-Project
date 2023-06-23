@@ -17,7 +17,7 @@
                             {{ spaceDetails.contactNumber }}
                         </li>
                         <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-star me-3"></i>
-                            {{ spaceDetails.ratingAverage }}
+                            {{ spaceDetails.ratingAverage.toFixed(1) }}
                         </li>
                         <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-wifi me-3"></i>
                             Offers free Wi-Fi
@@ -38,13 +38,22 @@
                 </div>
                 <div class="col-6 mb-5">
                     <img class="img-fluid image mt-5 " :src="imageSrc" alt="" width="520">
-
+                    <Reviews :spaceId="spaceId" :userID="userID" />
                 </div>
             </div>
-
-            <div class="text-center">
-                <v-rating v-model="rating" hover half-increments></v-rating>
-                <pre>{{ rating }}</pre>
+            <div class="ratings col-3 mt-4">
+                <div>
+                    <h3>Review:</h3>
+                    <v-rating v-model="rating" hover half-increments></v-rating>
+                    <!-- <pre class="text-center">{{ rating }}</pre> -->
+                    <form class="d-flex searchform">
+                        <input class="form-control searchinput me-2 mt-4 " type="text" aria-label="Search"
+                            v-model="comment" />
+                        <button class="btn btn-outline-success main-btn  commentbtn mt-5" type="submit" @click="submit">
+                            Submit
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <div class="row mt-5 pt-5">
@@ -55,7 +64,7 @@
             </div>
             <div class="row mt-5 pt-5">
                 <div class=" search pt-5">
-                    <h3 class="mb-5 pb-5 fw-bold mt-5 pt-5">Search for your room by name or capacity:</h3>
+                    <h3 class="mb-5 pb-5 fw-bold mt-5 pt-5">Search for your room:</h3>
                     <div class="pb-5 ms-5">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
                         <form class="d-flex searchform" @submit.prevent>
@@ -79,10 +88,6 @@
             </div>
         </div>
     </div>
-    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
-            v-if="this.authorizationFlag" class="alert align-items-center container">
-            <button class="goButton" @click="redirectPage()">Go to Log In</button>
-          </v-alert>
     <Footer />
 </template>
 
@@ -91,7 +96,9 @@ import NavBar from '../components/NavBar.vue';
 import RoomCard from '../components/RoomCard.vue';
 import Footer from '../components/Footer.vue';
 import { VPagination } from 'vuetify/components/VPagination';
+import Reviews from '../components/Reviews.vue';
 import axios from "axios";
+
 
 
 export default {
@@ -109,45 +116,38 @@ export default {
             roomsPerPage: 3,
             searchTerm: '',
             imageSrc: "",
-            rating: 2.5,
-            authorizationFlag: false,
+            rating: 0,
+            comment: "",
+            userID: null,
+
         }
     },
-    components: { NavBar, RoomCard, Footer },
+    components: { NavBar, RoomCard, Footer, Reviews },
 
     mounted() {
         this.fetchImage();
     },
     beforeMount() {
-        this.securityFlag = localStorage.getItem('securityFlag')
         axios
-            .get(`http://localhost:8080/api/spaces/${this.spaceId}?flag=${this.securityFlag}`)
+            .get(`http://localhost:8080/api/spaces/${this.spaceId}`)
             .then((response) => {
                 console.log(response.data)
                 this.spaceDetails = response.data;
             })
             .catch((err) => {
-        // Handle errors
-        if(err.response.data.message === "Unauthorized request"){
-          this.authorizationFlag = true
-          console.log(this.authorizationFlag)
-        }
-      })
+                console.error(err);
+            });
         axios
-            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}?flag=${this.securityFlag}`)
+            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}`)
             .then((response) => {
                 console.log(response.data)
                 this.rooms = response.data;
             })
             .catch((err) => {
-        // Handle errors
-        if(err.response.data.message === "Unauthorized request"){
-          this.authorizationFlag = true
-          console.log(this.authorizationFlag)
-        }
-      })
+                console.error(err);
+            });
         axios
-            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}?flag=${this.securityFlag}`)
+            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}`)
             .then((response) => {
                 console.log(response.data, "location")
                 this.location = response.data;
@@ -158,14 +158,14 @@ export default {
 
             })
             .catch((err) => {
-        // Handle errors
-        if(err.response.data.message === "Unauthorized request"){
-          this.authorizationFlag = true
-          console.log(this.authorizationFlag)
-        }
-      })
+                console.error(err);
+            });
+        this.userID = localStorage.getItem("userID");
     },
     computed: {
+        ratings() {
+            return this.rating = this.spaceDetails.ratingAverage;
+        },
 
         totalPages() {
             const filteredRooms = this.rooms.filter(room => {
@@ -189,10 +189,29 @@ export default {
             return filteredRooms.slice(startIndex, endIndex);
         },
     }, methods: {
-        redirectPage(){
-      this.$router.push('/')
-    }
-,
+        submit() {
+
+            console.log("Rating:", this.rating);
+            console.log("Comment:", this.comment);
+            console.log("spaceId:", this.spaceId);
+            console.log("userId:", this.userID);
+
+            axios
+                .post("http://localhost:8080/api/ratings", {
+                    comment: this.comment,
+                    rating: this.rating,
+                    space: { spaceId: this.spaceId },
+                    user: { userId: this.userID }
+                })
+
+                .catch((err) => {
+                    // Handle errors
+                    console.error(err);
+                });
+
+            this.rating = 0;
+            this.comment = "";
+        },
         initializeMap() {
             this.map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: this.latitude, lng: this.longitude },
@@ -229,25 +248,6 @@ export default {
 </script>
 
 <style scoped>
-.goButton{
-    background-color: var(--light)!important;
-    color: black!important;
-    border-radius: 15px !important;
-    height: 40px !important;
-    width:100px !important;
-    font-weight: 500 !important;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top:10px;
-  
-  }
-  .alert{
-    width:400px;
-    display: flex;
-    border-radius: 25px;
-  }
 .details {
     color: #203467;
     background-color: var(--background);
@@ -285,10 +285,21 @@ export default {
 
 .search-icon {
     position: absolute;
-    top: 1526px;
+    top: 1822px;
     left: 150px !important;
     z-index: 1;
     left: 40px;
     color: var(--darkblue);
+}
+
+.commentbtn {
+    width: 105px !important;
+    margin-top: 100px !important;
+    margin-left: -350px;
+    border-radius: 50px !important;
+}
+
+.location {
+    margin-top: 30px;
 }
 </style>

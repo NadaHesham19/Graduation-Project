@@ -121,10 +121,7 @@
             </div>
         </div>
     </div>
-    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
-            v-if="this.authorizationFlag" class="alert align-items-center container">
-            <button class="goButton" @click="redirectPage()">Go to Log In</button>
-          </v-alert>
+
     <Footer />
 </template>
 
@@ -248,9 +245,9 @@ export default {
             return filteredRooms.slice(startIndex, endIndex);
         },
     }, methods: {
-        redirectPage(){
-      this.$router.push('/')
-    },
+        redirectPage() {
+            this.$router.push('/')
+        },
         EnableEdit(field) {
             this.$refs[field].focus();
         },
@@ -347,25 +344,27 @@ export default {
 </script>
 
 <style scoped>
-.goButton{
-    background-color: var(--light)!important;
-    color: black!important;
+.goButton {
+    background-color: var(--light) !important;
+    color: black !important;
     border-radius: 15px !important;
     height: 40px !important;
-    width:100px !important;
+    width: 100px !important;
     font-weight: 500 !important;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top:10px;
-  
-  }
-  .alert{
-    width:400px;
+    margin-top: 10px;
+
+}
+
+.alert {
+    width: 400px;
     display: flex;
     border-radius: 25px;
-  }
+}
+
 .details {
     color: #203467;
     background-color: var(--background);

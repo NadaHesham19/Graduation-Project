@@ -4,7 +4,7 @@
         <div class="card-body">
             <h5 class="card-title fw-bolder"> {{ space.name }}</h5>
             <p class="card-text ms-2 mt-4">{{ space.address }}</p>
-            <p class="card-text"><i class="fa-solid fa-star ms-2 me-1"></i> {{ space.ratingAverage.toFixed(2) }}</p>
+            <p class="card-text"><i class="fa-solid fa-star ms-2 me-1"></i> {{ space.ratingAverage.toFixed(1) }}</p>
             <div class="row d-flex justify-content-evenly ">
                 <div class="col-5">
                     <router-link :to="{ name: 'modifyspace', params: { id: space.spaceId } }"
@@ -12,16 +12,12 @@
                             class="fa-regular fa-pen-to-square ms-2"></i></router-link>
                 </div>
                 <div class="col-5">
-                    <button @click="deleteSpace" class="btn mx-auto main-btn deletebtn">Delete <i
+                    <button @click="deleteSpace" class="  btn mx-auto  deletebtn">Delete <i
                             class="fa-solid fa-x ms-2"></i></button>
                 </div>
             </div>
         </div>
     </div>
-    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
-    v-if="this.authorizationFlag" class="alert align-items-center">
-    <button class="goButton" @click="redirectPage()">Go to Log In</button>
-  </v-alert>
 </template>
 
 <script>
@@ -34,8 +30,6 @@ export default {
             imageSrc: "",
             // jsessionId: localStorage.getItem('jsessionidValue'),
             // isVisible: true
-            authorizationFlag: false,
-            securityFlag: localStorage.getItem('securityFlag')
 
         };
     }
@@ -48,9 +42,6 @@ export default {
     },
 
     methods: {
-        redirectPage(){
-      this.$router.push('/')
-    },
         fetchImage() {
             axios
                 .get(`http://localhost:8080/api/images/space/${this.space.spaceId}/0`,
@@ -70,19 +61,15 @@ export default {
 
             axios
 
-                .delete(`http://localhost:8080/api/spaces/${this.space.spaceId}?flag=${this.securityFlag}`)
+                .delete(`http://localhost:8080/api/spaces/${this.space.spaceId}`)
                 .then((response) => {
                     console.log(response);
                     this.$emit('deleted', this.space.spaceId);
                     window.location.reload();
                 })
-                .catch((err) => {
-                    // Handle errors
-                    if (err.response.data.message === "Unauthorized request") {
-                        this.authorizationFlag = true
-                        console.log(this.authorizationFlag)
-                    }
-                })
+                .catch((error) => {
+                    console.error(error);
+                });
 
 
             // this.isVisible = false;
@@ -95,26 +82,6 @@ export default {
 </script>
 
 <style>
-
-.goButton{
-    background-color: var(--light)!important;
-    color: black!important;
-    border-radius: 15px !important;
-    height: 40px !important;
-    width:100px !important;
-    font-weight: 500 !important;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top:10px;
-  
-  }
-  .alert{
-    width:400px;
-    display: flex;
-    border-radius: 25px;
-  }
 .card {
     background-color: var(--darkblue) !important;
     border-radius: 30px !important;
@@ -130,6 +97,18 @@ export default {
 .deletebtn {
     width: 130px !important;
     background-color: #C82333 !important;
+    color: white !important;
+    font-weight: 500 !important;
+    border-radius: 15px !important;
+    padding: 0.5rem 1.5rem !important;
+    border: none;
+    height: 50px;
+}
+
+.deletebtn:hover {
+    color: var(--darkblue) !important;
+    font-weight: 700 !important;
+
 }
 
 .modifybtn {

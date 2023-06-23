@@ -4,7 +4,7 @@
         <div class="card-body">
             <h5 class="card-title fw-bolder"> {{ room.name }}</h5>
             <p class="card-text">Type: {{ room.type }}</p>
-            <p class="card-text">Capacity: {{ room.number }}</p>
+            <!-- <p class="card-text">Capacity: {{ room.number }}</p> -->
             <p class="card-text">Price: {{ room.price }}</p>
             <div class="text-center">
                 <BookCard :spaceId="spaceId" />
@@ -32,9 +32,10 @@ export default {
     }, methods: {
         fetchImage() {
             axios
-                .get(`http://localhost:8080/api/images/room/${this.room.id}/0`, {
-                    responseType: "arraybuffer",
-                })
+                .get(`http://localhost:8080/api/images/room/${this.room.id}/0`,
+                    {
+                        responseType: "arraybuffer",
+                    })
                 .then((response) => {
                     const blob = new Blob([response.data], { type: "image/jpeg" }); // Create a Blob 
                     this.imageSrc = URL.createObjectURL(blob); //  URL for the Blob
