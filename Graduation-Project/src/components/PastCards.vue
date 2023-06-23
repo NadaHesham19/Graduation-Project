@@ -9,8 +9,8 @@
       <p class="card-text">Payment Method: {{ booking.paymentMethod }}</p>
       <div class="text-center">
         <div class="d-none">{{ booking.rooomId }}</div>
-        <!-- <button class="btn mx-auto main-btn ">Rebook <i class="mx-1 fa-regular fa-calendar"></i></button> -->
-        <RebookModal />
+        
+        <RebookModal :roomId="booking.roomId"/>
       </div>
     </div>
   </div>
