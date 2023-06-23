@@ -68,6 +68,10 @@
       <AvailableOnSearch/>
     </div>
   </div>-->
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 
   <Footer />
 </template>
@@ -107,6 +111,8 @@ export default ({
         }
 
       ],
+      authorizationFlag: false,
+      securityFlag : localStorage.getItem('securityFlag')
 
     }
   },
@@ -114,6 +120,9 @@ export default ({
     'space'
   ],
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    },
     /*onChange(index) {
       this.selected[index] = ''
     },
@@ -199,14 +208,18 @@ export default ({
     },
   },
   beforeMount() {
-    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.user.address}`)
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.user.address}?flag=${this.securityFlag}`)
       .then((response) => {
         this.spaces = response.data
         console.log(response.data)
       })
-      .catch((error) =>
-        console.log(error)
-      )
+      .catch((err) => {
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
   },
 })
 
@@ -228,6 +241,25 @@ export default ({
 </script>
 
 <style>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
 body {
   padding: 0;
   margin: 0;

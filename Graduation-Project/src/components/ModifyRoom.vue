@@ -15,6 +15,10 @@
             </div>
         </div>
     </div>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 </template>
 
 <script>
@@ -26,6 +30,8 @@ export default {
         return {
             imageSrc: "",
             spaceId: this.$route.params.id,
+            authorizationFlag: false,
+            securityFlag: localStorage.getItem('securityFlag')
         };
     }, components: { BookCard },
     props: [
@@ -52,19 +58,26 @@ export default {
 
             axios
 
-                .delete(`http://localhost:8080/api/room/${this.room.id}`)
+                .delete(`http://localhost:8080/api/room/${this.room.id}?flag=${this.securityFlag}`)
                 .then((response) => {
                     console.log(response);
                     // this.$emit('deleted', this.space.spaceId);
                     window.location.reload();
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
+                .catch((err) => {
+                    // Handle errors
+                    if (err.response.data.message === "Unauthorized request") {
+                        this.authorizationFlag = true
+                        console.log(this.authorizationFlag)
+                    }
+                })
 
 
             // this.isVisible = false;
         },
+        redirectPage(){
+      this.$router.push('/')
+    }
     },
 };
 
@@ -72,6 +85,28 @@ export default {
 </script>
 
 <style>
+
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
+
+  
 .card {
     background-color: var(--darkblue) !important;
     border-radius: 30px !important;

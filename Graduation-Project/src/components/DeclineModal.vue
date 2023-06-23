@@ -25,6 +25,11 @@
       </v-dialog>
       <span class="d-none req" >{{ requestId }}</span>
     </v-row>
+    
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+    v-if="this.authorizationFlag" class="alert align-items-center">
+    <button class="goButton" @click="redirectPage()">Go to Log In</button>
+  </v-alert>
 
     
   </template>
@@ -37,8 +42,9 @@
       return {
         dialog: false,
         userID: localStorage.getItem('userID'),
-        
-        status : 'declined'
+        status : 'declined',
+        authorizationFlag: false,
+        securityFlag : localStorage.getItem('securityFlag')
       };
     },
     props:[
@@ -53,7 +59,7 @@
       .then(() => this.status = 'Declined successful');
       this.dialog=false
       }*/
-      const url = `http://localhost:8080/api/admin/requests/?status=declined&requestID=${this.requestId}`
+      const url = `http://localhost:8080/api/admin/requests/?status=declined&requestID=${this.requestId}?flag=${this.securityFlag}`
       axios.post(url)
       .then((response)=>{
       this.status = 'declined',
@@ -62,17 +68,42 @@
     this.dialog=false
     console.log(this.dialog)
     .catch((err) => {
-      // Handle errors
-      console.error(err);
-    })
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
 
     
     },
+    redirectPage(){
+      this.$router.push('/')
+    }
   },}
   
   </script>
   
   <style>
+  .goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
   .decline-btn {
     background-color: rgb(169, 11, 11) !important;
     color: #fff !important;

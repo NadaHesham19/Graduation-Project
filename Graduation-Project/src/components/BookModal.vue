@@ -59,6 +59,10 @@
         </v-card>
       </v-dialog>
     </v-row>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
   </template>
   
   <script>
@@ -83,10 +87,12 @@
       ],
       disabledTimes: ["10:00", "12:00", "14:00"], // set the times that should be disabled
       selectedTime: "",
+      authorizationFlag: false,
+      securityFlag : localStorage.getItem('securityFlag')
     }),
     methods: {
       created(){
-          axios.get('http://localhost:8080/api/spaces').filter( 
+          axios.get(`http://localhost:8080/api/spaces?flag=${this.securityFlag}`).filter( 
             location == this.address,
             Capacity == this.type,
             date == this.date,
@@ -94,11 +100,36 @@
             endTime == this.endTime
           )
         },
+        redirectPage(){
+      this.$router.push('/')
+    }
     },
   };
   </script>
   
   <style scoped>
+  .goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+    
+    
+    
+  }
   .cancel-btn {
     background-color: rgb(169, 11, 11);
     color: #fff;

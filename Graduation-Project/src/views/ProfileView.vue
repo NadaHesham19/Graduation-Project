@@ -129,6 +129,10 @@
       v-if="error"></v-alert>
     </div>
   </div>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 
   <Footer></Footer>
 </template>
@@ -147,7 +151,9 @@ export default {
       userID: localStorage.getItem('userID'),
       flag: false,
       error: false,
-      userMobile: ''
+      userMobile: '',
+      securityFlag: localStorage.getItem('securityFlag'),
+      authorizationFlag: false,
 
     };
   },
@@ -156,6 +162,9 @@ export default {
     Footer,
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    },
     EnableEdit(field) {
       this.$refs[field].focus();
     },
@@ -163,7 +172,7 @@ export default {
       // this.userMobile = this.user.mobileNo.toString();
 
 
-      axios.put(`http://localhost:8080/api/user/${this.userID}`,
+      axios.put(`http://localhost:8080/api/user/${this.userID}?flag=${this.securityFlag}`,
         {
           firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio , userId:this.userID
         }).then((res) => {
@@ -174,9 +183,13 @@ export default {
           }
           console.log(res.data)
         })
-        .catch((e) => {
-          console.log(e)
-        });
+        .catch((err) => {
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
       setTimeout(() => {
         this.flag = false
         this.error = false
@@ -187,7 +200,7 @@ export default {
   beforeMount() {
 
     axios
-      .get(`http://localhost:8080/api/user/${this.userID}`)
+      .get(`http://localhost:8080/api/user/${this.userID}?flag=${this.securityFlag}`)
       .then((response) => {
         // Handle response
         this.user = response.data;
@@ -198,7 +211,10 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
       });
 
       // axios
@@ -221,6 +237,25 @@ export default {
 </script>
 
 <style>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
 .profile-image {
   width: 200px;
   height: 200px;

@@ -99,6 +99,7 @@ export default {
       //success and failure
       flag: false,
       error: false,
+      //securityFlag: ''
     };
   },
   components: {
@@ -106,6 +107,10 @@ export default {
     Footer,
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    }
+,
     toggleSignup() {
       document.getElementById("login-toggle").style.backgroundColor = "#007cc7";
       document.getElementById("login-toggle").style.color = "#ffff";
@@ -183,32 +188,42 @@ export default {
       axios
         .post(url, { withCredentials: true })
         .then((response) => {
-         const cookies = document.cookie.split(';');
-         
+          this.flag = true;
+          // delay
+          this.user = response.data;
+          localStorage.setItem("userID", this.user.userId);
+          this.$router.push("/home");
+          localStorage.setItem("securityFlag", this.user.securityFlag);
+          //console.log(this.user.securityFlag)
 
-          // Find the 'jsessionid' cookie
-          let jsessionidValue = null;
-          cookies.forEach(cookie => {
-            const [name, value] = cookie.trim().split('=');
-            if (name === 'JSESSIONID') {
-              jsessionidValue = value;
-            }
-
-          })
+          /*const cookies = document.cookie.split(';');
           
-         // console.log(jsessionidValue)
-          localStorage.setItem("jsessionidValue", jsessionidValue);
-          if (response.data.error) {
-            this.error = true;
-          } else {
-            this.flag = true;
-            // delay
-            this.user = response.data;
-            localStorage.setItem("userID", this.user.userId);
-            this.$router.push("/home");
-          }
+ 
+           // Find the 'jsessionid' cookie
+           let jsessionidValue = null;
+           cookies.forEach(cookie => {
+             const [name, value] = cookie.trim().split('=');
+             if (name === 'JSESSIONID') {
+               jsessionidValue = value;
+             }
+ 
+           })
+           
+          // console.log(jsessionidValue)
+           localStorage.setItem("jsessionidValue", jsessionidValue);
+           if (response.data.error) {
+             this.error = true;
+           } else {
+             this.flag = true;
+             // delay
+             this.user = response.data;
+             localStorage.setItem("userID", this.user.userId);
+             this.$router.push("/home");
+           }
+ 
+           /*this.$cookies.get(jsessionid)*/
 
-          /*this.$cookies.get(jsessionid)*/
+
         })
         .catch((err) => {
           // Handle errors
@@ -260,6 +275,26 @@ export default {
 </script>
 
 <style>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
+
 .form-modal {
   border-radius: 25px;
   position: relative;

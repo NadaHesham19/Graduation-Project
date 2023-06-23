@@ -42,7 +42,7 @@
             </router-link>
             <ul class="dropdown-menu "  :class="{ show: isProfileOpen }" @mouseleave="isProfileOpen = false ">
               <li class="">
-                <router-link class="nav-item nav-link item-drop " to="/" style="font-size: 15px" @click="logOut()">
+                <router-link class="nav-item nav-link item-drop " to="/" style="font-size: 15px">
                   Log Out</router-link>
               </li>
             </ul>
@@ -62,9 +62,9 @@ export default {
     };
   },
   methods:{
-    logOut(){
+    /*logOut(){
       localStorage.removeItem('jsessionidValue');
-    }
+    }*/
   }
 };
 </script>

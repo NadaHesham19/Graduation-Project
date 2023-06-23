@@ -38,6 +38,10 @@
       </div>
     </div>
   </div>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
   <Footer />
 </template>
 
@@ -61,38 +65,45 @@ export default {
           status: '',
           userId: '',
           /*errorMsg:''*/
-          jsessionId:''
           
-
         }
       ],
+      //securityFlag: false,
+      authorizationFlag: false,
 
     }
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    }
 
   },
 
   beforeMount() {
     this.userId = localStorage.getItem('userID')
-    this.jsessionId = localStorage.getItem('jsessionidValue')
-
-    axios.get(`http://localhost:8080/api/requests/users/${this.userId}`,
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },
+    this.securityFlag = localStorage.getItem('securityFlag')
+     
+    axios.get(`http://localhost:8080/api/requests/users/${this.userId}?flag=${this.securityFlag}`,
+     
     )
       .then((response) => {
         this.info = response.data
         console.log(response.data)
+        console.log(this.securityFlag)
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
-      });
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
+        
+        
+
+          
+      
   },
 };
 </script>
@@ -147,6 +158,40 @@ body {
 hr {
   color: var(--light);
 }
+
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
+
+
+/*#hideme {
+  animation: hideAnimation 0s ease-in 1.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hideAnimation {
+  to {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+  }
+}*/
 
 /*.accept {
   color: var(--light) !important;

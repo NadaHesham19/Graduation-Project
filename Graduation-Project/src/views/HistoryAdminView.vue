@@ -25,6 +25,10 @@
                 :total-visible="7" prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
         </div>
     </div>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 
     <Footer class="mt-5"></Footer>
 </template>
@@ -43,6 +47,7 @@ export default {
             bookingsPerPage: 4,
             searchTerm: '',
             bookings:[],
+            authorizationFlag: false,
         }
 
     },
@@ -50,7 +55,8 @@ export default {
         AdminNav, HistoryCard, Footer
     }, 
     beforeMount(){
-         axios.get("http://localhost:8080/api/bookings/admin/pastBookings")
+        this.securityFlag = localStorage.getItem('securityFlag')
+         axios.get(`http://localhost:8080/api/bookings/admin/pastBookings?flag=${this.securityFlag}`)
       .then((response) => {
         // Handle response
         this.bookings = response.data;
@@ -58,8 +64,11 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
-      });
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
     },
     computed: {
         totalPages() {
@@ -77,8 +86,32 @@ export default {
             return filteredBookings.slice(startIndex, endIndex);
         },
     },
+    methods:{
+        redirectPage(){
+      this.$router.push('/')
+    },
+    }
 }
 </script>
 
 <style scoped>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
 </style>

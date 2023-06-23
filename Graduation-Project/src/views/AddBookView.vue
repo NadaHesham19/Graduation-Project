@@ -45,7 +45,12 @@
         <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
             v-if="error"></v-alert>
         <v-alert color="error" icon="$error" title="There is no enough points" text="Please Try again" id="hideme"
-        v-if="noPoints"></v-alert>
+            v-if="noPoints"></v-alert>
+            <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
+            
     </div>
 </template>
 
@@ -70,9 +75,11 @@ export default {
             room: null,
             space: null,
             spaceName: '',
-            user:null,
-            userPoints:0,
-            noPoints:false,
+            user: null,
+            userPoints: 0,
+            noPoints: false,
+            authorizationFlag: false,
+            securityFlag: localStorage.getItem('securityFlag')
         };
     },
     components: {
@@ -80,6 +87,9 @@ export default {
         flatpickr,
     },
     methods: {
+        redirectPage(){
+      this.$router.push('/')
+    },
         computePrice(stTime, enTime, price) {
             return (enTime - stTime) * price
         },
@@ -97,7 +107,7 @@ export default {
             this.price = this.computePrice(this.startTime, this.endTime, this.room.price)
             console.log(this.price)
             axios
-                .post("http://localhost:8080/api/spaces", {
+                .post(`http://localhost:8080/api/spaces?flag=${this.securityFlag}`, {
                     startTime: this.startTime,
                     endTime: this.endTime,
                     date: this.data,
@@ -118,17 +128,19 @@ export default {
                 })
                 .catch((err) => {
                     // Handle errors
-                    this.error = false;
-                    console.error(err);
-                });
-            
+                    if (err.response.data.message === "Unauthorized request") {
+                        this.authorizationFlag = true
+                        console.log(this.authorizationFlag)
+                    }
+                })
+
         },
 
         bookPoints() {
             this.price = this.computePrice(this.startTime, this.endTime, this.room.price);
-            if (this.useerPoints >= this.price){
-                  axios
-                    .post("http://localhost:8080/api/bookings", {
+            if (this.useerPoints >= this.price) {
+                axios
+                    .post(`http://localhost:8080/api/bookings?flag=${this.securityFlag}`, {
                         startTime: this.startTime,
                         endTime: this.endTime,
                         date: this.data,
@@ -149,13 +161,15 @@ export default {
                     })
                     .catch((err) => {
                         // Handle errors
-                        this.error = false;
-                        console.error(err);
-                    });
-                }
-                else{
-                 this.noPoints=true;
-                }
+                        if (err.response.data.message === "Unauthorized request") {
+                            this.authorizationFlag = true
+                            console.log(this.authorizationFlag)
+                        }
+                    })
+            }
+            else {
+                this.noPoints = true;
+            }
         },
         getCurrentDate() {
             const today = new Date();
@@ -185,14 +199,14 @@ export default {
         this.roomId = this.$route.params.id;
         //get room 
         axios
-            .get(`http://localhost:8080/api/room/${this.roomId}`)
+            .get(`http://localhost:8080/api/room/${this.roomId}?flag=${this.securityFlag}`)
             .then((response) => {
                 // Handle response
                 this.room = response.data;
                 this.name = this.room.name;
                 //get space 
                 axios
-                    .get(`http://localhost:8080/api/spaces/${this.room.spaceId}`)
+                    .get(`http://localhost:8080/api/spaces/${this.room.spaceId}?flag=${this.securityFlag}`)
                     .then((response) => {
                         // Handle response
                         this.space = response.data;
@@ -200,37 +214,54 @@ export default {
                     })
                     .catch((err) => {
                         // Handle errors
-                        console.error(err);
-                    });
+                        if (err.response.data.message === "Unauthorized request") {
+                            this.authorizationFlag = true
+                            console.log(this.authorizationFlag)
+                        }
+                    })
 
 
             })
+        //get user 
+        axios
+            .get(`http://localhost:8080/api/user/${this.userID}?flag=${this.securityFlag}`)
+            .then((response) => {
+                // Handle response
+                this.user = response.data;
+                this.userPoints = this.user.points;
+            })
             .catch((err) => {
                 // Handle errors
-                console.error(err);
-            });
-
-
-
-
-            //get user 
-            axios
-                    .get(`http://localhost:8080/api/user/${this.userID}`)
-                    .then((response) => {
-                        // Handle response
-                        this.user = response.data;
-                        this.userPoints = this.user.points;
-                    })
-                    .catch((err) => {
-                        // Handle errors
-                        console.error(err);
-                    });
+                if (err.response.data.message === "Unauthorized request") {
+                    this.authorizationFlag = true
+                    console.log(this.authorizationFlag)
+                }
+            })
 
     },
 };
 </script>
 
 <style>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
 .addNew {
     background-color: var(--darkblue);
     color: white;

@@ -55,6 +55,10 @@
       <button type="button" class="btn cancel" @click="closeForm()">Close</button>
     </form>
   </div>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
   <Footer />
 </template>
 
@@ -74,7 +78,9 @@ export default {
     return{
       chat:[{
         userId : localStorage.getItem('userID'),
-        msg: ''
+        msg: '',
+        authorizationFlag: false,
+        securityFlag : localStorage.getItem('securityFlag')
 
       }]
       
@@ -82,6 +88,9 @@ export default {
     }
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    },
     openForm() {
       document.getElementById("myForm").style.display = "block";
     },
@@ -90,15 +99,18 @@ export default {
       document.getElementById("myForm").style.display = "none";
     },
     sendEmail() {
-      axios.post(`http://localhost:8080/api/message?userId=${this.userId}&message=${this.msg}` , this.chat)
+      axios.post(`http://localhost:8080/api/message?userId=${this.userId}&message=${this.msg}?flag=${this.securityFlag}` , this.chat)
         .then(response => {
           // Handle response
           this.chat = response.data
         })
-        .catch(err => {
-          // Handle errors
-          console.error(err);
-        });
+        .catch((err) => {
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
     }
   }
 }
@@ -106,6 +118,25 @@ export default {
 
 
 <style scoped>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
 body {
   padding: 0;
   margin: 0;

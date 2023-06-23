@@ -80,6 +80,10 @@
             </div>
         </div>
     </div>-->
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 </template>
  
 <script>
@@ -104,7 +108,9 @@ export default {
                     noOfRooms: ' '
 
                 },
-            ]
+            ],
+            authorizationFlag: false,
+
 
 
 
@@ -112,6 +118,10 @@ export default {
     },
 
     methods: {
+        redirectPage(){
+      this.$router.push('/')
+    },
+
         /*openPopup(){
             let popup = document.getElementById('popup');
             popup.classList.add('open-popup');
@@ -134,19 +144,43 @@ export default {
 
     },
     beforeMount() {
-        axios.get('http://localhost:8080/api/admin/requests/?status=pending')
+        this.securityFlag = localStorage.getItem('securityFlag')
+        axios.get(`http://localhost:8080/api/admin/requests/?status=pending?flag=${this.securityFlag}`)
             .then((response) => {
                 this.req = response.data
                 console.log(response.data)
             })
-            .catch((error) =>
-                console.log(error)
-            )
+            .catch((err) => {
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
     },
 };
 </script>
  
 <style scoped>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
 body {
     padding: 0;
     margin: 0;

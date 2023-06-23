@@ -65,6 +65,10 @@
 ></v-alert>
 </div>
   </div>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
   
 </template>
 
@@ -81,16 +85,21 @@ export default {
       userID: localStorage.getItem("userID"),
       flag: false,
       error: false,
+      securityFlag : localStorage.getItem('securityFlag'),
+      authorizationFlag: false,
     };
   },
   components: {
     NavBar,
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    },
     AddnewSpace() {
       // if(this.name.length!=0 && this.location.length!=0 && this.noOfRooms.length !=0){
        axios
-        .post("http://localhost:8080/api/requests", {
+        .post(`http://localhost:8080/api/requests?flag=${this.securityFlag}`, {
           name: this.name,
           address: this.location,
           noOfRooms: this.numberOfRooms,
@@ -108,9 +117,12 @@ export default {
           }
         })
         .catch((err) => {
-          // Handle errors
-          console.error(err);
-        });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
         setTimeout(() => {
         this.flag = false
         this.error = false
@@ -122,7 +134,7 @@ export default {
   },
   beforeMount() {
     axios
-      .get("http://localhost:8080/api/requests")
+      .get(`http://localhost:8080/api/requests?flag=${this.securityFlag}`)
       .then((response) => {
         // Handle response
         this.users = response.data;
@@ -130,13 +142,35 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
-      });
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
   },
 };
 </script>
 
 <style>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
 .addNew {
   background-color: var(--darkblue);
   color: white;

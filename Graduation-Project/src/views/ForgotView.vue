@@ -21,6 +21,10 @@
     <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
       v-if="error"></v-alert>
   </div>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 </template>
 
 <script>
@@ -31,9 +35,14 @@ export default {
     return {
       email: "",
       userID: null,
+      authorizationFlag: false,
+      securityFlag : localStorage.getItem('securityFlag')
     }
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    },
     SendAnEmail() {
 
       const encryptedData = this.encryptValue(this.email)
@@ -41,9 +50,9 @@ export default {
       // console.log(this.email)
       console.log(encryptedData)   
       const userEmail = this.email;
-      const link = 'http://localhost:5173/resetpassword/'+encryptedData;
+      const link = `http://localhost:5173/resetpassword/?flag=${this.securityFlag}`+encryptedData;
 
-      const url = `http://localhost:8080/api/user/resetPassword?email=${userEmail}&link=${link}`;
+      const url = `http://localhost:8080/api/user/resetPassword?email=${userEmail}&link=${link}?flag=${this.securityFlag}`;
 
       axios
         .post(url)
@@ -57,10 +66,12 @@ export default {
           }
         })
         .catch((err) => {
-          // Handle errors
-          this.error = true;
-          console.error(err);
-        });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
     },
     encryptValue(value) {
       const base64 = btoa(value);
@@ -79,6 +90,25 @@ export default {
 </script>
 
 <style>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
 .addNew {
   background-color: var(--nav);
   color: white;

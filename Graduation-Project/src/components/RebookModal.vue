@@ -70,6 +70,11 @@
       <div class="d-none">{{ roomId }}</div>
     </v-dialog>
   </v-row>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+  v-if="this.authorizationFlag" class="alert align-items-center">
+  <button class="goButton" @click="redirectPage()">Go to Log In</button>
+</v-alert>
+
 </template>
 
 <script>
@@ -121,6 +126,8 @@ export default {
     times: [],
     disabled: [],
     userID: localStorage.getItem('userID'),
+    authorizationFlag: false,
+    securityFlag : localStorage.getItem('securityFlag')
   }),
   components: {
     VueDatePicker, Datepicker
@@ -137,6 +144,9 @@ export default {
       this.dialog = false;
     },
     availableTime() { },
+    redirectPage(){
+      this.$router.push('/')
+    },
 
     convertTime12to24(time12h) {
       const [time, modifier] = time12h.split(" ");
@@ -175,7 +185,7 @@ export default {
       console.log(this.selectedDate)
       console.log(this.roomId)
       axios
-        .get(`http://localhost:8080/api/bookings/roomBookings/${this.roomId}?date=${this.selectedDate}`)
+        .get(`http://localhost:8080/api/bookings/roomBookings/${this.roomId}?date=${this.selectedDate}?flag=${this.securityFlag}`)
         .then((response) => {
           // Handle response
           this.disabledTimes = response.data;
@@ -183,9 +193,12 @@ export default {
           console.log(this.disabledTimes)
         })
         .catch((err) => {
-          // Handle errors
-          console.error(err);
-        });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
 
       // this.flag=false
       
@@ -199,7 +212,7 @@ export default {
   }, 
   beforeMount() {
     axios
-      .get(`http://localhost:8080/api/user/${this.userID}`)
+      .get(`http://localhost:8080/api/user/${this.userID}?flag=${this.securityFlag}`)
       .then((response) => {
 
         // Handle response
@@ -210,8 +223,11 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
-      });
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
 
     for (var hour = 0; hour < 24; hour++) {
       for (var minute = 0; minute < 60; minute += 30) {
@@ -228,6 +244,26 @@ export default {
 </script>
 
 <style scoped>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
+
 .cancel-btn {
   background-color: rgb(169, 11, 11);
   color: #fff;

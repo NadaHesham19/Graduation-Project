@@ -24,6 +24,10 @@
                 :total-visible="7" prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
         </div>
     </div>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 
     <Footer class="mt-5"></Footer>
 </template>
@@ -42,6 +46,7 @@ export default {
             currentPage: 1,
             bookingsPerPage: 4,
             searchTerm: '',
+            authorizationFlag: false,
         }
 
     },
@@ -65,18 +70,47 @@ export default {
         },
     },
     beforeMount() {
-            axios.get("http://localhost:8080/api/bookings/admin/upcomingBookings")
+        this.securityFlag = localStorage.getItem('securityFlag')
+            axios.get(`http://localhost:8080/api/bookings/admin/upcomingBookings?flag=${this.securityFlag}`)
           .then((response) => {
             // Handle response
             this.bookings = response.data;
             console.log(this.bookings)
           })
           .catch((err) => {
-            // Handle errors
-            console.error(err);
-          });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
+    },
+    methods:{
+        redirectPage(){
+      this.$router.push('/')
+    },
     }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
+</style>

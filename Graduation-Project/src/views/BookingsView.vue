@@ -64,6 +64,10 @@
       </button>
     </div>
   </div>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 
   <Footer />
 </template>
@@ -87,6 +91,8 @@ export default {
       userID: localStorage.getItem("userID"),
       pastBookings:[],
       upComingBookings:[],
+      authorizationFlag: false,
+      securityFlag : localStorage.getItem('securityFlag')
     };
   },
   components: {
@@ -101,7 +107,7 @@ export default {
     
     //upcoming bookings
     axios
-      .get(`http://localhost:8080/api/bookings/upComingBookings/${this.userID}`)
+      .get(`http://localhost:8080/api/bookings/upComingBookings/${this.userID}?flag=${this.securityFlag}`)
       .then((response) => {
         // Handle response
         this.upComingBookings = response.data;
@@ -109,12 +115,15 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
-      });
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
 
       //past bookings
       axios
-      .get(`http://localhost:8080/api/bookings/pastBookings/${this.userID}`)
+      .get(`http://localhost:8080/api/bookings/pastBookings/${this.userID}?flag=${this.securityFlag}`)
       .then((response) => {
         // Handle response
         this.pastBookings = response.data;
@@ -122,13 +131,19 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
-      });
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
 
 
 
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    },
     nextSlide() {
       if (this.currentSlide == this.upComingBookings.length / 2 - 0.5) {
         this.currentSlide = 0;
@@ -212,6 +227,25 @@ export default {
 </script>
 
 <style>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
 .icon {
   color: var(--darkblue);
 }

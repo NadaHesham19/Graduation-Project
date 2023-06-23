@@ -79,6 +79,10 @@
             </div>
         </div>
     </div>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
     <Footer />
 </template>
 
@@ -105,7 +109,8 @@ export default {
             roomsPerPage: 3,
             searchTerm: '',
             imageSrc: "",
-            rating: 2.5
+            rating: 2.5,
+            authorizationFlag: false,
         }
     },
     components: { NavBar, RoomCard, Footer },
@@ -114,26 +119,35 @@ export default {
         this.fetchImage();
     },
     beforeMount() {
+        this.securityFlag = localStorage.getItem('securityFlag')
         axios
-            .get(`http://localhost:8080/api/spaces/${this.spaceId}`)
+            .get(`http://localhost:8080/api/spaces/${this.spaceId}?flag=${this.securityFlag}`)
             .then((response) => {
                 console.log(response.data)
                 this.spaceDetails = response.data;
             })
             .catch((err) => {
-                console.error(err);
-            });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
         axios
-            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}`)
+            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}?flag=${this.securityFlag}`)
             .then((response) => {
                 console.log(response.data)
                 this.rooms = response.data;
             })
             .catch((err) => {
-                console.error(err);
-            });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
         axios
-            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}`)
+            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}?flag=${this.securityFlag}`)
             .then((response) => {
                 console.log(response.data, "location")
                 this.location = response.data;
@@ -144,8 +158,12 @@ export default {
 
             })
             .catch((err) => {
-                console.error(err);
-            });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
     },
     computed: {
 
@@ -171,6 +189,10 @@ export default {
             return filteredRooms.slice(startIndex, endIndex);
         },
     }, methods: {
+        redirectPage(){
+      this.$router.push('/')
+    }
+,
         initializeMap() {
             this.map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: this.latitude, lng: this.longitude },
@@ -207,6 +229,25 @@ export default {
 </script>
 
 <style scoped>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
 .details {
     color: #203467;
     background-color: var(--background);

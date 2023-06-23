@@ -121,6 +121,10 @@
             </div>
         </div>
     </div>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
     <Footer />
 </template>
 
@@ -129,7 +133,7 @@ import AdminNav from '../components/AdminNav.vue';
 import ModifyRoom from '../components/ModifyRoom.vue';
 import Footer from '../components/Footer.vue';
 import { VPagination } from 'vuetify/components/VPagination';
-import Reviews from '../components/Reviews.vue';
+//import Reviews from '../components/Reviews.vue';
 import axios from "axios";
 
 
@@ -153,51 +157,52 @@ export default {
             comment: "",
             userID: null,
             wifi: "Offers free Wi-Fi",
+            authorizationFlag: false,
+            securityFlag: localStorage.getItem('securityFlag')
 
         }
     },
-    components: { AdminNav, ModifyRoom, Footer, Reviews },
+    components: {
+        AdminNav, ModifyRoom, Footer,
+        // Reviews
+    },
 
     mounted() {
         this.fetchImage();
     },
     beforeMount() {
-        this.jsessionId = localStorage.getItem('jsessionidValue')
-        axios
-            .get(`http://localhost:8080/api/spaces/${this.spaceId}`, {
-                headers: {
-                    'Cookie': this.jsessionId,
-                }
 
-            },)
+        axios
+            .get(`http://localhost:8080/api/spaces/${this.spaceId}?flag=${this.securityFlag}`,
+
+            )
             .then((response) => {
                 console.log(response.data)
                 this.spaceDetails = response.data;
             })
             .catch((err) => {
-                console.error(err);
-            });
-        axios
-            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}`, {
-                headers: {
-                    'Cookie': this.jsessionId,
+                // Handle errors
+                if (err.response.data.message === "Unauthorized request") {
+                    this.authorizationFlag = true
+                    console.log(this.authorizationFlag)
                 }
-
-            },)
+            })
+        axios
+            .get(`http://localhost:8080/api/room/getBySpace/${this.spaceId}?flag=${this.securityFlag}`,)
             .then((response) => {
                 console.log(response.data)
                 this.rooms = response.data;
             })
             .catch((err) => {
-                console.error(err);
-            });
-        axios
-            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}`, {
-                headers: {
-                    'Cookie': this.jsessionId,
+                // Handle errors
+                if (err.response.data.message === "Unauthorized request") {
+                    this.authorizationFlag = true
+                    console.log(this.authorizationFlag)
                 }
-
-            },)
+            })
+        axios
+            .get(`http://localhost:8080/api/spaces/getCoordinates/?spaceId=${this.spaceId}?flag=${this.securityFlag}`,
+            )
             .then((response) => {
                 console.log(response.data, "location")
                 this.location = response.data;
@@ -208,8 +213,12 @@ export default {
 
             })
             .catch((err) => {
-                console.error(err);
-            });
+                // Handle errors
+                if (err.response.data.message === "Unauthorized request") {
+                    this.authorizationFlag = true
+                    console.log(this.authorizationFlag)
+                }
+            })
         this.userID = localStorage.getItem("userID");
     },
     computed: {
@@ -239,11 +248,14 @@ export default {
             return filteredRooms.slice(startIndex, endIndex);
         },
     }, methods: {
+        redirectPage(){
+      this.$router.push('/')
+    },
         EnableEdit(field) {
             this.$refs[field].focus();
         },
         SaveEditting() {
-            axios.patch(`http://localhost:8080/api/spaces/${this.spaceId}`,
+            axios.patch(`http://localhost:8080/api/spaces/${this.spaceId}?flag=${this.securityFlag}`,
                 {
                     address: this.spaceDetails.address,
                     district: this.spaceDetails.district,
@@ -263,9 +275,13 @@ export default {
                     console.log(res);
                     window.location.reload()
                 })
-                .catch((e) => {
-                    console.log(e)
-                });
+                .catch((err) => {
+                    // Handle errors
+                    if (err.response.data.message === "Unauthorized request") {
+                        this.authorizationFlag = true
+                        console.log(this.authorizationFlag)
+                    }
+                })
 
 
         }
@@ -277,7 +293,7 @@ export default {
             console.log("userId:", this.userID);
 
             axios
-                .post("http://localhost:8080/api/ratings", {
+                .post(`http://localhost:8080/api/ratings?flag=${this.securityFlag}`, {
                     comment: this.comment,
                     rating: this.rating,
                     space: { spaceId: this.spaceId },
@@ -286,8 +302,11 @@ export default {
 
                 .catch((err) => {
                     // Handle errors
-                    console.error(err);
-                });
+                    if (err.response.data.message === "Unauthorized request") {
+                        this.authorizationFlag = true
+                        console.log(this.authorizationFlag)
+                    }
+                })
 
             this.rating = 0;
             this.comment = "";
@@ -328,6 +347,25 @@ export default {
 </script>
 
 <style scoped>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
 .details {
     color: #203467;
     background-color: var(--background);

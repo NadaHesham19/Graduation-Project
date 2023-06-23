@@ -143,6 +143,10 @@
       <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
         v-if="error"></v-alert>
   </div>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 </template>
 
 <script>
@@ -167,12 +171,17 @@ export default {
       flag: false,
       errorMessage: "",
       error:false,
+      authorizationFlag: false,
+      securityFlag : localStorage.getItem('securityFlag')
     };
   },
   components: {
    SimpleNav,
   },
   methods: {
+    redirectPage(){
+      this.$router.push('/')
+    },
      convertTime12to24(time12h){ 
         const [time, modifier] = time12h.split(" ");
 
@@ -191,7 +200,7 @@ export default {
     AddnewSpace() {
     
       axios
-        .post("http://localhost:8080/api/spaces", {
+        .post(`http://localhost:8080/api/spaces?flag=${this.securityFlag}`, {
           name: this.name,
           address: this.address,
           roomNumbers: this.numberOfRooms,
@@ -218,17 +227,19 @@ export default {
           }
         })
         .catch((err) => {
-          // Handle errors
-          this.error=false
-          console.error(err);
-        });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
      
     },
   },
   beforeMount() {
 
     axios
-      .get("http://localhost:8080/api/spaces")
+      .get(`http://localhost:8080/api/spaces?flag=${this.securityFlag}`)
       .then((response) => {
         // Handle response
         this.users = response.data;
@@ -236,8 +247,11 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        console.error(err);
-      });
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
 
       this.userID=this.$route.params.id
       console.log(this.userID)
@@ -246,6 +260,25 @@ export default {
 </script>
 
 <style>
+.goButton{
+  background-color: var(--light)!important;
+  color: black!important;
+  border-radius: 15px !important;
+  height: 40px !important;
+  width:100px !important;
+  font-weight: 500 !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+
+}
+.alert{
+  width:400px;
+  display: flex;
+  border-radius: 25px;
+}
 .addNew {
   background-color: var(--darkblue);
   color: white;
