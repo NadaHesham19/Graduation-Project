@@ -6,8 +6,10 @@
             <p class="card-text">Type: {{ room.type }}</p>
             <!-- <p class="card-text">Capacity: {{ room.number }}</p> -->
             <p class="card-text">Price: {{ room.price }}</p>
-            <div class="text-center">
-                <BookCard :spaceId="spaceId" />
+            <div class="d-flex justify-content-center">
+                <button @click="book" class="btn mx-auto my-3 main-btn">
+                    Book Now <i class="mx-1 fa-regular fa-calendar"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -15,7 +17,7 @@
 
 <script>
 import axios from "axios";
-import BookCard from "./BookCard.vue";
+
 
 export default {
     data() {
@@ -23,7 +25,7 @@ export default {
             imageSrc: "",
             spaceId: this.$route.params.id,
         };
-    }, components: { BookCard },
+    },
     props: [
         'room'
     ],
@@ -44,6 +46,9 @@ export default {
                     console.error(error);
                 });
         },
+        book() {
+            this.$router.push(`/addbooking/${this.room.id}`)
+        }
     },
 };
 

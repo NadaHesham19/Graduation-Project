@@ -15,19 +15,26 @@
                     <input type="date" class="col-lg-4 mb-4 inputText" style="background-color: #d4d4d4" v-model="date"
                         :min="getCurrentDate()" />
                 </div>
+                <div class="row justify-content-center" v-if="inputDateError">
+                    <p class="col-lg-4 mb-2 text-danger error">*Please enter a specific Date.</p>
+                </div>
 
                 <div class="row justify-content-center">
                     <label class="col-lg-5 mb-4">Start Time</label>
                     <input type="text" class="col-lg-4 mb-4 inputText" ref="startTimeInput"
                         style="background-color: #d4d4d4" v-model="startTime" />
                 </div>
-
+                <div class="row justify-content-center" v-if="inputStartError">
+                    <p class="col-lg-4 mb-2 text-danger error">*Please enter a start time.</p>
+                </div>
                 <div class="row justify-content-center">
                     <label class="col-lg-5 mb-4">End Time</label>
                     <input type="text" class="col-lg-4 mb-4 inputText" ref="endTimeInput" style="background-color: #d4d4d4"
                         v-model="endTime" />
                 </div>
-
+                <div class="row justify-content-center" v-if="inputEndError">
+                    <p class="col-lg-4 mb-2 text-danger error">*Please enter an end time.</p>
+                </div>
                 <div class="row justify-content-center align-items-center mt-3">
                     <button class="col-lg-3 mb-5 text-center main-btn" type="submit" @click="book">
                         Book By Cash
@@ -40,21 +47,21 @@
                 </div>
             </div>
         </div>
-        <v-alert color="success" icon="$success" title="Booked Successfully" text="Your Booking is successfull"
-            id="hideme" v-if="flag"></v-alert>
-        <v-alert color="error" icon="$error" title="Bookin unsuccessful" text="Please Try again and try another time slots" id="hideme"
-            v-if="error"></v-alert>
+        <v-alert color="success" icon="$success" title="Booked Successfully" text="Your Booking is successfull" id="hideme"
+            v-if="flag"></v-alert>
+        <v-alert color="error" icon="$error" title="Booking unsuccessful" text="Please Try again and try another time slots"
+            id="hideme" v-if="error"></v-alert>
 
-        
-            <v-alert color="error" icon="$error" title="There Is No Enough Points" text="Please Try again" id="hideme"
+
+        <v-alert color="error" icon="$error" title="There Is No Enough Points" text="Please Try again" id="hideme"
             v-if="noPoints"></v-alert>
-            <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+        <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again"
             v-if="this.authorizationFlag" class="alert align-items-center container">
             <button class="goButton" @click="redirectPage()">Go to Log In</button>
-          </v-alert>
-            
+        </v-alert>
 
-        
+
+
 
     </div>
 </template>
@@ -83,13 +90,13 @@ export default {
             user: null,
             userPoints: 0,
             noPoints: false,
-
             authorizationFlag: false,
             securityFlag: localStorage.getItem('securityFlag'),
-
             spaceId: '',
-            dateGood: ''
-
+            dateGood: '',
+            inputDateError: false,
+            inputStartError: false,
+            inputEndError: false,
         };
     },
     components: {
@@ -98,10 +105,10 @@ export default {
     },
     methods: {
 
-        redirectPage(){
-      this.$router.push('/')
-    },
-       
+        redirectPage() {
+            this.$router.push('/')
+        },
+
         calculateTotalPrice(startTime, endTime, pricePerUnit) {
             // Convert time strings to Date objects
             const startDate = new Date(`1970/01/01 ${startTime}`);
@@ -126,6 +133,21 @@ export default {
 
         },
         book() {
+            this.inputDateError = false;
+            this.inputEndError = false;
+            this.inputStartError = false;
+            if (!this.date) {
+                this.inputDateError = true;
+                return;
+            }
+            if (!this.startTime) {
+                this.inputStartError = true;
+                return;
+            }
+            if (!this.endTime) {
+                this.inputEndError = true;
+                return;
+            }
             this.price = this.calculateTotalPrice(this.startTime, this.endTime, this.room.price)
             this.dateGood = this.formatDate(this.date);
             axios
@@ -160,6 +182,21 @@ export default {
         },
 
         bookPoints() {
+            this.inputDateError = false;
+            this.inputEndError = false;
+            this.inputStartError = false;
+            if (!this.date) {
+                this.inputDateError = true;
+                return;
+            }
+            if (!this.startTime) {
+                this.inputStartError = true;
+                return;
+            }
+            if (!this.endTime) {
+                this.inputEndError = true;
+                return;
+            }
             this.price = this.calculateTotalPrice(this.startTime, this.endTime, this.room.price);
             if (this.useerPoints >= this.price) {
                 axios
@@ -182,13 +219,13 @@ export default {
                         }
                     })
                     .catch((err) => {
-                    // Handle errors
+                        // Handle errors
 
-                    if (err.response.data.message === "Unauthorized request") {
-                        this.authorizationFlag = true
-                        console.log(this.authorizationFlag)
-                    }
-                })
+                        if (err.response.data.message === "Unauthorized request") {
+                            this.authorizationFlag = true
+                            console.log(this.authorizationFlag)
+                        }
+                    })
             }
             else {
                 this.noPoints = true;
@@ -199,7 +236,7 @@ export default {
                 this.noPoints = false;
             }, 3000);
 
-        
+
         },
         getCurrentDate() {
             const today = new Date();
@@ -238,13 +275,13 @@ export default {
 
             })
             .catch((err) => {
-                    // Handle errors
+                // Handle errors
 
-                    if (err.response.data.message === "Unauthorized request") {
-                        this.authorizationFlag = true
-                        console.log(this.authorizationFlag)
-                    }
-                })
+                if (err.response.data.message === "Unauthorized request") {
+                    this.authorizationFlag = true
+                    console.log(this.authorizationFlag)
+                }
+            })
 
 
 
@@ -258,13 +295,13 @@ export default {
                 this.userPoints = this.user.points;
             })
             .catch((err) => {
-                    // Handle errors
+                // Handle errors
 
-                    if (err.response.data.message === "Unauthorized request") {
-                        this.authorizationFlag = true
-                        console.log(this.authorizationFlag)
-                    }
-                })
+                if (err.response.data.message === "Unauthorized request") {
+                    this.authorizationFlag = true
+                    console.log(this.authorizationFlag)
+                }
+            })
 
 
         // get space
@@ -280,41 +317,47 @@ export default {
 
             })
             .catch((err) => {
-                    // Handle errors
+                // Handle errors
 
-                    if (err.response.data.message === "Unauthorized request") {
-                        this.authorizationFlag = true
-                        console.log(this.authorizationFlag)
-                    }
-                });
+                if (err.response.data.message === "Unauthorized request") {
+                    this.authorizationFlag = true
+                    console.log(this.authorizationFlag)
+                }
+            });
     },
 };
 </script>
 
 <style>
-.goButton{
-    background-color: var(--light)!important;
-    color: black!important;
+.goButton {
+    background-color: var(--light) !important;
+    color: black !important;
     border-radius: 15px !important;
     height: 40px !important;
-    width:100px !important;
+    width: 100px !important;
     font-weight: 500 !important;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top:10px;
-  
-  }
-  .alert{
-    width:400px;
+    margin-top: 10px;
+
+}
+
+.alert {
+    width: 400px;
     display: flex;
     border-radius: 25px;
-  }
+}
+
 .addNew {
     background-color: var(--darkblue);
     color: white;
     border-radius: 25px;
+}
+
+.error {
+    margin-left: 410px !important;
 }
 
 .inputText {
