@@ -185,7 +185,7 @@ export default {
       console.log(this.selectedDate)
       console.log(this.roomId)
       axios
-        .get(`http://localhost:8080/api/bookings/roomBookings/${this.roomId}?date=${this.selectedDate}?flag=${this.securityFlag}`)
+        .get(`http://localhost:8080/api/bookings/roomBookings/${this.roomId}?date=${this.selectedDate}&flag=${this.securityFlag}`)
         .then((response) => {
           // Handle response
           this.disabledTimes = response.data;

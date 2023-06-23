@@ -145,7 +145,7 @@ export default {
     },
     beforeMount() {
         this.securityFlag = localStorage.getItem('securityFlag')
-        axios.get(`http://localhost:8080/api/admin/requests/?status=pending?flag=${this.securityFlag}`)
+        axios.get(`http://localhost:8080/api/admin/requests/?status=pending&flag=${this.securityFlag}`)
             .then((response) => {
                 this.req = response.data
                 console.log(response.data)

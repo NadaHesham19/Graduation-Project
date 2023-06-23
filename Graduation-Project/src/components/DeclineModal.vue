@@ -59,7 +59,7 @@
       .then(() => this.status = 'Declined successful');
       this.dialog=false
       }*/
-      const url = `http://localhost:8080/api/admin/requests/?status=declined&requestID=${this.requestId}?flag=${this.securityFlag}`
+      const url = `http://localhost:8080/api/admin/requests/?status=declined&requestID=${this.requestId}&flag=${this.securityFlag}`
       axios.post(url)
       .then((response)=>{
       this.status = 'declined',

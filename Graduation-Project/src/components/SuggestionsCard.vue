@@ -75,7 +75,7 @@ export default {
   },
   beforeMount() {
     this.securityFlag = localStorage.getItem('securityFlag')
-    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.address}?flag=${this.securityFlag}`)
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.address}&flag=${this.securityFlag}`)
       .then((response) => {
         this.final = response.data
         console.log(response.data)

@@ -24,6 +24,10 @@
                 :total-visible="7" prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
         </div>
     </div>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
     <Footer />
 </template>
 
@@ -44,7 +48,9 @@ export default {
             spaces: [],
             currentPage: 1,
             spacesPerPage: 6,
-            searchTerm: ''
+            searchTerm: '',
+            authorizationFlag: false,
+            securityFlag : localStorage.getItem('securityFlag')
 
         };
     },
@@ -68,28 +74,52 @@ export default {
     methods: {
         search() {
             this.currentPage = 1;
-        }
+        },
+        redirectPage(){
+      this.$router.push('/')
+    }
+
     },
     beforeMount() {
-        this.jsessionId = localStorage.getItem('jsessionidValue')
         axios
-            .get("http://localhost:8080/api/spaces", {
-
-
-            },)
+            .get(`http://localhost:8080/api/spaces?flag=${this.securityFlag}`,)
             .then((response) => {
                 console.log(response.data)
                 this.spaces = response.data;
             })
             .catch((err) => {
-                console.error(err);
-            });
+        // Handle errors
+        if(err.response.data.message === "Unauthorized request"){
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
     }
 
 }
 </script>
 
 <style scoped>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
+  
 .searchinput {
     position: absolute !important;
     width: 340px !important;

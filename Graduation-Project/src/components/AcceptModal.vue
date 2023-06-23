@@ -48,7 +48,7 @@ export default {
   ,
   methods: {
     Accept() {
-      const url = `http://localhost:8080/api/admin/requests/?status=approved&requestID=${this.requestId}?flag=${this.securityFlag}`
+      const url = `http://localhost:8080/api/admin/requests/?status=approved&requestID=${this.requestId}&flag=${this.securityFlag}`
       axios.post(url)
         .then((response) => {
           this.status = 'approved'

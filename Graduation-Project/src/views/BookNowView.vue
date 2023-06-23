@@ -227,7 +227,7 @@ export default ({
         }
       })
       
-    axios.get(`http://localhost:8080/api/spaces/suggested?city=cairo&flag=${this.securityFlag}`)  //ghayrtha 3shan a test
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=${this.userAddress}&flag=${this.securityFlag}`)  //ghayrtha 3shan a test
       .then((response) => {
         this.spaces = response.data
         console.log(response.data)

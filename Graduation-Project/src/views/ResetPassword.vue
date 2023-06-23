@@ -72,7 +72,7 @@ export default {
     ResetPassword() {
       //user id will be from the url
 
-      axios.patch(`http://localhost:8080/api/user/updatePassword?email=${this.userEmail}?flag=${this.securityFlag}`,
+      axios.patch(`http://localhost:8080/api/user/updatePassword?email=${this.userEmail}&flag=${this.securityFlag}`,
         {
           password: this.newPass
         })

@@ -52,7 +52,7 @@ export default {
       const userEmail = this.email;
       const link = `http://localhost:5173/resetpassword/?flag=${this.securityFlag}`+encryptedData;
 
-      const url = `http://localhost:8080/api/user/resetPassword?email=${userEmail}&link=${link}?flag=${this.securityFlag}`;
+      const url = `http://localhost:8080/api/user/resetPassword?email=${userEmail}&link=${link}&flag=${this.securityFlag}`;
 
       axios
         .post(url)

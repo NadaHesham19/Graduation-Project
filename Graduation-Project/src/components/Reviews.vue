@@ -30,6 +30,10 @@
             </v-card>
         </v-dialog>
     </v-row>
+    <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
+            v-if="this.authorizationFlag" class="alert align-items-center container">
+            <button class="goButton" @click="redirectPage()">Go to Log In</button>
+          </v-alert>
 </template>
 
 <script>
@@ -42,6 +46,8 @@ export default {
         user: {},
         reviews: [],
         usernames: {},
+        authorizationFlag: false,
+        securityFlag: localStorage.getItem('securityFlag')
 
     }), props: ['spaceId', 'userID'],
     mounted() {
@@ -49,6 +55,9 @@ export default {
 
     },
     methods: {
+        redirectPage(){
+      this.$router.push('/')
+    }
 
     },
 
@@ -59,7 +68,7 @@ export default {
         },
     }, beforeMount() {
         axios
-            .get(`http://localhost:8080/api/ratings/space/${this.spaceId}`)
+            .get(`http://localhost:8080/api/ratings/space/${this.spaceId}?flag=${this.securityFlag}`)
             .then((response) => {
                 console.log(response.data)
                 this.reviews = response.data;
@@ -67,7 +76,7 @@ export default {
                 console.log(userIds);
                 userIds.forEach(userId => {
                     axios
-                        .get(`http://localhost:8080/api/user/${userId}`)
+                        .get(`http://localhost:8080/api/user/${userId}?flag=${this.securityFlag}`)
                         .then((response) => {
                             console.log(response.data)
                             this.user = response.data;
@@ -76,22 +85,48 @@ export default {
                             console.log(this.usernames, "names")
                         })
                         .catch((err) => {
-                            console.error(err);
-                        });
-
+                            // Handle errors
+                            if (err.response.data.message === "Unauthorized request") {
+                                this.authorizationFlag = true
+                                console.log(this.authorizationFlag)
+                            }
+                        })
 
                 });
 
             })
             .catch((err) => {
-                console.error(err);
-            });
+                            // Handle errors
+                            if (err.response.data.message === "Unauthorized request") {
+                                this.authorizationFlag = true
+                                console.log(this.authorizationFlag)
+                            }
+                        })
 
     },
 };
 </script>
 
 <style scoped>
+.goButton{
+    background-color: var(--light)!important;
+    color: black!important;
+    border-radius: 15px !important;
+    height: 40px !important;
+    width:100px !important;
+    font-weight: 500 !important;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+  
+  }
+  .alert{
+    width:400px;
+    display: flex;
+    border-radius: 25px;
+  }
 .cancel-btn {
     background-color: rgb(169, 11, 11);
     color: #fff;

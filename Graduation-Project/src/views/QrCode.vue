@@ -80,7 +80,7 @@ export default {
   },
   methods:{
     approve(){
-    axios.post(`http://localhost:8080/api/bookings/scan/${this.id}?flag=${this.securityFlag}`)
+    axios.post(`http://localhost:8080/api/bookings/scan/${this.id}`)
        
     .catch((err) => {
         // Handle errors
