@@ -87,7 +87,7 @@
           <span
             v-for="error in passwordValidation.errors"
             :key="error"
-            class="error"
+            class="errorr"
           >
             {{ error }}
           </span>
@@ -98,7 +98,7 @@
           v-model.lazy="checkPassword"
           required
         />
-        <div class="error" v-if="notSamePasswords">
+        <div class="errorr" v-if="notSamePasswords">
           <p>Passwords don't match.</p>
         </div>
 
@@ -335,7 +335,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .goButton {
   background-color: var(--light) !important;
   color: black !important;
@@ -522,7 +522,7 @@ export default {
   color: var(--lightblue) !important;
 }
 
-.error {
+.errorr {
   color: red;
 }
 
