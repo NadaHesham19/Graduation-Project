@@ -1,67 +1,100 @@
 <template>
-    <NavBar />
+    <AdminNav />
     <!-- <p>{{ spaceId }}</p> -->
     <div class="details pt-4">
         <div class="container mt-5 pt-5">
             <div class="row align-items-center justify-content-evenly">
                 <div class="col-6">
-                    <h2 class="mb-5 pb-5 fw-bold">{{ spaceDetails.name }}</h2>
+                    <!-- <h2 class="mb-5 pb-5 fw-bold">{{ spaceDetails.name }}</h2> -->
+                    <input class=" ms-2 name" type="text" ref="name" v-model="spaceDetails.name" />
+                    <span class="editable mx-2"><i class="fa-solid fa-pen-to-square" @click="EnableEdit('name')"></i></span>
                     <ul class="list-unstyled lh-lg ms-5 mb-5">
                         <li class="align-items-center m-3 fs-4 "><i class=" me-3 fa-solid fa-circle-info fs-3 "></i>
-                            {{ spaceDetails.description }}
+                            <input class=" ms-2" type="text" ref="desc" v-model="spaceDetails.description" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('desc')"></i></span>
                         </li>
                         <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-location-dot me-3 p-1"></i>
-                            {{ spaceDetails.address }}, {{ spaceDetails.district }}
+
+                            <input class=" ms-2" type="text" ref="address" v-model="spaceDetails.address" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('address')"></i></span>
+                        </li>
+                        <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-location-dot me-3 p-1"></i>
+
+                            <input class=" ms-2" type="text" ref="district" v-model="spaceDetails.district" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('district')"></i></span>
                         </li>
                         <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-phone me-3"></i>
-                            {{ spaceDetails.contactNumber }}
+
+                            <input class=" ms-2" type="text" ref="number" v-model="spaceDetails.contactNumber" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('number')"></i></span>
                         </li>
-                        <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-star me-3"></i>
-                            {{ spaceDetails.ratingAverage.toFixed(1) }}
-                        </li>
-                        <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-wifi me-3"></i>
-                            Offers free Wi-Fi
+                        <!-- <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-star me-3"></i>
+
+                            <input class=" ms-2" type="text" ref="rating" v-model="spaceDetails.ratingAverage" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('rating')"></i></span>
+                        </li> -->
+                        <!-- <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-wifi me-3"></i>
+
+
+                            <input class=" ms-2" type="text" ref="wifi" v-model="wifi" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('wifi')"></i></span>
+                        </li> -->
+                        <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-clock me-3"></i>
+
+                            <input class=" ms-2" type="text" ref="start" v-model="spaceDetails.startTime" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('start')"></i></span>
                         </li>
                         <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-clock me-3"></i>
-                            {{ spaceDetails.startTime }} - {{ spaceDetails.endTime }}
+
+                            <input class=" ms-2" type="text" ref="end" v-model="spaceDetails.endTime" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('end')"></i></span>
+                        </li>
+                        <!-- <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-dollar-sign me-3"></i>
+
+                            <input class=" ms-2" type="text" ref="min" v-model="spaceDetails.minPrice" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('min')"></i></span>
                         </li>
                         <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-dollar-sign me-3"></i>
-                            {{ spaceDetails.minPrice }} - {{ spaceDetails.maxPrice }}
-                        </li>
-                        <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-mug-saucer me-3"></i>
-                            Drinks: {{ displayBooleanValue(spaceDetails.drinks) }}
+
+                            <input class=" ms-2" type="text" ref="max" v-model="spaceDetails.maxPrice" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('max')"></i></span>
+                        </li> -->
+                        <!-- <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-mug-saucer me-3"></i>
+
+                            <input class=" ms-2" type="text" ref="drink" v-model="spaceDetails.drinks" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('drink')"></i></span>
                         </li>
                         <li class="align-items-center m-3 fs-4 "><i class="fa-solid fa-tree me-3"></i>
-                            Outdoors: {{ displayBooleanValue(spaceDetails.outdoors) }}
-                        </li>
+
+                            <input class=" ms-2" type="text" ref="out" v-model="spaceDetails.outdoors" />
+                            <span class="editable mx-2"><i class="fa-solid fa-pen-to-square"
+                                    @click="EnableEdit('out')"></i></span>
+                        </li> -->
+                        <div class="row justify-content-center mt-5 pt-5">
+                            <button class="main-btn col-lg-3 savebtn " type="submit" @click="SaveEditting">
+                                Save
+                            </button>
+                        </div>
+
                     </ul>
                 </div>
                 <div class="col-6 mb-5">
                     <img class="img-fluid image mt-5 " :src="imageSrc" alt="" width="520">
-                    <Reviews :spaceId="spaceId" :userID="userID" />
-                </div>
-            </div>
-            <div class="ratings col-3 mt-4">
-                <div>
-                    <h3>Review:</h3>
-                    <v-rating v-model="rating" hover half-increments></v-rating>
-                    <!-- <pre class="text-center">{{ rating }}</pre> -->
-                    <form class="d-flex searchform">
-                        <input class="form-control searchinput me-2 mt-4 " type="text" aria-label="Search"
-                            v-model="comment" />
-                        <button class="btn btn-outline-success main-btn  commentbtn mt-5" type="submit" @click="submit">
-                            Submit
-                        </button>
-                    </form>
+
                 </div>
             </div>
 
-            <div class="row mt-5 pt-5">
-                <div class="location">
-                    <h3 class="mb-5 pb-5 fw-bold">Our Locations:</h3>
-                    <div class="map p-5" id="map"></div>
-                </div>
-            </div>
             <div class="row mt-5 pt-5">
                 <div class=" search pt-5">
                     <h3 class="mb-5 pb-5 fw-bold mt-5 pt-5">Search for your room:</h3>
@@ -77,7 +110,7 @@
                     </div>
                     <div class="row justify-content-evenly">
                         <div class="col-4" v-for="(room) in pagedRooms" :key="room.id">
-                            <RoomCard :room="room" />
+                            <ModifyRoom :room="room" />
                         </div>
                     </div>
                     <div class=" row numbers mt-5 mb-5 text-center">
@@ -92,8 +125,8 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue';
-import RoomCard from '../components/RoomCard.vue';
+import AdminNav from '../components/AdminNav.vue';
+import ModifyRoom from '../components/ModifyRoom.vue';
 import Footer from '../components/Footer.vue';
 import { VPagination } from 'vuetify/components/VPagination';
 import Reviews from '../components/Reviews.vue';
@@ -119,10 +152,11 @@ export default {
             rating: 0,
             comment: "",
             userID: null,
+            wifi: "Offers free Wi-Fi",
 
         }
     },
-    components: { NavBar, RoomCard, Footer, Reviews },
+    components: { AdminNav, ModifyRoom, Footer, Reviews },
 
     mounted() {
         this.fetchImage();
@@ -205,7 +239,37 @@ export default {
             return filteredRooms.slice(startIndex, endIndex);
         },
     }, methods: {
-        submit() {
+        EnableEdit(field) {
+            this.$refs[field].focus();
+        },
+        SaveEditting() {
+            axios.patch(`http://localhost:8080/api/spaces/${this.spaceId}`,
+                {
+                    address: this.spaceDetails.address,
+                    district: this.spaceDetails.district,
+                    name: this.spaceDetails.name,
+                    description: this.spaceDetails.description,
+
+                    contactNumber: this.spaceDetails.contactNumber,
+                    minPrice: this.spaceDetails.minPrice,
+                    maxPrice: this.spaceDetails.maxPrice,
+                    startTime: this.spaceDetails.startTime,
+                    endTime: this.spaceDetails.endTime,
+                    drinks: this.spaceDetails.drinks,
+
+                    outdoors: this.spaceDetails.outdoors,
+                    ratingAverage: this.spaceDetails.ratingAverage,
+                }).then((res) => {
+                    console.log(res);
+                    window.location.reload()
+                })
+                .catch((e) => {
+                    console.log(e)
+                });
+
+
+        }
+        , submit() {
 
             console.log("Rating:", this.rating);
             console.log("Comment:", this.comment);
@@ -281,6 +345,11 @@ export default {
     border-radius: 15px;
 }
 
+.name {
+    font-size: 40px;
+    font-weight: 600;
+}
+
 .searchinput {
 
     width: 340px !important;
@@ -317,5 +386,20 @@ export default {
 
 .location {
     margin-top: 30px;
+}
+
+.editable {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+input {
+    color: #203467;
+}
+
+.savebtn {
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+
 }
 </style>
