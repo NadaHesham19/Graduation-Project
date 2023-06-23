@@ -12,48 +12,54 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row class="my-3">
               <b>Please Enter date and time</b>
             </v-row>
-            <v-row>
+            <v-row class="my-3">
               <v-col cols="12" sm="10" md="8">
+
                 <VueDatePicker :model-value="date" :min-date="new Date()" :enable-time-picker="false"
                   @update:model-value="getAvailableTime" v-model="date"/>
+
+                <VueDatePicker :min-date="new Date()" :enable-time-picker="false" @update:model-value="getAvailableTime()"
+                  v-model="selectedDate" />
+                <!-- <datepicker :inline="true" :icon-color="red"/> -->
+
               </v-col>
             </v-row>
-            <v-row>
-
+            <v-row class="my-3">
               <v-col cols="12" sm="6" md="4">
                 <label for="start time" class="time-dropdown__label">Start Time</label>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <select id="time" v-model="selectedTime" :disabled="flag" class="time-dropdown__select">
-                  <option v-for="time in times" :value="start" class="time-dropdown__option">{{ time }}</option>
+                <select id="time" v-model="selectedStartTime" :disabled="flag" class="time-dropdown__select">
+                  <option v-for="time in times" :value="start" class="time-dropdown__option">
+                    {{ time }}
+                  </option>
                 </select>
-
               </v-col>
             </v-row>
-            <v-row>
-
+            <v-row class="my-3">
               <v-col cols="12" sm="6" md="4">
                 <label for="End Time" class="time-dropdown__label" >End Time</label>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <select id="time" v-model="selectedTime" :disabled="flag" class="time-dropdown__select">
-                  <option v-for="time in times" :value="end" class="time-dropdown__option">{{ time }}</option>
+                <select id="time" v-model="selectedEndTime" :disabled="flag" class="time-dropdown__select">
+                  <option v-for=" (time, index ) in times" :key="index" :value="end" class="time-dropdown__option"
+                    :disabled="booked">
+                    {{ time }}
+                  </option>
                 </select>
-
               </v-col>
-
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <button class="btn cancel-btn mx-2" variant="text" @click="dialog = false">
+          <button class="btn cancel-btn mx-2 my-5" variant="text" @click="dialog = false">
             Cancel
           </button>
-          <button class="btn main-btn mx-2" variant="text" @click="rebookPoints" :disabled="value">
+          <button class="btn main-btn mx-2 my-5" variant="text" @click="rebookPoints" :disabled="value">
             Pay by Points
           </button>
           <button class="btn main-btn mx-2" variant="text" @click="rebookCash">
@@ -61,22 +67,26 @@
           </button>
         </v-card-actions>
       </v-card>
+      <div class="d-none">{{ roomId }}</div>
     </v-dialog>
   </v-row>
 </template>
 
 <script>
 import VueDatePicker from '@vuepic/vue-datepicker';
+import Datepicker from 'vuejs3-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import axios from 'axios'
+import { ref } from 'vue';
+import moment from 'moment';
 export default {
   data: () => ({
     value: true,
     dialog: false,
-    date: null,
     menu: false,
     start: null,
     end: null,
+
     flag:true,
     times: [
       "09:00",
@@ -90,11 +100,34 @@ export default {
     ],
     disabledTimes: ["10:00", "12:00", "14:00"], // set the times that should be disabled
     selectedTime: "",
+
+    flag: true,
+    selectedDate: '19-11-2023',
+    booked: false,
+    // times: [
+    //   "09:00",
+    //   "10:00",
+    //   "11:00",
+    //   "12:00",
+    //   "13:00",
+    //   "14:00",
+    //   "15:00",
+    //   "16:00",
+    // ],
+    // disabledTimes: ["10:00", "12:00", "14:00"], // set the times that should be disabled
+    selectedStartTime: "",
+    selectedEndTime: "",
+    disabledTimes: [],
+    times: [],
+    disabled: [],
     userID: localStorage.getItem('userID'),
   }),
   components: {
-    VueDatePicker
+    VueDatePicker, Datepicker
   },
+  props: [
+    'roomId'
+  ],
   methods: {
     rebookPoints() {
       this.dialog = false;
@@ -104,9 +137,7 @@ export default {
       this.dialog = false;
     },
     availableTime() { },
-    save(date) {
-      this.$refs.menu.save(date);
-    },
+
     convertTime12to24(time12h) {
       const [time, modifier] = time12h.split(" ");
 
@@ -122,9 +153,43 @@ export default {
 
       return `${hours}:${minutes}:00`;
     },
-    getAvailableTime() {
 
+    // formatDate(dateString) {
+    //   const dateParts = dateString.split(' ');
+    //   const day = dateParts[2];
+    //   const monthName = dateParts[1];
+    //   const year = dateParts[3];
+
+    //   const months = {
+    //     Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06',
+    //     Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12'
+    //   };
+
+    //   const month = months[monthName];
+
+    //   return `${day}-${month}-${year}`;
+    // },
+    getAvailableTime() {
+      // this.selectedDate=this.date,
       //api call to get disabled time
+      console.log(this.selectedDate)
+      console.log(this.roomId)
+      axios
+        .get(`http://localhost:8080/api/bookings/roomBookings/${this.roomId}?date=${this.selectedDate}`)
+        .then((response) => {
+          // Handle response
+          this.disabledTimes = response.data;
+
+          console.log(this.disabledTimes)
+        })
+        .catch((err) => {
+          // Handle errors
+          console.error(err);
+        });
+
+      // this.flag=false
+      
+
     },
   },
   watch: {
@@ -148,6 +213,13 @@ export default {
         console.error(err);
       });
 
+    for (var hour = 0; hour < 24; hour++) {
+      for (var minute = 0; minute < 60; minute += 30) {
+        var timeStr = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        this.times.push(timeStr);
+        this.disabled.push(false)
+      }
+    }
   },
   components: {
     VueDatePicker,
@@ -184,7 +256,6 @@ export default {
   color: var(--darkblue) !important;
   font-weight: 700 !important;
 }
-
 
 .time-dropdown__label {
   font-weight: bold;

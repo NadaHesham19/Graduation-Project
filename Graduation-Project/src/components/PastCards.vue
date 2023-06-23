@@ -9,24 +9,22 @@
       <p class="card-text">Payment Method: {{ booking.paymentMethod }}</p>
       <div class="text-center">
         <div class="d-none">{{ booking.rooomId }}</div>
-        <!-- <button class="btn mx-auto main-btn ">Rebook <i class="mx-1 fa-regular fa-calendar"></i></button> -->
-        <RebookModal />
+        
+        <button @click="book" class="btn mx-auto my-3 main-btn">
+          Rebook <i class="mx-1 fa-regular fa-calendar"></i>
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import RebookModal from './RebookModal.vue';
 import axios from 'axios'
 export default {
   data() {
     return {
       imageSrc: "",
     };
-  },
-  components: {
-    RebookModal
   },
   beforeMount() {
 axios
@@ -45,6 +43,12 @@ axios
   props: [
     'booking',
   ],
+  methods:{
+    book(){
+      this.$router.push(`/addbooking/${this.booking.roomId}`)
+    }
+  }
+
  
 };
 </script>

@@ -139,11 +139,18 @@ export default {
     },
     prevSlide() {
       if (this.currentSlide == 0) {
-        this.currentSlide = this.upComingBookings.length / 2 - 0.5;
-      } else {
+        if(this.upComingBookings.length % 2 != 0){
+        this.currentSlide = this.upComingBookings.length /2 - 0.5;
+      }
+      else{
+        this.currentSlide = (this.upComingBookings.length /2) -1 ;
+      }
+        
+      } 
+      else {
         this.currentSlide =
           (this.currentSlide + this.upComingBookings.length - 1) %
-          (this.upComingBookings.length / 2);
+          (this.upComingBookings.length / 2) ;
       }
     },
 
@@ -157,7 +164,12 @@ export default {
     },
     prevSlidePast() {
       if (this.currentSlidePast == 0) {
-        this.currentSlidePast = this.pastBookings.length / 2 - 0.5;
+        if(this.pastBookings.length %2 != 0){
+        this.currentSlidePast = this.pastBookings.length/2  - 0.5;
+      }
+        else{
+          this.currentSlidePast = this.pastBookings.length/2 -1
+        }
       } else {
         this.currentSlidePast =
           (this.currentSlidePast + this.pastBookings.length - 1) %

@@ -15,8 +15,10 @@ import HistoryAdminView from "../views/HistoryAdminView.vue";
 import SpaceView from "../views/SpaceView.vue";
 import ResetPassword from "../views/ResetPassword.vue"
 import QrCodeView from "../views/QrCode.vue"
-import ExtraAddNewView from"../views/ExtraAddNewView.vue"
-
+import ExtraAddNewView from "../views/ExtraAddNewView.vue"
+import SpacesAdminView from "../views/SpacesAdminView.vue"
+import ModifySpaceView from "../views/ModifySpaceView.vue"
+import AddBookView from "../views/AddBookView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +27,16 @@ const router = createRouter({
       path: "/",
       name: "signup",
       component: SignupView,
+    },
+    {
+      path: "/spacesadmin",
+      name: "spacesadmin",
+      component: SpacesAdminView,
+    },
+    {
+      path: "/modifyspace/:id",
+      name: "modifyspace",
+      component: ModifySpaceView,
     },
     {
       path: "/about",
@@ -105,6 +117,12 @@ const router = createRouter({
     path:'/extraaddnew/:id',
     name:'ExtraAddNew',
     component:ExtraAddNewView
+   }
+   ,
+   {
+    path:'/addbooking/:id',
+    name:'addbooking',
+    component:AddBookView
    }
   ],
 });

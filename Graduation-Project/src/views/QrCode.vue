@@ -50,38 +50,20 @@ export default {
       id: "",
     };
   },
-  // beforeMount() {
-  //   // const decode = () => {
-  //   //   //Take token from window local storage
-  //   //   let token =
-  //   //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-  //   //   try {
-  //   //     let decoded = VueJwtDecode.decode(token);
-  //   //     console.log(decoded);
-  //   //   } catch (err) {
-  //   //     console.log("token is null: ", err);
-  //   //   }
-  //   // };
-  //   // const encodedJwt = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.L8i6g3PfcHlioHCCPURC9pmXT7gdJpx3kOoyAfNUwCc')
-  //   // const { header, payload } = useJwt(encodedJwt)
-  //   // // return { header, payload }
-  //   // console.log(header)
-  //   // console.log(payload)
-  // },
   beforeMount() {
     // Access ID from the URL
     this.id = this.$route.params.id;
-      // axios
-    //   .get("http://localhost:8080/api/user")
-    //   .then((response) => {
-    //     // Handle response
-    //     this.booking = response.data;
-    //     console.log(this.booking);
-    //   })
-    //   .catch((err) => {
-    //     // Handle errors
-    //     console.error(err);
-    //   });
+      axios
+      .get(`http://localhost:8080/api/bookings/${this.id}`)
+      .then((response) => {
+        // Handle response
+        this.booking = response.data;
+        console.log(this.booking);
+      })
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
 
   },
   components: {
@@ -89,8 +71,13 @@ export default {
   },
   methods:{
     approve(){
- 
-    axios.post(`http://localhost:8080/api/bookings/scan/${this.id}`,{})
+    axios.post(`http://localhost:8080/api/bookings/scan/${this.id}`)
+       
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
+
     }
   }
 };
