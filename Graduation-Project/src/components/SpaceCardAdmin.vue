@@ -4,10 +4,10 @@
         <div class="card-body">
             <h5 class="card-title fw-bolder"> {{ space.name }}</h5>
             <p class="card-text ms-2 mt-4">{{ space.address }}</p>
-            <p class="card-text"><i class="fa-solid fa-star ms-2 me-1"></i> {{ space.ratingAverage }}</p>
+            <p class="card-text"><i class="fa-solid fa-star ms-2 me-1"></i> {{ space.ratingAverage.toFixed(2) }}</p>
             <div class="row d-flex justify-content-evenly ">
                 <div class="col-5">
-                    <router-link :to="{ name: 'space', params: { id: space.spaceId } }"
+                    <router-link :to="{ name: 'modifyspace', params: { id: space.spaceId } }"
                         class="btn mx-auto main-btn modifybtn">Modify<i
                             class="fa-regular fa-pen-to-square ms-2"></i></router-link>
                 </div>

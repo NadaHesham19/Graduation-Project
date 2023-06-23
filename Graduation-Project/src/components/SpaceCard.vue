@@ -4,7 +4,7 @@
         <div class="card-body">
             <h5 class="card-title fw-bolder"> {{ space.name }}</h5>
             <p class="card-text ms-2 mt-4">{{ space.address }}</p>
-            <p class="card-text"><i class="fa-solid fa-star ms-2 me-1"></i> {{ space.ratingAverage }}</p>
+            <p class="card-text"><i class="fa-solid fa-star ms-2 me-1"></i> {{ space.ratingAverage.toFixed(2) }}</p>
             <div class="text-center">
                 <router-link :to="{ name: 'space', params: { id: space.spaceId } }"
                     class="btn mx-auto main-btn">Visit</router-link>
