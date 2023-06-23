@@ -73,6 +73,8 @@
     <button class="goButton" @click="redirectPage()">Go to Log In</button>
   </v-alert>
 
+  
+
   <Footer />
 </template>
 
@@ -105,19 +107,17 @@ export default ({
       currentPage: 1,
       spacesPerPage: 6,
       searchTerm: '',
-      user: [
-        {
-          address: ''
-        }
-
-      ],
+      //address: '',
       authorizationFlag: false,
-      securityFlag: localStorage.getItem('securityFlag')
+      securityFlag: localStorage.getItem('securityFlag'),
+      user:null,
+      userAddress:''
+
 
     }
   },
   props: [
-    'space'
+    
   ],
   methods: {
     redirectPage() {
@@ -208,11 +208,30 @@ export default ({
     },
   },
   beforeMount() {
-    axios.get(`http://localhost:8080/api/spaces/suggested?city=cairo`)  //ghayrtha 3shan a test
+    this.userId = localStorage.getItem('userID')
+    axios.get(`http://localhost:8080/api/user/${this.userId}?flag=${this.securityFlag}`)
+    .then((response) => {
+        this.user = response.data
+        this.userAddress = this.user.address
+        console.log(this.userAddress)
+
+        console.log(response.data)
+      //console.log(this.user.address)   //mafesh haga henaaa fe error
+      })
+      
+      .catch((err) => {
+        // Handle errors
+        if (err.response.data.message === "Unauthorized request") {
+          this.authorizationFlag = true
+          console.log(this.authorizationFlag)
+        }
+      })
+      
+    axios.get(`http://localhost:8080/api/spaces/suggested?city=cairo&flag=${this.securityFlag}`)  //ghayrtha 3shan a test
       .then((response) => {
         this.spaces = response.data
         console.log(response.data)
-        console.log(this.user.address, "address")   //mafesh haga henaaa fe error
+        console.log(this.user.address)   //mafesh haga henaaa fe error
       })
       .catch((err) => {
         // Handle errors
