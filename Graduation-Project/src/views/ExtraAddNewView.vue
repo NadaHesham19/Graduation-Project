@@ -1,5 +1,5 @@
 <template>
-  <NavBar></NavBar>
+  <SimpleNav/>
   <div class="container mt-5">
     <div class="row justify-content-center align-items-center mb-5 w-100">
       <div class="col-lg-9 addNew">
@@ -58,24 +58,7 @@
             v-model="contNum"
           />
         </div>
-        <!-- <div class="row justify-content-center">
-          <label class="col-lg-5 mb-4">Minimum Price</label>
-          <input
-            type="text"
-            class="col-lg-4 mb-4 inputText"
-            style="background-color: #d4d4d4"
-            v-model="minPrice"
-          />
-        </div>
-        <div class="row justify-content-center">
-          <label class="col-lg-5 mb-4">Maximum Price</label>
-          <input
-            type="text"
-            class="col-lg-4 mb-4 inputText"
-            style="background-color: #d4d4d4"
-            v-model="maxPrice"
-          />
-        </div> -->
+
         <div class="row justify-content-center">
           <label class="col-lg-5 mb-4">Start Time</label>
           <input
@@ -165,6 +148,7 @@
 <script>
 import NavBar from "../components/NavBar.vue";
 import axios from "axios";
+import SimpleNav from '@/components/SimpleNav.vue';
 export default {
   data() {
     return {
@@ -174,21 +158,19 @@ export default {
       district: "",
       description: "",
       contNum: "",
-      // minPrice: "",
-      // maxPrice: "",
       startTime: "",
       EndTime: "",
       drinks: "",
       owner: "",
       out: "",
-      userID: localStorage.getItem("userID"),
+      userID:'',
       flag: false,
       errorMessage: "",
       error:false,
     };
   },
   components: {
-    NavBar,
+   SimpleNav,
   },
   methods: {
      convertTime12to24(time12h){ 
@@ -216,23 +198,19 @@ export default {
           district: this.district,
           description: this.description,
           contactNumber: this.contNum,
-          // minPrice: this.minPrice,
-          // maxPrice: this.maxPrice,
           startTime: this.convertTime12to24(this.startTime),
           endTime: this.convertTime12to24(this.EndTime),
           drinks: this.drinks,
           owner: this.owner,
           outdoors: this.out,
-          userId:this.userID,
+          user:{userId:this.userID},
         })
         .then((response) => {
           if (response.data.error) {
             this.errorMessage = response.data.message;
-            this.error=false
+           
           } else {
-            //redirect
             this.flag=true
-            // this.$router.push("/")
             setTimeout(() => {
               this.$router.push("/");
           }, 3000);
@@ -241,23 +219,15 @@ export default {
         })
         .catch((err) => {
           // Handle errors
+          this.error=false
           console.error(err);
         });
      
     },
   },
   beforeMount() {
-    axios
-      .get("http://localhost:8080/api/spaces")
-      .then((response) => {
-        // Handle response
-        this.users = response.data;
-        console.log(this.users);
-      })
-      .catch((err) => {
-        // Handle errors
-        console.error(err);
-      });
+      this.userID=this.$route.params.id
+      console.log(this.userID)
   },
 };
 </script>
