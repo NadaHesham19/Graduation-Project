@@ -67,6 +67,7 @@
     })
     this.dialog=false
     console.log(this.dialog)
+    window.location.reload()
     .catch((err) => {
         // Handle errors
         if(err.response.data.message === "Unauthorized request"){

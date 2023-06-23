@@ -126,7 +126,7 @@
     title="Submission Failed"
     text="Please Try again"
     id="hideme"
-    v-if="error"
+    v-if="errorAlert"
   ></v-alert>
   <Footer class="mt-5 pt-5"></Footer>
   <router-view></router-view>
@@ -171,7 +171,7 @@ export default {
       username: null,
       //success and failure
       flag: false,
-      error: false,
+      errorAlert: false,
       //securityFlag: ''
     };
   },
@@ -224,7 +224,7 @@ export default {
         })
         .then((response) => {
           if (response.data.error) {
-            this.error = true;
+            this.errorAlert = true;
           } else {
             this.flag = true;
             // delay
@@ -242,13 +242,13 @@ export default {
         })
         .catch((err) => {
           // Handle errors
-          this.error = true;
+          this.errorAlert = true;
           console.error(err);
         });
 
       setTimeout(() => {
         this.flag = false;
-        this.error = false;
+        this.errorAlert = false;
       }, 2000);
     },
     resetPasswords() {
@@ -270,19 +270,25 @@ export default {
         .post(url, { withCredentials: true })
         .then((response) => {
           if (response.data.error) {
-            this.error = true;
+            this.errorAlert = true;
           } else {
             this.flag = true;
             // delay
             this.user = response.data;
             localStorage.setItem("userID", this.user.userId);
-            this.$router.push("/home");
             localStorage.setItem("securityFlag", this.user.securityFlag);
+            if(this.user.role=="User" || this.user.role=="Owner"){
+            this.$router.push("/home");
+          }
+          else if(this.user.role=="Admin"){
+         this.$router.push("/spacesadmin")
+          }
+            
           }
         })
         .catch((err) => {
           // Handle errors
-          this.error = true;
+          this.errorAlert = true;
           console.error(err);
         });
     },

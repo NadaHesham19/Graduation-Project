@@ -31,21 +31,58 @@
         </div>
       </div>
     </div>
+    <!-- login form -->
+    <h4 class="text-center">Please Sign in </h4>
+    <div id="app" class="signInCard">
+      <div class="card-body">
+        <form>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Username</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Enter Username" required v-model="username">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required
+              v-model="password">
+          </div>
+          <submit-btn v-bind:class="validClass"></submit-btn>
+        </form>
+      </div>
+    </div>
+
     <div class="row justify-content-center my-5">
-      <button class="main-btn col-lg-2 my-5 mx-2" type="submit" @click="aprrove">
+      <button class="main-btn col-lg-2 my-5 mx-2" type="submit" @click="approve">
         Approve
       </button>
     </div>
   </div>
-  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" 
-            v-if="this.authorizationFlag" class="alert align-items-center container">
-            <button class="goButton" @click="redirectPage()">Go to Log In</button>
-          </v-alert>
+  <v-alert color="error" icon="$error" title="You're not logged in" text="Please Try again" v-if="this.authorizationFlag"
+    class="alert align-items-center container">
+    <button class="goButton" @click="redirectPage()">Go to Log In</button>
+  </v-alert>
+  <v-alert
+    color="success"
+    icon="$success"
+    title="Submitted Successfully"
+    text="The Request is submitted successfully"
+    id="hideme"
+    v-if="flag"
+  ></v-alert>
+  <v-alert
+    color="error"
+    icon="$error"
+    title="Submission Failed"
+    text="Please Try again"
+    id="hideme"
+    v-if="errorAlert"
+  ></v-alert>
 </template>
 
 <script>
 import SimpleNav from "@/components/SimpleNav.vue";
 // import  useJwt  from 'jwt-decode';
+import axios from 'axios'
 
 export default {
   data() {
@@ -53,13 +90,19 @@ export default {
       booking: null,
       id: "",
       authorizationFlag: false,
-      securityFlag : localStorage.getItem('securityFlag')
+      securityFlag: localStorage.getItem('securityFlag'),
+      username:'',
+      password:'',
+      user:null,
+      flag:false,
+      error:false,
+      userRole:null,
     };
   },
   beforeMount() {
     // Access ID from the URL
     this.id = this.$route.params.id;
-      axios
+    axios
       .get(`http://localhost:8080/api/bookings/${this.id}?flag=${this.securityFlag}`)
       .then((response) => {
         // Handle response
@@ -68,7 +111,7 @@ export default {
       })
       .catch((err) => {
         // Handle errors
-        if(err.response.data.message === "Unauthorized request"){
+        if (err.response.data.message === "Unauthorized request") {
           this.authorizationFlag = true
           console.log(this.authorizationFlag)
         }
@@ -78,20 +121,53 @@ export default {
   components: {
     SimpleNav,
   },
-  methods:{
-    approve(){
-    axios.post(`http://localhost:8080/api/bookings/scan/${this.id}`)
-       
-    .catch((err) => {
-        // Handle errors
-        if(err.response.data.message === "Unauthorized request"){
-          this.authorizationFlag = true
-          console.log(this.authorizationFlag)
-        }
-      })
+  methods: {
+    approve() {
+      const url = `http://localhost:8080/login?username=${this.username}&password=${this.password}`;
+
+      axios
+        .post(url, { withCredentials: true })
+        .then((response) => {
+          if (response.data.error) {
+            this.error = true;
+          } else {
+            this.flag = true;
+            // delay
+            this.user = response.data;
+            this.userRole=this.user.role
+            localStorage.setItem("userID", this.user.userId);
+            localStorage.setItem("securityFlag", this.user.securityFlag);
+
+          }
+            
+          
+        })
+        .catch((err) => {
+          // Handle errors
+          this.error = true;
+          console.error(err);
+        });
+
+
+
+      //qr function
+      if(this.userRole =="Owner"){
+      axios.post(`http://localhost:8080/api/bookings/scan/${this.id}`)
+
+        .catch((err) => {
+          // Handle errors
+          if (err.response.data.message === "Unauthorized request") {
+            this.authorizationFlag = true
+            console.log(this.authorizationFlag)
+          }
+        })
+      }
+      else{
+        this.error=true
+      }
 
     },
-    redirectPage(){
+    redirectPage() {
       this.$router.push('/')
     },
   }
@@ -99,25 +175,27 @@ export default {
 </script>
 
 <style>
-.goButton{
-  background-color: var(--light)!important;
-  color: black!important;
+.goButton {
+  background-color: var(--light) !important;
+  color: black !important;
   border-radius: 15px !important;
   height: 40px !important;
-  width:100px !important;
+  width: 100px !important;
   font-weight: 500 !important;
   border: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top:10px;
+  margin-top: 10px;
 
 }
-.alert{
-  width:400px;
+
+.alert {
+  width: 400px;
   display: flex;
   border-radius: 25px;
 }
+
 .addNew {
   background-color: var(--nav);
   color: white;
@@ -156,4 +234,10 @@ export default {
 .inputText::-webkit-input-placeholder {
   color: #222;
 }
+
+.signInCard {
+  width: 25rem;
+  margin: 2rem auto;
+}
+
 </style>

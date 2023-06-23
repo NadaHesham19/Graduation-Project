@@ -125,7 +125,7 @@
 
       <v-alert color="success" icon="$success" title="Submitted Successfully" text="Data is updated successfully"
       id="hideme" v-if="flag"></v-alert>
-    <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+    <v-alert color="error" icon="$error" title="Username or email already exists" text="Please Try Valid username or email" id="hideme"
       v-if="error"></v-alert>
     </div>
   </div>
@@ -145,7 +145,7 @@ export default {
   data() {
     return {
       // userBio:this.user.bio,
-      imgSrc:"",
+      imgSrc:"https://i.stack.imgur.com/l60Hf.png",
       user: null,
       userID: localStorage.getItem('userID'),
       flag: false,
@@ -168,8 +168,6 @@ export default {
       this.$refs[field].focus();
     },
     SaveEditting() {
-      // this.userMobile = this.user.mobileNo.toString();
-
 
       axios.put(`http://localhost:8080/api/user/${this.userID}?flag=${this.securityFlag}`,
         {
@@ -184,6 +182,7 @@ export default {
         })
         .catch((err) => {
         // Handle errors
+        this.error = true
         if(err.response.data.message === "Unauthorized request"){
           this.authorizationFlag = true
           console.log(this.authorizationFlag)
@@ -210,6 +209,7 @@ export default {
       })
       .catch((err) => {
         // Handle errors
+        console.log(err)
         if(err.response.data.message === "Unauthorized request"){
           this.authorizationFlag = true
           console.log(this.authorizationFlag)
@@ -220,10 +220,8 @@ export default {
       .get(`http://localhost:8080/api/images/user/${this.userID}`)
         .then((response) => {
         const blob = new Blob([response.data], { type: "image/png" }); // Create a Blob
-        this.imaSrc = URL.createObjectURL(blob); //  URL for the Blob
-        if(this.imgSrc==null){
-          this.imgSrc="https://i.stack.imgur.com/l60Hf.png"
-        }
+        this.imgSrc = URL.createObjectURL(blob); //  URL for the Blob
+
       })
         // Handle response
        
@@ -232,9 +230,6 @@ export default {
         console.error(err);
       });
 
-    if(this.user.bio.length == 0){
-      this.userBio = "Please enter your bio"
-    }
   },
 };
 </script>

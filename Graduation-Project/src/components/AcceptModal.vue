@@ -53,7 +53,7 @@ export default {
         .then((response) => {
           this.status = 'approved'
           //console.log(this.status)
-
+          window.location.reload()
         })
       this.dialog = false
       console.log(this.dialog)

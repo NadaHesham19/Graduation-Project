@@ -49,7 +49,7 @@
         </div>
         <v-alert color="success" icon="$success" title="Booked Successfully" text="Your Booking is successfull" id="hideme"
             v-if="flag"></v-alert>
-        <v-alert color="error" icon="$error" title="Booking unsuccessful" text="Please Try again and try another time slots"
+        <v-alert color="error" icon="$error" title= "Room is Booked at this time" text="Please Try again and try another time slot"
             id="hideme" v-if="error"></v-alert>
 
 
@@ -172,13 +172,17 @@ export default {
                 })
                 .catch((err) => {
                     // Handle errors
-
+                    this.error=true;
                     if (err.response.data.message === "Unauthorized request") {
                         this.authorizationFlag = true
                         console.log(this.authorizationFlag)
                     }
-                })
-
+                });
+                setTimeout(() => {
+                this.flag = false;
+                this.error = false;
+                this.noPoints = false;
+            }, 3000);
         },
 
         bookPoints() {
@@ -220,7 +224,7 @@ export default {
                     })
                     .catch((err) => {
                         // Handle errors
-
+                          this.error=true
                         if (err.response.data.message === "Unauthorized request") {
                             this.authorizationFlag = true
                             console.log(this.authorizationFlag)
@@ -391,7 +395,7 @@ export default {
 }
 
 #hideme {
-    animation: hideAnimation 0s ease-in 2s;
+    animation: hideAnimation 0s ease-in 2.5s;
     animation-fill-mode: forwards;
 }
 
