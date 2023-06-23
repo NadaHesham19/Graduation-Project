@@ -96,17 +96,22 @@
             </div>
 
             <div class="row mt-5 pt-5">
-                <div class=" search pt-5">
-                    <h3 class="mb-5 pb-5 fw-bold mt-5 pt-5">Search for your room:</h3>
-                    <div class="pb-5 ms-5">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <form class="d-flex searchform" @submit.prevent>
-                            <input class="form-control searchinput me-2 " type="search" aria-label="Search"
-                                v-model="searchTerm" />
-                            <button class="btn btn-outline-success main-btn search-btn" type="submit" @click="search">
-                                Search
-                            </button>
-                        </form>
+                <div class=" search pt-5 ">
+                    <div class="row d-flex">
+                        <h3 class="mb-5 pb-5 fw-bold mt-5 pt-5 ">Search for your room:</h3>
+                        <div class="pb-5 ms-5 col-8">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <form class="d-flex searchform" @submit.prevent>
+                                <input class="form-control searchinput me-2 " type="search" aria-label="Search"
+                                    v-model="searchTerm" />
+                                <button class="btn btn-outline-success main-btn search-btn" type="submit" @click="search">
+                                    Search
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-3 ms-5">
+                            <AddRoom :spaceId="spaceId" />
+                        </div>
                     </div>
                     <div class="row justify-content-evenly">
                         <div class="col-4" v-for="(room) in pagedRooms" :key="room.id">
@@ -130,7 +135,7 @@ import AdminNav from '../components/AdminNav.vue';
 import ModifyRoom from '../components/ModifyRoom.vue';
 import Footer from '../components/Footer.vue';
 import { VPagination } from 'vuetify/components/VPagination';
-//import Reviews from '../components/Reviews.vue';
+import AddRoom from '../components/AddRoom.vue';
 import axios from "axios";
 
 
@@ -160,7 +165,7 @@ export default {
         }
     },
     components: {
-        AdminNav, ModifyRoom, Footer,
+        AdminNav, ModifyRoom, Footer, AddRoom
         // Reviews
     },
 
