@@ -147,8 +147,7 @@ export default {
       userID: localStorage.getItem('userID'),
       flag: false,
       error: false,
-      userMobile: '',
-      jsessionId : localStorage.getItem('jsessionidValue')
+      userMobile: ''
 
     };
   },
@@ -165,12 +164,6 @@ export default {
 
 
       axios.put(`http://localhost:8080/api/user/${this.userID}`,
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },
         {
           firstName: this.user.firstName, lastName: this.user.lastName, email: this.user.email, username: this.user.username, mobileNo: this.user.mobileNo, birthDate: this.user.birthDate, address: this.user.address, bio: this.user.bio , userId:this.userID
         }).then((res) => {
@@ -194,14 +187,7 @@ export default {
   beforeMount() {
 
     axios
-      .get(`http://localhost:8080/api/user/${this.userID}` , 
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },
-      )
+      .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
         // Handle response
         this.user = response.data;

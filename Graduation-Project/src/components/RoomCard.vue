@@ -22,7 +22,6 @@ export default {
         return {
             imageSrc: "",
             spaceId: this.$route.params.id,
-            jsessionId: localStorage.getItem('jsessionidValue')
         };
     }, components: { BookCard },
     props: [

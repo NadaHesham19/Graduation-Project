@@ -185,7 +185,6 @@ export default {
       flag: false,
       errorMessage: "",
       error:false,
-      jsessionId : localStorage.getItem('jsessionidValue')
     };
   },
   components: {
@@ -211,12 +210,6 @@ export default {
     
       axios
         .post("http://localhost:8080/api/spaces", {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },
-        {
           name: this.name,
           address: this.address,
           roomNumbers: this.numberOfRooms,
@@ -255,13 +248,7 @@ export default {
   },
   beforeMount() {
     axios
-      .get("http://localhost:8080/api/spaces" , 
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },) 
+      .get("http://localhost:8080/api/spaces")
       .then((response) => {
         // Handle response
         this.users = response.data;

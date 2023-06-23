@@ -21,8 +21,6 @@ export default {
     data() {
         return {
             imageSrc: "",
-            jsessionId: localStorage.getItem('jsessionidValue')
-
         };
     }
     , props: [
@@ -41,6 +39,7 @@ export default {
                     {
                         responseType: "arraybuffer",
                     })
+
                 .then((response) => {
                     const blob = new Blob([response.data], { type: "image/jpeg" }); // Create a Blob 
                     this.imageSrc = URL.createObjectURL(blob); //  URL for the Blob

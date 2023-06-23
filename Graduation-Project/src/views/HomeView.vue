@@ -74,8 +74,7 @@ export default {
     return{
       chat:[{
         userId : localStorage.getItem('userID'),
-        msg: '',
-        jsessionId : localStorage.getItem('jsessionidValue')
+        msg: ''
 
       }]
       
@@ -91,13 +90,7 @@ export default {
       document.getElementById("myForm").style.display = "none";
     },
     sendEmail() {
-      axios.post(`http://localhost:8080/api/message?userId=${this.userId}&message=${this.msg}` , this.chat , 
-      {
-        headers:{
-          'Cookie': this.jsessionId,
-        }
-          
-      },)
+      axios.post(`http://localhost:8080/api/message?userId=${this.userId}&message=${this.msg}` , this.chat)
         .then(response => {
           // Handle response
           this.chat = response.data

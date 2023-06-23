@@ -29,31 +29,23 @@ export default {
     RebookModal
   },
   beforeMount() {
-    this.jsessionId = localStorage.getItem('jsessionidValue')
-    axios
-      .get(`http://localhost:8080/api/images/room/${this.booking.roomId}/0`,
-        {
-          headers: {
-            'Cookie': this.jsessionId,
-          }
+axios
+  .get(`http://localhost:8080/api/images/room/${this.booking.roomId}/0`, {
+    responseType: "arraybuffer",
+  })
+  .then((response) => {
+    const blob = new Blob([response.data], { type: "image/png" }); // Create a Blob
+    this.imageSrc = URL.createObjectURL(blob); //  URL for the Blob
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
-        },
-        {
-          responseType: "arraybuffer",
-        })
-      .then((response) => {
-        const blob = new Blob([response.data], { type: "image/png" }); // Create a Blob
-        this.imageSrc = URL.createObjectURL(blob); //  URL for the Blob
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-  },
+},
   props: [
     'booking',
   ],
-
+ 
 };
 </script>
 

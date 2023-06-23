@@ -81,7 +81,6 @@ export default {
       userID: localStorage.getItem("userID"),
       flag: false,
       error: false,
-      jsessionId : localStorage.getItem('jsessionidValue')
     };
   },
   components: {
@@ -92,13 +91,8 @@ export default {
     AddnewSpace() {
       // if(this.name.length!=0 && this.location.length!=0 && this.noOfRooms.length !=0){
        axios
-        .post("http://localhost:8080/api/requests",  
-        {
-        headers:{
-          'Cookie':this.jsessionId ,
-        }
-          
-      }, {
+        .post("http://localhost:8080/api/requests", {
+
           name: this.name,
           address: this.location,
           noOfRooms: this.numberOfRooms,
@@ -130,14 +124,8 @@ export default {
   },
   beforeMount() {
     axios
-      .get("http://localhost:8080/api/requests" ,  
-      {
-        headers:{
-          'Cookie': this.jsessionId 
-        }
-          
-      },)
-      
+      .get("http://localhost:8080/api/requests")
+
       .then((response) => {
         // Handle response
         this.users = response.data;

@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent width="500">
+    <v-dialog v-model="dialog" persistent width="500" >
       <template v-slot:activator="{ props }">
         <button v-bind="props" class="btn mx-auto my-3 main-btn">
           Rebook <i class="mx-1 fa-regular fa-calendar"></i>
@@ -18,7 +18,7 @@
             <v-row>
               <v-col cols="12" sm="10" md="8">
                 <VueDatePicker :model-value="date" :min-date="new Date()" :enable-time-picker="false"
-                  @update:model-value="getAvailableTime" v-model="date" />
+                  @update:model-value="getAvailableTime" v-model="date"/>
               </v-col>
             </v-row>
             <v-row>
@@ -36,7 +36,7 @@
             <v-row>
 
               <v-col cols="12" sm="6" md="4">
-                <label for="End Time" class="time-dropdown__label">End Time</label>
+                <label for="End Time" class="time-dropdown__label" >End Time</label>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <select id="time" v-model="selectedTime" :disabled="flag" class="time-dropdown__select">
@@ -77,7 +77,7 @@ export default {
     menu: false,
     start: null,
     end: null,
-    flag: true,
+    flag:true,
     times: [
       "09:00",
       "10:00",
@@ -131,18 +131,10 @@ export default {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     },
-  },
+  }, 
   beforeMount() {
-    this.jsessionId = localStorage.getItem('jsessionidValue')
     axios
-      .get(`http://localhost:8080/api/user/${this.userID}`,
-        {
-          headers: {
-            'Cookie': this.jsessionId,
-          }
-
-        },
-      )
+      .get(`http://localhost:8080/api/user/${this.userID}`)
       .then((response) => {
 
         // Handle response
