@@ -40,12 +40,12 @@
                 </div>
             </div>
         </div>
-        <v-alert color="success" icon="$success" title="Submitted Successfully" text="The data is submitted successfully"
+        <v-alert color="success" icon="$success" title="Booked Successfully" text="Your Booking is successfull"
             id="hideme" v-if="flag"></v-alert>
-        <v-alert color="error" icon="$error" title="Submission Failed" text="Please Try again" id="hideme"
+        <v-alert color="error" icon="$error" title="Bookin unsuccessful" text="Please Try again and try another time slots" id="hideme"
             v-if="error"></v-alert>
-        <v-alert color="error" icon="$error" title="There is no enough points" text="Please Try again" id="hideme"
-        v-if="noPoints"></v-alert>
+        <v-alert color="error" icon="$error" title="There Is No Enough Points" text="Please Try again" id="hideme"
+            v-if="noPoints"></v-alert>
     </div>
 </template>
 
@@ -70,9 +70,11 @@ export default {
             room: null,
             space: null,
             spaceName: '',
-            user:null,
-            userPoints:0,
-            noPoints:false,
+            user: null,
+            userPoints: 0,
+            noPoints: false,
+            spaceId: '',
+            dateGood: ''
         };
     },
     components: {
@@ -80,34 +82,42 @@ export default {
         flatpickr,
     },
     methods: {
-        computePrice(stTime, enTime, price) {
-            return (enTime - stTime) * price
+        calculateTotalPrice(startTime, endTime, pricePerUnit) {
+            // Convert time strings to Date objects
+            const startDate = new Date(`1970/01/01 ${startTime}`);
+            const endDate = new Date(`1970/01/01 ${endTime}`);
+
+            // Calculate the duration in minutes
+            const duration = (endDate - startDate) / (1000 * 60);
+
+            // Calculate the total price
+            const totalPrice = (duration / 30) * pricePerUnit;
+
+            // Return the total price
+            return totalPrice;
+        }
+        , formatDate(date) {
+            var parts = date.split("-");
+            var year = parts[0];
+            var month = parts[1];
+            var day = parts[2];
+
+            return day + "-" + month + "-" + year;
         },
         book() {
-            // console.log(this.startTime)
-            // console.log(this.endTime)
-            // console.log(this.date)
-            // console.log(this.userId)
-            // console.log(this.spaceName)
-            // console.log(this.room.spaceId)
-
-
-
-
-            this.price = this.computePrice(this.startTime, this.endTime, this.room.price)
-            console.log(this.price)
+            this.price = this.calculateTotalPrice(this.startTime, this.endTime, this.room.price)
+            this.dateGood = this.formatDate(this.date);
             axios
-                .post("http://localhost:8080/api/spaces", {
+                .post("http://localhost:8080/api/bookings", {
                     startTime: this.startTime,
                     endTime: this.endTime,
-                    date: this.data,
+                    date: this.dateGood,
                     roomId: this.roomId,
                     userId: this.userID,
                     spaceName: this.spaceName,
                     qrScan: false,
                     paymentMethod: "Cash",
                     price: this.price,
-                    spaceId: this.room.spaceId
                 })
                 .then((response) => {
                     if (response.data.error) {
@@ -121,13 +131,17 @@ export default {
                     this.error = false;
                     console.error(err);
                 });
-            
+            setTimeout(() => {
+                this.flag = false;
+                this.error = false;
+                this.noPoints = false;
+            }, 3000);
         },
 
         bookPoints() {
-            this.price = this.computePrice(this.startTime, this.endTime, this.room.price);
-            if (this.useerPoints >= this.price){
-                  axios
+            this.price = this.calculateTotalPrice(this.startTime, this.endTime, this.room.price);
+            if (this.useerPoints >= this.price) {
+                axios
                     .post("http://localhost:8080/api/bookings", {
                         startTime: this.startTime,
                         endTime: this.endTime,
@@ -138,7 +152,6 @@ export default {
                         qrScan: false,
                         paymentMethod: "Points",
                         price: this.price,
-                        spaceId: this.room.spaceId
                     })
                     .then((response) => {
                         if (response.data.error) {
@@ -152,10 +165,16 @@ export default {
                         this.error = false;
                         console.error(err);
                     });
-                }
-                else{
-                 this.noPoints=true;
-                }
+            }
+            else {
+                this.noPoints = true;
+            }
+            setTimeout(() => {
+                this.flag = false;
+                this.error = false;
+                this.noPoints = false;
+            }, 3000);
+
         },
         getCurrentDate() {
             const today = new Date();
@@ -190,19 +209,7 @@ export default {
                 // Handle response
                 this.room = response.data;
                 this.name = this.room.name;
-                //get space 
-                axios
-                    .get(`http://localhost:8080/api/spaces/${this.room.spaceId}`)
-                    .then((response) => {
-                        // Handle response
-                        this.space = response.data;
-                        this.Spacename = this.space.name;
-                    })
-                    .catch((err) => {
-                        // Handle errors
-                        console.error(err);
-                    });
-
+                console.log(this.name)
 
             })
             .catch((err) => {
@@ -213,19 +220,36 @@ export default {
 
 
 
-            //get user 
-            axios
-                    .get(`http://localhost:8080/api/user/${this.userID}`)
-                    .then((response) => {
-                        // Handle response
-                        this.user = response.data;
-                        this.userPoints = this.user.points;
-                    })
-                    .catch((err) => {
-                        // Handle errors
-                        console.error(err);
-                    });
+        //get user 
+        axios
+            .get(`http://localhost:8080/api/user/${this.userID}`)
+            .then((response) => {
+                // Handle response
+                this.user = response.data;
+                this.userPoints = this.user.points;
+            })
+            .catch((err) => {
+                // Handle errors
+                console.error(err);
+            });
 
+
+        // get space
+        axios
+            .get(`http://localhost:8080/api/spaces/room/${this.roomId}`)
+            .then((response) => {
+                // Handle response
+                this.space = response.data;
+                this.spaceName = this.space.name;
+                this.spaceId = this.space.spaceId
+
+
+
+            })
+            .catch((err) => {
+                // Handle errors
+                console.error(err);
+            });
     },
 };
 </script>
@@ -268,7 +292,7 @@ export default {
 }
 
 #hideme {
-    animation: hideAnimation 0s ease-in 1.5s;
+    animation: hideAnimation 0s ease-in 2s;
     animation-fill-mode: forwards;
 }
 
