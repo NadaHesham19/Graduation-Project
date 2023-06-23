@@ -17,6 +17,7 @@ import ResetPassword from "../views/ResetPassword.vue"
 import QrCodeView from "../views/QrCode.vue"
 import ExtraAddNewView from "../views/ExtraAddNewView.vue"
 import SpacesAdminView from "../views/SpacesAdminView.vue"
+import ModifySpaceView from "../views/ModifySpaceView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       path: "/spacesadmin",
       name: "spacesadmin",
       component: SpacesAdminView,
+    },
+    {
+      path: "/modifyspace/:id",
+      name: "modifyspace",
+      component: ModifySpaceView,
     },
     {
       path: "/about",
