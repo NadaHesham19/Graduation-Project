@@ -145,8 +145,7 @@ export default {
   data() {
     return {
       // userBio:this.user.bio,
-      imgSrc:
-        "https://i.stack.imgur.com/l60Hf.png",
+      imgSrc:"",
       user: null,
       userID: localStorage.getItem('userID'),
       flag: false,
@@ -217,21 +216,25 @@ export default {
         }
       });
 
-      // axios
-      // .get(`http://localhost:8080/api/images/user/${this.userID}`)
-      // .then((response) => {
-      //   // Handle response
-      //   this.imgSrc = response.data;
-      //   console.log(this.imgSrc)
-      // })
-      // .catch((err) => {
-      //   // Handle errors
-      //   console.error(err);
-      // });
+      axios
+      .get(`http://localhost:8080/api/images/user/${this.userID}`)
+        .then((response) => {
+        const blob = new Blob([response.data], { type: "image/png" }); // Create a Blob
+        this.imaSrc = URL.createObjectURL(blob); //  URL for the Blob
+        if(this.imgSrc==null){
+          this.imgSrc="https://i.stack.imgur.com/l60Hf.png"
+        }
+      })
+        // Handle response
+       
+      .catch((err) => {
+        // Handle errors
+        console.error(err);
+      });
 
-    // if(this.user.bio.length == 0){
-    //   this.userBio = "Please enter your bio"
-    // }
+    if(this.user.bio.length == 0){
+      this.userBio = "Please enter your bio"
+    }
   },
 };
 </script>
