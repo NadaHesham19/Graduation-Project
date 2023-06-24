@@ -51,6 +51,7 @@ export default {
       axios.delete(`http://localhost:8080/api/bookings/${this.bookingId}?flag=${this.securityFlag}`)
     .then(() => this.status = 'Delete successful');
     this.dialog=false
+    window.location.reload()
     },
     redirectPage(){
       this.$router.push('/')

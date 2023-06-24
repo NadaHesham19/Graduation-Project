@@ -178,7 +178,7 @@ export default {
           } else {
             this.flag = true
           }
-          console.log(res.data)
+         
         })
         .catch((err) => {
         // Handle errors
@@ -192,7 +192,7 @@ export default {
         this.flag = false
         this.error = false
       }, 3000);
-
+      window.location.reload()
     }
   },
   beforeMount() {

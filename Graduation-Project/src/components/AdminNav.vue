@@ -17,7 +17,8 @@
           <router-link class="nav-link nav-item" aria-current="page" to="/historyadmin">History</router-link>
 
           <router-link class="nav-link nav-item" aria-current="page" to="/reviewadmin">Requests</router-link>
-
+                <router-link class="nav-item nav-link" to="/" style="font-size: 15px" @click="logOut">
+                  Log Out</router-link>
 
         </div>
       </div>
@@ -26,7 +27,14 @@
 </template>
   
 <script>
-export default {}
+export default {
+  methods:{
+    logOut(){
+      // localStorage.removeItem('userID');
+      localStorage.setItem('securityFlag',false);
+    }
+  }
+}
 </script>
   
 <style scoped>

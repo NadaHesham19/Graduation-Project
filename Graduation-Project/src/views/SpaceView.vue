@@ -66,7 +66,6 @@
                 <div class=" search pt-5">
                     <h3 class="mb-5 pb-5 fw-bold mt-5 pt-5">Search for your room:</h3>
                     <div class="pb-5 ms-5">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
                         <form class="d-flex searchform" @submit.prevent>
                             <input class="form-control searchinput me-2 " type="search" aria-label="Search"
                                 v-model="searchTerm" />
